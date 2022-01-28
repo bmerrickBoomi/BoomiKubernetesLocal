@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{name}}
+  labels:
+    app: {{name}}
+  namespace: molecule-{{name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{name}}
+  serviceName: {{name}}-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: {{name}}
+    spec:
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: molecule-{{name}}-storage
+          persistentVolumeClaim:
+            claimName: molecule-{{name}}-claim
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - image: boomi/molecule:4.0.0
+        imagePullPolicy: Always
+        name: molecule-{{name}}-node
+        ports:
+        - containerPort: {{port}}
+          protocol: TCP
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - sh
+                - /home/boomi/scaledown.sh
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+          requests:
+            cpu: "500m"
+            memory: "768Mi"
+        volumeMounts:
+          - name: molecule-{{name}}-storage
+            mountPath: "/boomi"
+        readinessProbe:
+          periodSeconds: 10
+          initialDelaySeconds: 10
+          httpGet:
+            path: /_admin/readiness
+            port: {{port}}
+        livenessProbe:
+          periodSeconds: 60
+          httpGet:
+            path: /_admin/liveness
+            port: {{port}}
+        env:
+        - name: BOOMI_ATOMNAME
+          value: {{name}}
+        - name: ATOM_LOCALHOSTID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: BOOMI_ACCOUNTID
+          valueFrom:
+            secretKeyRef:
+              name: boomi-secret-{{name}}
+              key: account
+        - name: INSTALL_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: boomi-secret-{{name}}
+              key: token
