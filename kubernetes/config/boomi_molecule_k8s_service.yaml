@@ -8,9 +8,10 @@ metadata:
 spec:
   selector:
     app: {{name}}
-  type: LoadBalancer
+  type: NodePort
   ports:
   - name: http
     protocol: TCP
-    port: {{port}}
-    targetPort: {{port}}
+    nodePort: {{port}}
+    port: 9090
+    targetPort: 9090

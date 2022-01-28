@@ -13,4 +13,4 @@ kubectl proxy &
 # Molecule
 kubectl apply -f kubernetes/config
 
-./molecule.sh -a -n MoleculeX -p 9797 -x /c/Users/brian_merrick/Documents/Kubernetes/MoleculeX -u boomi_brianmerrick-4SYB9W -t TOKEN
+./molecule.sh -a -n MoleculeX -p 30036 -x /c/Users/brian_merrick/Documents/Kubernetes/MoleculeX -u BOOMI_TOKEN.brian.merrick@dell.com -m boomi_brianmerrick-4SYB9W -t API_TOKEN

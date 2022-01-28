@@ -29,7 +29,7 @@ spec:
         imagePullPolicy: Always
         name: molecule-{{name}}-node
         ports:
-        - containerPort: {{port}}
+        - containerPort: 9090
           protocol: TCP
         lifecycle:
           preStop:
@@ -52,12 +52,12 @@ spec:
           initialDelaySeconds: 10
           httpGet:
             path: /_admin/readiness
-            port: {{port}}
+            port: 9090
         livenessProbe:
           periodSeconds: 60
           httpGet:
             path: /_admin/liveness
-            port: {{port}}
+            port: 9090
         env:
         - name: BOOMI_ATOMNAME
           value: {{name}}
@@ -70,8 +70,13 @@ spec:
             secretKeyRef:
               name: boomi-secret-{{name}}
               key: account
-        - name: INSTALL_TOKEN
+        - name: BOOMI_USERNAME 
           valueFrom:
             secretKeyRef:
               name: boomi-secret-{{name}}
-              key: token
+              key: username
+        - name: BOOMI_PASSWORD  
+          valueFrom:
+            secretKeyRef:
+              name: boomi-secret-{{name}}
+              key: password
