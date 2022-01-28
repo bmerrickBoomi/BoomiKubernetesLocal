@@ -19,8 +19,9 @@ spec:
       terminationGracePeriodSeconds: 60
       volumes:
         - name: molecule-{{name}}-storage
-          persistentVolumeClaim:
-            claimName: molecule-{{name}}-claim
+          hostPath: 
+            path: {{path}}
+            type: DirectoryOrCreate
       securityContext:
         fsGroup: 1000
       containers:

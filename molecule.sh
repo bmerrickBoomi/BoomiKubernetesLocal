@@ -65,16 +65,17 @@ fi
 kubectl apply -f tools/dashboard
 
 # Apply Molecule with Replacements
-FILES="kubernetes/config/*"
-cat "kubernetes/config/boomi_molecule_k8s_namespace.yaml" | sed "s@{{name}}@${name}@g" | sed "s@{{port}}@${port}@g" | sed "s@{{path}}@${path}@g" | sed "s@{{token}}@${token}@g" | sed "s@{{account}}@${account}@g" | kubectl apply -f -
-for f in $FILES
-do
-  if [ ! -z ${add} ];
-  then
+
+if [ ! -z ${delete} ];
+then
+  kubectl delete all --all -n molecule-${name}
+  kubectl delete namespace molecule-${name}
+elif [ ! -z ${add} ];
+then
+  FILES="kubernetes/config/*"
+  cat "kubernetes/config/boomi_molecule_k8s_namespace.yaml" | sed "s@{{name}}@${name}@g" | sed "s@{{port}}@${port}@g" | sed "s@{{path}}@${path}@g" | sed "s@{{token}}@${token}@g" | sed "s@{{account}}@${account}@g" | kubectl apply -f -
+  for f in $FILES
+  do
     cat $f | sed "s@{{name}}@${name}@g" | sed "s@{{port}}@${port}@g" | sed "s@{{path}}@${path}@g" | sed "s@{{token}}@${token}@g" | sed "s@{{account}}@${account}@g" | kubectl apply -f -
-  elif [ ! -z ${delete} ];
-  then
-    kubectl delete all --all -n molecule-${name}
-    kubectl delete namespace molecule-${name}
-  fi
-done
+  done
+fi
