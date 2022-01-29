@@ -4,14 +4,14 @@ This repository contains all Runtime containerization reference architectures, g
 
 ## Contents
 
-[Kubernetes Reference Architecture - Boomi Molecule & Boomi Atom Cloud](https://bitbucket.org/officialboomi/runtime-containers/src/master/Kubernetes/){:target="_blank"}
+[Kubernetes Reference Architecture - Boomi Molecule & Boomi Atom Cloud](https://bitbucket.org/officialboomi/runtime-containers/src/master/Kubernetes/)
 
 # Setup
-[Install Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows){:target="_blank"}
+[Install Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
 
-[Enable Kubernetes for Docker Desktop](https://docs.docker.com/desktop/kubernetes/){:target="_blank"}
+[Enable Kubernetes for Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
 
-[Install kubectl (Windows)](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/){:target="_blank"} or [Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/){:target="_blank"}
+[Install kubectl (Windows)](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/) or [Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
 # Molecule
 
@@ -19,7 +19,7 @@ This repository contains all Runtime containerization reference architectures, g
 
 kubectl proxy &
 
-Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/){:target="_blank"}
+Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 
 ## Install a new molecule
 
