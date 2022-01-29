@@ -2,16 +2,14 @@
 
 function usage () {
     cat <<EOUSAGE
-$(basename $0) adn:p:x:t:u:m:
+$(basename $0) adn:p:x:t:
   -a Add
   -n Molecule Name
   -p Port
   -d Delete
   -x Path
-  -t Boomi Password/API Token
-  -u Boomi Username
-  -m Boomi Account
-  molecule [-a -n <NAME> -p <PORT> -x <PATH> -t <PASSWORD> -u <USERNAME> -m <ACCOUNT>] | [-d -n <NAME]
+  -t Boomi Token
+  molecule [-a -n <NAME> -p <PORT> -x <PATH> -t <TOKEN>] | [-d -n <NAME>]
 EOUSAGE
 }
 
@@ -23,9 +21,7 @@ do
         p) port=${OPTARG};;
         x) path=${OPTARG};;
         t) password=${OPTARG};;
-        u) username=${OPTARG};;
         d) delete=TRUE;;
-        m) account=${OPTARG};;
         *)
             echo "Invalid option: -$OPTARG" >&2
             usage
@@ -40,9 +36,7 @@ echo "name = ${name}"
 echo "port = ${port}"
 echo "path = ${path}"
 echo "password = ${password}"
-echo "account = ${account}"
 echo "delete = ${delete}"
-echo "username = ${username}"
 
 # Checking for ${add} and ${delete} not set
 if [ ! -z ${add} ] && [ ! -z ${delete} ]; 
@@ -53,8 +47,8 @@ then
   usage  
 fi
 
-# Checking ${add} -n && -p && -x && -t && -u and ${delete} -n
-if [ ! -z ${add} ] && ( [ -z ${name} ] || [ -z ${port} ] || [ -z ${path} ] || [ -z ${password} ] || [ -z ${account} ] || [ -z ${username} ]);
+# Checking ${add} -n && -p && -x && -t and ${delete} -n
+if [ ! -z ${add} ] && ( [ -z ${name} ] || [ -z ${port} ] || [ -z ${path} ] || [ -z ${password} ]);
 then
   usage
   exit
@@ -76,9 +70,9 @@ then
 elif [ ! -z ${add} ];
 then
   FILES="kubernetes/config/*"
-  cat "kubernetes/config/boomi_molecule_k8s_namespace.yaml" | sed "s#{{name}}#${name}#g" | sed "s#{{port}}#${port}#g" | sed "s#{{path}}#${path}#g" | sed "s#{{password}}#${password}#g" | sed "s#{{account}}#${account}#g" | sed "s#{{username}}#${username}#g"  | kubectl apply -f -
+  cat "kubernetes/config/boomi_molecule_k8s_namespace.yaml" | sed "s#{{name}}#${name}#g" | sed "s#{{port}}#${port}#g" | sed "s#{{path}}#${path}#g" | sed "s#{{password}}#${password}#g" | kubectl apply -f -
   for f in $FILES
   do
-    cat $f | sed "s#{{name}}#${name}#g" | sed "s#{{port}}#${port}#g" | sed "s#{{path}}#${path}#g" | sed "s#{{password}}#${password}#g" | sed "s#{{account}}#${account}#g" | sed "s#{{username}}#${username}#g" | kubectl apply -f -
+    cat $f | sed "s#{{name}}#${name}#g" | sed "s#{{port}}#${port}#g" | sed "s#{{path}}#${path}#g" | sed "s#{{password}}#${password}#g" | kubectl apply -f -
   done
 fi

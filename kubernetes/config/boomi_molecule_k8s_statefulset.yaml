@@ -10,7 +10,7 @@ spec:
     matchLabels:
       app: {{name}}
   serviceName: {{name}}-service
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -65,17 +65,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        - name: BOOMI_ACCOUNTID
-          valueFrom:
-            secretKeyRef:
-              name: boomi-secret-{{name}}
-              key: account
-        - name: BOOMI_USERNAME 
-          valueFrom:
-            secretKeyRef:
-              name: boomi-secret-{{name}}
-              key: username
-        - name: BOOMI_PASSWORD  
+        - name: INSTALL_TOKEN 
           valueFrom:
             secretKeyRef:
               name: boomi-secret-{{name}}
