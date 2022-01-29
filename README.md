@@ -4,14 +4,14 @@ This repository contains all Runtime containerization reference architectures, g
 
 ## Contents
 
-[Kubernetes Reference Architecture - Boomi Molecule & Boomi Atom Cloud](https://bitbucket.org/officialboomi/runtime-containers/src/master/Kubernetes/)
+[Kubernetes Reference Architecture - Boomi Molecule & Boomi Atom Cloud](https://bitbucket.org/officialboomi/runtime-containers/src/master/Kubernetes/){:target="_blank"}
 
 # Setup
-[Install Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
+[Install Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows){:target="_blank"}
 
-[Enable Kubernetes for Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
+[Enable Kubernetes for Docker Desktop](https://docs.docker.com/desktop/kubernetes/){:target="_blank"}
 
-[Install kubectl (Windows)](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/) or [Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+[Install kubectl (Windows)](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/){:target="_blank"} or [Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/){:target="_blank"}
 
 # Molecule
 
@@ -19,11 +19,11 @@ This repository contains all Runtime containerization reference architectures, g
 
 kubectl proxy &
 
-Naviate to Kubernetes Dashboard
-http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/){:target="_blank"}
 
 ## Install a new molecule
 
+```
   -a Add
   -n Molecule Name
   -p Port
@@ -33,8 +33,12 @@ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kube
   
 molecule [-a -n <NAME> -p <PORT> -x <PATH> -t <TOKEN>] | [-d -n <NAME>]
 
+```
+
 Example:
 
+```
 ./molecule.sh -a -n MoleculeX -p 30036 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
 
 ./molecule.sh -a -n MoleculeZ -p 31036 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
+```
