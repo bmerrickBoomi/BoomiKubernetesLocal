@@ -8,7 +8,7 @@ $(basename $0) adn:p:x:t:
   -p Port
   -d Delete
   -x Path
-  -t Boomi Token
+  -t Installer Token
   molecule [-a -n <NAME> -p <PORT> -x <PATH> -t <TOKEN>] | [-d -n <NAME>]
 EOUSAGE
 }
