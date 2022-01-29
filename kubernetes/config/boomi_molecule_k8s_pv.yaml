@@ -1,0 +1,34 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: molecule-{{name}}-storage
+  namespace: molecule-{{name}}
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+mountOptions:
+  - uid=1000
+  - gid=1000
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: molecule-{{name}}-pv
+  namespace: molecule-{{name}}
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: molecule-{{name}}-storage
+  local:
+    path: {{path}}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - docker-desktop

@@ -13,6 +13,6 @@ kubectl proxy &
 # Molecule
 kubectl apply -f kubernetes/config
 
-./molecule.sh -a -n MoleculeX -p 30036 -x /c/Users/brian_merrick/Documents/Kubernetes/MoleculeX -t API_TOKEN
+./molecule.sh -a -n MoleculeX -p 30036 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t API_TOKEN
 
-./molecule.sh -a -n MoleculeZ -p 31036 -x /c/Users/brian_merrick/Documents/Kubernetes/MoleculeZ -t API_TOKEN
+./molecule.sh -a -n MoleculeZ -p 31036 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t API_TOKEN

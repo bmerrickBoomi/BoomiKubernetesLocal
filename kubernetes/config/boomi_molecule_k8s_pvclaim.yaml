@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: molecule-{{name}}-claim
+  namespace: molecule-{{name}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: molecule-{{name}}-storage
+  resources:
+    requests:
+      storage: 5Gi

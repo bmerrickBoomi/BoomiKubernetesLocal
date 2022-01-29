@@ -67,6 +67,7 @@ if [ ! -z ${delete} ];
 then
   kubectl delete all --all -n molecule-${name}
   kubectl delete namespace molecule-${name}
+  kubectl delete pv molecule-${name}-pv
 elif [ ! -z ${add} ];
 then
   FILES="kubernetes/config/*"

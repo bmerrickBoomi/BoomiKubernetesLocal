@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{name}}
   labels:
@@ -9,7 +9,6 @@ spec:
   selector:
     matchLabels:
       app: {{name}}
-  serviceName: {{name}}-service
   replicas: 1
   template:
     metadata:
@@ -19,11 +18,8 @@ spec:
       terminationGracePeriodSeconds: 60
       volumes:
         - name: molecule-{{name}}-storage
-          hostPath: 
-            path: {{path}}
-            type: DirectoryOrCreate
-      securityContext:
-        fsGroup: 1000
+          persistentVolumeClaim:
+            claimName: molecule-{{name}}-claim
       containers:
       - image: boomi/molecule:4.0.0
         imagePullPolicy: Always
@@ -46,7 +42,7 @@ spec:
             memory: "768Mi"
         volumeMounts:
           - name: molecule-{{name}}-storage
-            mountPath: "/boomi"
+            mountPath: /mnt/boomi
         readinessProbe:
           periodSeconds: 10
           initialDelaySeconds: 10
