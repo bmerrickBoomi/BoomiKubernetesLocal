@@ -42,9 +42,11 @@ echo "delete = ${delete}"
 if [ ! -z ${add} ] && [ ! -z ${delete} ]; 
 then 
   usage 
+  exit
 elif [ -z ${add} ] && [ -z ${delete} ];
 then
   usage  
+  exit
 fi
 
 # Checking ${add} -n && -p && -x && -t and ${delete} -n
@@ -60,6 +62,9 @@ fi
 
 # Apply Dashboard
 kubectl apply -f tools/dashboard
+
+# Apply nginx
+kubectl apply -f tools/nginx
 
 # Apply Molecule with Replacements
 

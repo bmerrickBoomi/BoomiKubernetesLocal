@@ -38,7 +38,7 @@ molecule [-a -n <NAME> -p <PORT> -x <PATH> -t <TOKEN>] | [-d -n <NAME>]
 Example:
 
 ```
-./molecule.sh -a -n MoleculeX -p 30036 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
+./molecule.sh -a -n MoleculeX -p 9696 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
 
-./molecule.sh -a -n MoleculeZ -p 31036 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
+./molecule.sh -a -n MoleculeZ -p 9797 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
 ```
