@@ -5,9 +5,6 @@ metadata:
   namespace: molecule-{{name}}
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
-mountOptions:
-  - uid=1000
-  - gid=1000
 ---
 apiVersion: v1
 kind: PersistentVolume

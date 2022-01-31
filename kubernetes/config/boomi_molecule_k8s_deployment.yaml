@@ -45,7 +45,7 @@ spec:
             mountPath: /mnt/boomi
         readinessProbe:
           periodSeconds: 10
-          initialDelaySeconds: 10
+          initialDelaySeconds: 60
           httpGet:
             path: /_admin/readiness
             port: 9090
@@ -65,4 +65,4 @@ spec:
           valueFrom:
             secretKeyRef:
               name: boomi-secret-{{name}}
-              key: password
+              key: token

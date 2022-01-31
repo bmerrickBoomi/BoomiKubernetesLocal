@@ -26,19 +26,18 @@ Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubern
 ```
   -a Add
   -n Molecule Name
-  -p Port
   -d Delete
-  -x Path
+  -p Path
   -t Installer Token
   
-molecule [-a -n <NAME> -p <PORT> -x <PATH> -t <TOKEN>] | [-d -n <NAME>]
+molecule [-a -n <NAME> -p <PATH> -t <TOKEN>] | [-d -n <NAME>]
 
 ```
 
 Example:
 
 ```
-./molecule.sh -a -n MoleculeX -p 9696 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
+./molecule.sh -a -n MoleculeX -p /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
 
-./molecule.sh -a -n MoleculeZ -p 9797 -x /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
+./molecule.sh -a -n MoleculeZ -p /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
 ```
