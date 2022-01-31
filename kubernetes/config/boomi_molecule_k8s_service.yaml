@@ -28,9 +28,9 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: /{{name}}
+        path: /molecule/{{name}}
         backend:
           service:
             name: {{name}}
             port: 
-              number: 80
+              number: 9090
