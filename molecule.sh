@@ -2,27 +2,32 @@
 
 function usage () {
     cat <<EOUSAGE
-$(basename $0) adn:p:x:t:
+$(basename $0) adn:p:t:v:c:
   -a Add
   -n Molecule Name
   -d Delete
   -p Path
   -t Installer Token
-  molecule [-a -n <NAME> -p <PATH> -t <TOKEN>] | [-d -n <NAME>]
+  -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
+  -c CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
+
+  molecule [-a -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> -c <CONTAINER_OPTIONS>] ] | [-d -n <NAME>]
 EOUSAGE
 }
 
 function fileReplace() {
-  cat $1 | sed "s#{{name}}#${name}#g" | sed "s#{{path}}#${path}#g" | sed "s#{{token}}#${token}#g"
+  cat $1 | sed "s#{{name}}#${name}#g" | sed "s#{{path}}#${path}#g" | sed "s#{{token}}#${token}#g" | sed "s#{{vm}}#${vm}#g" | sed "s#{{container}}#${container}#g"
 }
 
-while getopts adn:p:t: opt
+while getopts adn:p:t:v:c: opt
 do
     case "${opt}" in
         a) add=TRUE;;
         n) name=${OPTARG,,};;
         p) path=${OPTARG};;
         t) token=${OPTARG};;
+        v) vm=${OPTARG};;
+        c) container=${OPTARG};;
         d) delete=TRUE;;
         *)
             echo "Invalid option: -$OPTARG" >&2
@@ -37,6 +42,8 @@ echo "add = ${add}"
 echo "name = ${name}"
 echo "path = ${path}"
 echo "token = ${token}"
+echo "vm = ${vm}"
+echo "container = ${container}"
 echo "delete = ${delete}"
 
 # Checking for ${add} and ${delete} not set

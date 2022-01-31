@@ -57,6 +57,10 @@ spec:
         env:
         - name: BOOMI_ATOMNAME
           value: {{name}}
+        - name: ATOM_VMOPTIONS_OVERRIDES
+          value: {{vm}}
+        - name: CONTAINER_PROPERTIES_OVERRIDES
+          value: {{container}}
         - name: ATOM_LOCALHOSTID
           valueFrom:
             fieldRef:
