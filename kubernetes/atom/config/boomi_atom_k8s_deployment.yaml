@@ -4,7 +4,7 @@ metadata:
   name: {{name}}
   labels:
     app: {{name}}
-  namespace: molecule-{{name}}
+  namespace: atom-{{name}}
 spec:
   selector:
     matchLabels:
@@ -17,13 +17,13 @@ spec:
     spec:
       terminationGracePeriodSeconds: 60
       volumes:
-        - name: molecule-{{name}}-storage
+        - name: atom-{{name}}-storage
           persistentVolumeClaim:
-            claimName: molecule-{{name}}-claim
+            claimName: atom-{{name}}-claim
       containers:
-      - image: boomi/molecule:4.0.0
+      - image: boomi/atom:4.0.0
         imagePullPolicy: Always
-        name: molecule-{{name}}-node
+        name: atom-{{name}}-node
         ports:
         - containerPort: 9090
           protocol: TCP
@@ -41,7 +41,7 @@ spec:
             cpu: "500m"
             memory: "768Mi"
         volumeMounts:
-          - name: molecule-{{name}}-storage
+          - name: atom-{{name}}-storage
             mountPath: /mnt/boomi
         readinessProbe:
           periodSeconds: 10

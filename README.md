@@ -2,7 +2,7 @@
 
 This repository contains all Runtime containerization reference architectures, guidance, and definitions for configuring a Boomi Molecule on a Docker Desktop Kubernetes configuration.
 
-## Contents
+## Reference Contents
 
 [Kubernetes Reference Architecture - Boomi Molecule & Boomi Atom Cloud](https://bitbucket.org/officialboomi/runtime-containers/src/master/Kubernetes/)
 
@@ -21,26 +21,30 @@ kubectl proxy &
 
 Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 
+# Installer
+
+```
+-o Operation [ATOM | MOLECULE]
+-a Add
+-n Name
+-d Delete
+-p Path
+-t Installer Token                                                                                                                                                                                     -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
+-c CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
+
+boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> -c <CONTAINER_OPTIONS>] ] | [-d -o [ATOM | MOLECULE] -n <NAME>]   
+```
+
 # Molecule
 
 ## Install a new molecule
 
 ```
-  -a Add
-  -n Molecule Name
-  -d Delete
-  -p Path
-  -t Installer Token
-  -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
-  -c CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
-  
-molecule [-a -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> -c <CONTAINER_OPTIONS>] ] | [-d -n <NAME>]
-```
+ADD
+./boomi.sh -o MOLECULE -a -n <NAME> -p "/run/desktop/mnt/host/c/Boomi\ AtomSphere" -t INSTALLER_TOKEN
 
-Example:
-
-```
-./molecule.sh -a -n <NAME> -p /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
+DELETE
+./boomi.sh -o MOLECULE -d -n <NAME>
 ```
 
 Example Options:
@@ -56,3 +60,25 @@ https://localhost/molecule/<NAME>
 ```
 
 # Atom
+
+## Install a new atom
+
+```
+ADD
+./boomi.sh -o ATOM -a -n <NAME> -p "/run/desktop/mnt/host/c/Boomi\ AtomSphere" -t INSTALLER_TOKEN
+
+DELETE
+./boomi.sh -o ATOM -d -n <NAME>
+```
+
+Example Options:
+```
+-v "-Xmx2048m" -c "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
+
+-v $(cat kubernetes/atom/atom-default.vmoptions | xargs | sed -e 's/ /|/g') -c $(cat kubernetes/atom/container-default.properties | xargs | sed -e 's/ /|/g')
+```
+
+## Access Molecule API
+```
+https://localhost/atom/<NAME>
+```

@@ -2,32 +2,34 @@
 
 function usage () {
     cat <<EOUSAGE
-$(basename $0) adn:p:t:v:c:
+$(basename $0) adn:p:t:v:c:o:
+  -o Operation [ATOM | MOLECULE]
   -a Add
-  -n Molecule Name
+  -n Name
   -d Delete
   -p Path
   -t Installer Token
   -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
   -c CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
 
-  molecule [-a -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> -c <CONTAINER_OPTIONS>] ] | [-d -n <NAME>]
+  boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> -c <CONTAINER_OPTIONS>] ] | [-d -o [ATOM | MOLECULE] -n <NAME>]
 EOUSAGE
 }
 
 function fileReplace() {
-  cat $1 | sed "s#{{name}}#${name}#g" | sed "s#{{path}}#${path}#g" | sed "s#{{token}}#${token}#g" | sed "s#{{vm}}#${vm}#g" | sed "s#{{container}}#${container}#g"
+  cat $1 | sed "s#{{uname}}#${name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${path}#g" | sed "s#{{token}}#${token}#g" | sed "s#{{vm}}#${vm}#g" | sed "s#{{container}}#${container}#g"
 }
 
-while getopts adn:p:t:v:c: opt
+while getopts adn:p:t:v:c:o: opt
 do
     case "${opt}" in
         a) add=TRUE;;
-        n) name=${OPTARG,,};;
+        n) name=${OPTARG};;
         p) path=${OPTARG};;
         t) token=${OPTARG};;
         v) vm=${OPTARG};;
         c) container=${OPTARG};;
+        o) operation=${OPTARG};;
         d) delete=TRUE;;
         *)
             echo "Invalid option: -$OPTARG" >&2
@@ -36,10 +38,14 @@ do
             ;;
     esac
 done
-shift $((OPTIND-1))
 
+shift $((OPTIND-1))
+lname=${name,,}
+
+echo "operation = ${operation}"
 echo "add = ${add}"
 echo "name = ${name}"
+echo "lower name = ${lname}"
 echo "path = ${path}"
 echo "token = ${token}"
 echo "vm = ${vm}"
@@ -57,12 +63,16 @@ then
   exit
 fi
 
-# Checking ${add} -n && -p && -t and ${delete} -n
+# Checking ${add} -o && -n && -p && -t and ${delete} -o -n
 if [ ! -z ${add} ] && ( [ -z ${name} ] || [ -z ${path} ] || [ -z ${token} ]);
 then
   usage
   exit
 elif [ ! -z ${delete} ] && [ -z ${name} ];
+then
+  usage
+  exit
+elif [ ${operation} != "ATOM" ] && [ ${operation} != "MOLECULE" ];
 then
   usage
   exit
@@ -74,20 +84,26 @@ kubectl apply -f tools/dashboard
 # Apply nginx
 kubectl apply -f tools/nginx
 
-# Apply Molecule with Replacements
+if [ "${operation}" = "MOLECULE" ]; then
+  op="molecule"
+else
+  op="atom"
+fi
+
+# Apply ${operation} with Replacements
 
 if [ ! -z ${delete} ];
 then
-  kubectl delete all --all -n molecule-${name}
-  kubectl delete namespace molecule-${name}
-  kubectl delete pv molecule-${name}-pv
+  kubectl delete all --all -n ${op}-${lname}
+  kubectl delete namespace ${op}-${lname}
+  kubectl delete pv ${op}-${lname}-pv
 elif [ ! -z ${add} ];
 then
-  FILES="kubernetes/molecule/config/*"
+  FILES="kubernetes/${op}/config/*"
 
-  fileReplace "kubernetes/molecule/config/boomi_molecule_k8s_namespace.yaml" | kubectl apply -f -
-  fileReplace "kubernetes/molecule/config/boomi_molecule_k8s_pv.yaml" | kubectl apply -f -
-  fileReplace "kubernetes/molecule/config/boomi_molecule_k8s_pvclaim.yaml" | kubectl apply -f - 
+  fileReplace "kubernetes/${op}/config/boomi_${op}_k8s_namespace.yaml" | kubectl apply -f -
+  fileReplace "kubernetes/${op}/config/boomi_${op}_k8s_pv.yaml" | kubectl apply -f -
+  fileReplace "kubernetes/${op}/config/boomi_${op}_k8s_pvclaim.yaml" | kubectl apply -f - 
   for f in $FILES
   do
     fileReplace $f | kubectl apply -f -
