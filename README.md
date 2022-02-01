@@ -6,6 +6,8 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Kubernetes Reference Architecture - Boomi Molecule & Boomi Atom Cloud](https://bitbucket.org/officialboomi/runtime-containers/src/master/Kubernetes/)
 
+[Setup of a Dell Boomi Molecule with multiple nodes on Kubernetes](https://github.com/anthonyrabiaza/BoomiKubernetes)
+
 # Setup
 [Install Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
 
