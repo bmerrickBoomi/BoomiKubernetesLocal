@@ -13,13 +13,13 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Install kubectl (Windows)](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/) or [Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
-# Molecule
-
-## Start Kubernetes forwarding
+# Start Kubernetes forwarding
 
 kubectl proxy &
 
 Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
+
+# Molecule
 
 ## Install a new molecule
 
@@ -38,14 +38,19 @@ molecule [-a -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> -c <CONTAINER_OPTI
 Example:
 
 ```
-./molecule.sh -a -n API -p /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes [-v <VM_OPTIONS>] [-c <CONTAINER_OPTIONS>] -t INSTALLER_TOKEN
+./molecule.sh -a -n <NAME> -p /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
+```
 
-./molecule.sh -a -n ETL -p /run/desktop/mnt/host/c/Users/brian_merrick/Documents/Kubernetes -t INSTALLER_TOKEN
+Example Options:
+```
+-v "-Xmx2048m" -c "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
+
+-v $(cat kubernetes/molecule/atom-default.vmoptions | xargs | sed -e 's/ /|/g') -c $(cat kubernetes/molecule/container-default.properties | xargs | sed -e 's/ /|/g')
 ```
 
 ## Access Molecule API
 ```
-https://localhost/molecule/api
-
-https://localhost/molecule/etl
+https://localhost/molecule/<NAME>
 ```
+
+# Atom

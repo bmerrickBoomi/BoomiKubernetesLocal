@@ -83,11 +83,11 @@ then
   kubectl delete pv molecule-${name}-pv
 elif [ ! -z ${add} ];
 then
-  FILES="kubernetes/config/*"
+  FILES="kubernetes/molecule/config/*"
 
-  fileReplace "kubernetes/config/boomi_molecule_k8s_namespace.yaml" | kubectl apply -f -
-  fileReplace "kubernetes/config/boomi_molecule_k8s_pv.yaml" | kubectl apply -f -
-  fileReplace "kubernetes/config/boomi_molecule_k8s_pvclaim.yaml" | kubectl apply -f - 
+  fileReplace "kubernetes/molecule/config/boomi_molecule_k8s_namespace.yaml" | kubectl apply -f -
+  fileReplace "kubernetes/molecule/config/boomi_molecule_k8s_pv.yaml" | kubectl apply -f -
+  fileReplace "kubernetes/molecule/config/boomi_molecule_k8s_pvclaim.yaml" | kubectl apply -f - 
   for f in $FILES
   do
     fileReplace $f | kubectl apply -f -

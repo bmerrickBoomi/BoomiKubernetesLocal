@@ -60,7 +60,7 @@ spec:
         - name: ATOM_VMOPTIONS_OVERRIDES
           value: {{vm}}
         - name: CONTAINER_PROPERTIES_OVERRIDES
-          value: {{container}}
+          value: "{{container}}"
         - name: ATOM_LOCALHOSTID
           valueFrom:
             fieldRef:
