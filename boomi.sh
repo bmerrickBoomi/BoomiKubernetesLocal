@@ -64,11 +64,11 @@ then
 fi
 
 # Checking ${add} -o && -n && -p && -t and ${delete} -o -n
-if [ ! -z ${add} ] && ( [ -z ${name} ] || [ -z ${path} ] || [ -z ${token} ]);
+if [ ! -z ${add} ] && ( [ "${name}" = "" ] || [ -z ${path} ] || [ -z ${token} ]);
 then
   usage
   exit
-elif [ ! -z ${delete} ] && [ -z ${name} ];
+elif [ ! -z ${delete} ] && [ "${name}" = "" ];
 then
   usage
   exit
