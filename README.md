@@ -37,7 +37,7 @@ boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> 
 
 # Molecule
 
-## Install a new molecule
+## Install
 
 ```
 ADD
@@ -54,14 +54,14 @@ Example Options:
 -v $(cat kubernetes/molecule/atom-default.vmoptions | xargs | sed -e 's/ /|/g') -c $(cat kubernetes/molecule/container-default.properties | xargs | sed -e 's/ /|/g')
 ```
 
-## Access Molecule API
+## Access API
 ```
 https://localhost/molecule/<NAME>
 ```
 
 # Atom
 
-## Install a new atom
+## Install
 
 ```
 ADD
@@ -78,7 +78,7 @@ Example Options:
 -v $(cat kubernetes/atom/atom-default.vmoptions | xargs | sed -e 's/ /|/g') -c $(cat kubernetes/atom/container-default.properties | xargs | sed -e 's/ /|/g')
 ```
 
-## Access Molecule API
+## Access API
 ```
 https://localhost/atom/<NAME>
 ```
