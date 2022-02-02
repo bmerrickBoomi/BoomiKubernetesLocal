@@ -56,7 +56,7 @@ boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> 
 ./boomi.sh -o MOLECULE -d -n <NAME>
 ```
 
-Example Options:
+## Example Options
 ```
 -v "-Xmx2048m" -c "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
 
@@ -85,7 +85,7 @@ https://localhost/molecule/<NAME>
 ./boomi.sh -o ATOM -d -n <NAME>
 ```
 
-Example Options:
+## Example Options
 ```
 -v "-Xmx2048m" -c "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
 
