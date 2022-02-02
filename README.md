@@ -44,15 +44,13 @@ boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> 
 
 # Molecule
 
-## Install
-
-### Add
+## Add
 
 ```
 ./boomi.sh -o MOLECULE -a -n <NAME> -p /run/desktop/mnt/host/c/Boomi\ AtomSphere -t INSTALLER_TOKEN
 ```
 
-### Delete
+## Delete
 
 ```
 ./boomi.sh -o MOLECULE -d -n <NAME>
@@ -75,15 +73,13 @@ https://localhost/molecule/<NAME>
 
 # Atom
 
-## Install
-
-### Add
+## Add
 
 ```
 ./boomi.sh -o ATOM -a -n <NAME> -p /run/desktop/mnt/host/c/Boomi\ AtomSphere -t INSTALLER_TOKEN
 ```
 
-### Delete
+## Delete
 
 ```
 ./boomi.sh -o ATOM -d -n <NAME>
