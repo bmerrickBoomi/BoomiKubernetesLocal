@@ -13,11 +13,18 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Enable Kubernetes for Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
 
-[Install kubectl (Windows)](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/) or [Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+[Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+
+[Install GIT for Ubunutu (or whatever WSL2 distro you are running)](https://linuxize.com/post/how-to-install-git-on-ubuntu-18-04/)
 
 # Start Kubernetes forwarding
 
+To access the Kubernetes dashboard, start the proxy and navigate to the link below. 
+The Boomi APIs should be accessible without port forwarding, but any modifications require this to be running.
+
+```
 kubectl proxy &
+```
 
 Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 
@@ -39,11 +46,15 @@ boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> 
 
 ## Install
 
-```
-ADD
-./boomi.sh -o MOLECULE -a -n <NAME> -p /run/desktop/mnt/host/c/Boomi\ AtomSphere -t INSTALLER_TOKEN
+### Add
 
-DELETE
+```
+./boomi.sh -o MOLECULE -a -n <NAME> -p /run/desktop/mnt/host/c/Boomi\ AtomSphere -t INSTALLER_TOKEN
+```
+
+### Delete
+
+```
 ./boomi.sh -o MOLECULE -d -n <NAME>
 ```
 
@@ -55,6 +66,9 @@ Example Options:
 ```
 
 ## Access API
+
+In order to access the API, the Shared Web Server API Type needs to be set to [Advanced](https://community.boomi.com/s/article/Authentication-Available-to-the-Shared-Web-Server#Advanced-API-Type).
+
 ```
 https://localhost/molecule/<NAME>
 ```
@@ -63,11 +77,15 @@ https://localhost/molecule/<NAME>
 
 ## Install
 
-```
-ADD
-./boomi.sh -o ATOM -a -n <NAME> -p /run/desktop/mnt/host/c/Boomi\ AtomSphere -t INSTALLER_TOKEN
+### Add
 
-DELETE
+```
+./boomi.sh -o ATOM -a -n <NAME> -p /run/desktop/mnt/host/c/Boomi\ AtomSphere -t INSTALLER_TOKEN
+```
+
+### Delete
+
+```
 ./boomi.sh -o ATOM -d -n <NAME>
 ```
 
@@ -79,6 +97,9 @@ Example Options:
 ```
 
 ## Access API
+
+In order to access the API, the Shared Web Server API Type needs to be set to [Advanced](https://community.boomi.com/s/article/Authentication-Available-to-the-Shared-Web-Server#Advanced-API-Type).
+
 ```
 https://localhost/atom/<NAME>
 ```
