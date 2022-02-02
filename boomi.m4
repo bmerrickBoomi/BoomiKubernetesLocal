@@ -13,6 +13,9 @@
 # ARG_HELP([boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE] --delete --name NAME\nboomi ADDON --add --name NAME\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
 # ARGBASH_GO
 
+SCRIPT=`realpath $0`
+SCRIPTPATH=`dirname $SCRIPT`
+
 # [ <-- needed because of Argbash
 
 function fileReplace() {
@@ -44,10 +47,10 @@ then
   fi
  
   # Apply Dashboard
-  kubectl apply -f tools/dashboard
+  kubectl apply -f $SCRIPTPATH/tools/dashboard
 
   # Apply nginx
-  kubectl apply -f tools/nginx
+  kubectl apply -f $SCRIPTPATH/tools/nginx
 
   if [ "$_arg_operation" = "MOLECULE" ];
   then
@@ -68,7 +71,7 @@ then
     kubectl delete pv ${op}-${lname}-pv
   elif [ "$_arg_add" = on ];
   then
-    FILES="kubernetes/${op}/config/*"
+    FILES="$SCRIPTPATH/kubernetes/${op}/config/*"
 
     fileReplace "kubernetes/${op}/config/boomi_${op}_k8s_namespace.yaml" | kubectl apply -f -
     fileReplace "kubernetes/${op}/config/boomi_${op}_k8s_pv.yaml" | kubectl apply -f -
@@ -88,7 +91,7 @@ then
 
   if [ "$_arg_list" = on ];
   then
-    echo "LIST"
+    ls $SCRIPTPATH/kubernetes/addons    
   elif [ "$_arg_add" = on ];
   then
     echo "ADD"
