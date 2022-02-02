@@ -32,16 +32,20 @@ Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubern
 # Installer
 
 ```
--o Operation [ATOM | MOLECULE]
--a Add
--n Name
--d Delete
--p Path
--t Installer Token   
--v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.                                                                                                                                                                                  -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
--c CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
+Operation [ATOM | MOLECULE | ADDON]
+--add Add
+--name Name
+--delete Delete
+--path Path
+--token Installer Token   
+--vm ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.                                                                                                                                                                                  -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
+--container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
 
-boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> -c <CONTAINER_OPTIONS>] ] | [-d -o [ATOM | MOLECULE] -n <NAME>]   
+boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
+boomi [ATOM | MOLECULE] --delete --name NAME
+boomi ADDON --add --name NAME
+boomi ADDON --delete --name NAME
+boomi ADDON --list
 ```
 
 # Molecule
@@ -49,20 +53,20 @@ boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> 
 ## Add
 
 ```
-./boomi.sh -o MOLECULE -a -n <NAME> -p /run/desktop/mnt/host/c/Boomi\ AtomSphere -t INSTALLER_TOKEN
+./boomi.sh MOLECULE --add --name NAME --path /run/desktop/mnt/host/c/Boomi\ AtomSphere --token INSTALLER_TOKEN
 ```
 
 ## Delete
 
 ```
-./boomi.sh -o MOLECULE -d -n <NAME>
+./boomi.sh MOLECULE --delete --name NAME
 ```
 
 ## Example Options
 ```
--v "-Xmx2048m" -c "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
+--vm "-Xmx2048m" --container "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
 
--v $(cat kubernetes/molecule/atom-default.vmoptions | xargs | sed -e 's/ /|/g') -c $(cat kubernetes/molecule/container-default.properties | xargs | sed -e 's/ /|/g')
+--vm $(cat kubernetes/molecule/atom-default.vmoptions | xargs | sed -e 's/ /|/g') --container $(cat kubernetes/molecule/container-default.properties | xargs | sed -e 's/ /|/g')
 ```
 
 ## Access API
@@ -70,7 +74,7 @@ boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> 
 In order to access the API, the Shared Web Server API Type needs to be set to [Advanced](https://community.boomi.com/s/article/Authentication-Available-to-the-Shared-Web-Server#Advanced-API-Type).
 
 ```
-https://localhost/molecule/<NAME>
+https://localhost/molecule/NAME
 ```
 
 # Atom
@@ -78,20 +82,20 @@ https://localhost/molecule/<NAME>
 ## Add
 
 ```
-./boomi.sh -o ATOM -a -n <NAME> -p /run/desktop/mnt/host/c/Boomi\ AtomSphere -t INSTALLER_TOKEN
+./boomi.sh ATOM --add --name NAME -=-path /run/desktop/mnt/host/c/Boomi\ AtomSphere --token INSTALLER_TOKEN
 ```
 
 ## Delete
 
 ```
-./boomi.sh -o ATOM -d -n <NAME>
+./boomi.sh ATOM --delete --name NAME
 ```
 
 ## Example Options
 ```
--v "-Xmx2048m" -c "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
+--vm "-Xmx2048m" --container "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
 
--v $(cat kubernetes/atom/atom-default.vmoptions | xargs | sed -e 's/ /|/g') -c $(cat kubernetes/atom/container-default.properties | xargs | sed -e 's/ /|/g')
+--vm $(cat kubernetes/atom/atom-default.vmoptions | xargs | sed -e 's/ /|/g') --container $(cat kubernetes/atom/container-default.properties | xargs | sed -e 's/ /|/g')
 ```
 
 ## Access API
@@ -99,5 +103,7 @@ https://localhost/molecule/<NAME>
 In order to access the API, the Shared Web Server API Type needs to be set to [Advanced](https://community.boomi.com/s/article/Authentication-Available-to-the-Shared-Web-Server#Advanced-API-Type).
 
 ```
-https://localhost/atom/<NAME>
+https://localhost/atom/NAME
 ```
+
+# Addons
