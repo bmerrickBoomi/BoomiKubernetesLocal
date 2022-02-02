@@ -14,7 +14,9 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Enable Kubernetes for Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
 
-[Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+[Install WSL](https://docs.microsoft.com/en-us/windows/wsl/install)
+
+[Install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
 # Start Kubernetes forwarding
 
