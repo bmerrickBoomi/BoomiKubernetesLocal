@@ -16,8 +16,6 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Install kubectl (Linux on WSL2)](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
-[Install GIT for Ubunutu (or whatever WSL2 distro you are running)](https://linuxize.com/post/how-to-install-git-on-ubuntu-18-04/)
-
 # Start Kubernetes forwarding
 
 To access the Kubernetes dashboard, start the proxy and navigate to the link below. 
