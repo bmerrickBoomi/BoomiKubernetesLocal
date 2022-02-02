@@ -274,9 +274,9 @@ then
   then
     FILES="$SCRIPTPATH/kubernetes/${op}/config/*"
 
-    fileReplace "kubernetes/${op}/config/boomi_${op}_k8s_namespace.yaml" | kubectl apply -f -
-    fileReplace "kubernetes/${op}/config/boomi_${op}_k8s_pv.yaml" | kubectl apply -f -
-    fileReplace "kubernetes/${op}/config/boomi_${op}_k8s_pvclaim.yaml" | kubectl apply -f -
+    fileReplace "$SCRIPTPATH/kubernetes/${op}/config/boomi_${op}_k8s_namespace.yaml" | kubectl apply -f -
+    fileReplace "$SCRIPTPATH/kubernetes/${op}/config/boomi_${op}_k8s_pv.yaml" | kubectl apply -f -
+    fileReplace "$SCRIPTPATH/kubernetes/${op}/config/boomi_${op}_k8s_pvclaim.yaml" | kubectl apply -f -
     for f in $FILES
     do
       fileReplace $f | kubectl apply -f -
@@ -295,16 +295,33 @@ then
     ls $SCRIPTPATH/kubernetes/addons
   elif [ "$_arg_add" = on ];
   then
-    echo "ADD"
+    if [ ! -d "$SCRIPTPATH/kubernetes/addons/${_arg_name}/" ];
+    then
+      echo "${_arg_name} does not exist"
+      exit
+    fi
+
+    FILES="$SCRIPTPATH/kubernetes/addons/${_arg_name}/config/*"
+
+    fileReplace "$SCRIPTPATH/kubernetes/addons/${_arg_name}/config/*_namespace.yaml" | kubectl apply -f -
+    for f in $FILES
+    do
+      fileReplace $f | kubectl apply -f -
+    done
   elif [ "$_arg_delete" = on ];
   then
-    echo "DELETE"
+    if [ ! -d "$SCRIPTPATH/kubernetes/addons/$_arg_name/" ];
+    then
+      echo "${_arg_name} does not exist"
+      exit
+    fi
+
+    kubectl delete all --all -n ${_arg_name}
+    kubectl delete namespace ${_arg_name}
   fi
 else
   print_help
   exit
 fi
-
-# ^^^  TERMINATE YOUR CODE BEFORE THE BOTTOM ARGBASH MARKER  ^^^
 
 # ] <-- needed because of Argbash
