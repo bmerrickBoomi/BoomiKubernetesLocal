@@ -35,7 +35,8 @@ Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubern
 -n Name
 -d Delete
 -p Path
--t Installer Token                                                                                                                                                                                     -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
+-t Installer Token   
+-v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.                                                                                                                                                                                  -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
 -c CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
 
 boomi [-a -o [ATOM | MOLECULE] -n <NAME> -p <PATH> -t <TOKEN> [ -v <VM_OPTIONS> -c <CONTAINER_OPTIONS>] ] | [-d -o [ATOM | MOLECULE] -n <NAME>]   
