@@ -90,7 +90,7 @@ https://localhost/molecule/NAME
 ## Add
 
 ```
-./boomi.sh ATOM --add --name NAME -=-path /run/desktop/mnt/host/c/Boomi\ AtomSphere --token INSTALLER_TOKEN
+./boomi.sh ATOM --add --name NAME --path /run/desktop/mnt/host/c/Boomi\ AtomSphere --token INSTALLER_TOKEN
 ```
 
 ## Delete
