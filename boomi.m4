@@ -20,7 +20,7 @@ SCRIPTPATH=`dirname $SCRIPT`
 # [ <-- needed because of Argbash
 
 function fileReplace() {
-  cat $1 | sed "s#{{uname}}#${_arg_name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${_arg_path}#g" | sed "s#{{token}}#${_arg_token}#g" | sed "s#{{vm}}#${_arg_vm}#g" | sed "s#{{container}}#${_arg_container}#g" | sed "s#{{port}}#${_arg_port}#g"
+  cat $1 | sed "s#{{uname}}#${_arg_name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${_arg_path}#g" | sed "s#{{token}}#${_arg_token}#g" | sed "s#{{vm}}#${_arg_vm}#g" | sed "s#{{container}}#${_arg_container}#g" | sed "s#{{port}}#${xport}#g"
 }
 
 if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ];
@@ -95,35 +95,48 @@ then
     ls $SCRIPTPATH/kubernetes/addons    
   elif [ "$_arg_add" = on ];
   then
-    if [ ! -d "$SCRIPTPATH/kubernetes/addons/${_arg_name}/" ]; 
-    then
-      echo "${_arg_name} does not exist"
-      exit
-    fi
-
-    if [ "$_arg_name" = "" ] || [ "$_arg_port" = "" ];
+    if [ "$_arg_name" = "" ];
     then
       print_help
       exit
     fi
 
-    FILES="$SCRIPTPATH/kubernetes/addons/${_arg_name}/config/*"
-
-    fileReplace "$SCRIPTPATH/kubernetes/addons/${_arg_name}/config/*_namespace.yaml" | kubectl apply -f -
-    for f in $FILES
+    for d in "$SCRIPTPATH/kubernetes/addons/${_arg_name}"
     do
-      fileReplace $f | kubectl apply -f -
+      dpath=$(basename $d)
+      if [ ! -d "$SCRIPTPATH/kubernetes/addons/${dpath}/" ];
+      then
+        continue
+      fi
+
+      xport=$_arg_port
+      if [ "$_arg_port" = "" ];
+      then
+        xport=$(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.port')
+        echo "default port: ${xport}"
+      fi
+
+      FILES="$SCRIPTPATH/kubernetes/addons/${dpath}/config/*"
+
+      fileReplace "$SCRIPTPATH/kubernetes/addons/${dpath}/config/*_namespace.yaml" | kubectl apply -f -
+      for f in $FILES
+      do
+        fileReplace $f | kubectl apply -f -
+      done
     done
   elif [ "$_arg_delete" = on ];
   then
-    if [ ! -d "$SCRIPTPATH/kubernetes/addons/$_arg_name/" ]; 
-    then
-      echo "${_arg_name} does not exist"
-      exit
-    fi 
-   
-    kubectl delete all --all -n ${_arg_name}
-    kubectl delete namespace ${_arg_name}
+    for d in "$SCRIPTPATH/kubernetes/addons/${_arg_name}"
+    do
+      dpath=$(basename $d)
+      if [ ! -d "$SCRIPTPATH/kubernetes/addons/${dpath}/" ];
+      then
+        continue 
+      fi 
+
+      kubectl delete all --all -n addons-${dpath}
+      kubectl delete namespace addons-${dpath}
+    done
   fi
 else
   print_help

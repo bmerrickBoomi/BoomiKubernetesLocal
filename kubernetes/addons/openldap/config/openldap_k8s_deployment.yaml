@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: openldap
-  namespace: openldap
+  namespace: addons-openldap
   labels:
     app.kubernetes.io/name: openldap
 spec:
