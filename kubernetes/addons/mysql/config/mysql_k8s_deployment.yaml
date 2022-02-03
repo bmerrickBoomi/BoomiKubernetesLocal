@@ -1,3 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-{{port}}-config
+  namespace: addons-mysql-{{port}}
+data:
+  my.custom.conf: |
+    [mysqld]
+    bind-address=0.0.0.0
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,13 +31,25 @@ spec:
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: password
+        - name: MYSQL_USER
+          value: user
+        - name: MYSQL_PASSWORD
+          value: password
+        - name: MYSQL_DATABASE
+          value: demo
         ports:
         - containerPort: 3306
           name: tcp-mysql-{{port}}
         volumeMounts:
         - name: mysql-{{port}}-storage
           mountPath: /var/lib/mysql
+        - name: mysql-{{port}}-config
+          mountPath: /etc/mysql/conf.d/custom.my.cnf
+          subPath: custom.my.cnf
       volumes:
       - name: mysql-{{port}}-storage
         persistentVolumeClaim:
           claimName: mysql-{{port}}-claim
+      - name: mysql-{{port}}-config
+        configMap:
+          name: mysql-{{port}}-config
