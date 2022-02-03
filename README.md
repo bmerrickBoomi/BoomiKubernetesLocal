@@ -18,6 +18,12 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
+Install jq to parse JSON files
+```
+sudo apt update
+sudo apt install jq
+```
+
 # Start Kubernetes forwarding
 
 To access the Kubernetes dashboard, start the proxy and navigate to the link below. 
@@ -38,12 +44,13 @@ Operation [ATOM | MOLECULE | ADDON]
 --delete Delete
 --path Path
 --token Installer Token   
+--port Port override for service. If ommitted, the service default port will be used.
 --vm ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.                                                                                                                                                                                  -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
 --container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
 
 boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
 boomi [ATOM | MOLECULE] --delete --name NAME
-boomi ADDON --add --name NAME
+boomi ADDON --add --name NAME [--port PORT]
 boomi ADDON --delete --name NAME
 boomi ADDON --list
 ```
@@ -63,6 +70,7 @@ boomi ADDON --list
 ```
 
 ## Example Options
+
 ```
 --vm "-Xmx2048m" --container "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
 
@@ -92,6 +100,7 @@ https://localhost/molecule/NAME
 ```
 
 ## Example Options
+
 ```
 --vm "-Xmx2048m" --container "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
 
@@ -107,3 +116,43 @@ https://localhost/atom/NAME
 ```
 
 # Addons
+
+Additional services can be installed to create integrations from. They can be accessed from within a Atom/Molecule from the internal DNS name.
+
+```
+SERVICE.SERVICE.svc.cluster.local
+```
+
+## Example
+
+```
+openldap.openldap.svc.cluster.local
+```
+
+## Boomi Connection Samples
+
+[Boomi Kubernetes Demo](https://platform.boomi.com/AtomSphere.html#build;accountId=boomi_brianmerrick-4SYB9W;components=61eddde4-c766-4e0a-902d-f4a26cb47811;componentIdOnFocus=61eddde4-c766-4e0a-902d-f4a26cb47811)
+
+### List
+
+```
+./boomi.sh ADDON --list
+```
+
+### Add
+
+```
+./boomi.sh ADDON --add --name "openldap" --port 1388
+./boomi.sh ADDON --add --name "openldap"
+./boomi.sh ADDON --add --name "open*"
+./boomi.sh ADDON --add --name "*"
+```
+
+### Delete
+
+```
+./boomi.sh ADDON --delete --name "openldap"
+./boomi.sh ADDON --delete --name "openldap"
+./boomi.sh ADDON --delete --name "open*"
+./boomi.sh ADDON --delete --name "*"
+```
