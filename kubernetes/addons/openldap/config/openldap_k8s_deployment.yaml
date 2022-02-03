@@ -30,4 +30,4 @@ spec:
               value: "password01,password02"
           ports:
             - name: tcp-ldap
-              containerPort: 1389
+              containerPort: {{port}}

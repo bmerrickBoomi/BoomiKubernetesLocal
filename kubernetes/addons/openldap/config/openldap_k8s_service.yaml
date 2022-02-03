@@ -9,28 +9,7 @@ spec:
   type: ClusterIP
   ports:
     - name: tcp-ldap
-      port: 1389
+      port: {{port}}
       targetPort: tcp-ldap
   selector:
     app.kubernetes.io/name: openldap
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: openldap-ingress
-  namespace: openldap
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-  - host: localhost
-    http:
-      paths:
-      - pathType: Prefix
-        path: /addons/openldap(/|$)(.*)
-        backend:
-          service:
-            name: localhost-openldap
-            port: 
-              number: 1389
