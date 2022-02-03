@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-{{port}}-claim
+  namespace: addons-mysql-{{port}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mysql-{{port}}-storage
+  resources:
+    requests:
+      storage: 5Gi

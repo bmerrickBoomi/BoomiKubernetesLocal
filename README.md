@@ -50,7 +50,7 @@ Operation [ATOM | MOLECULE | ADDON]
 
 boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
 boomi [ATOM | MOLECULE] --delete --name NAME
-boomi ADDON --add --name NAME [--port PORT]
+boomi ADDON --add --name NAME [--port PORT] [--path PATH]
 boomi ADDON --delete --name NAME
 boomi ADDON --list
 ```
@@ -118,15 +118,16 @@ https://localhost/atom/NAME
 # Addons
 
 Additional services can be installed to create integrations from. They can be accessed from within a Atom/Molecule from the internal DNS name.
+For services with paths, they need to be manually created before deployment.
 
 ```
-SERVICE.SERVICE.svc.cluster.local
+SERVICE.NAMESPACE.svc.cluster.local
 ```
 
 ## Example
 
 ```
-openldap.openldap.svc.cluster.local
+openldap-1389.addons-openldap-1389.svc.cluster.local
 ```
 
 ## Boomi Connection Samples
@@ -142,17 +143,15 @@ openldap.openldap.svc.cluster.local
 ### Add
 
 ```
-./boomi.sh ADDON --add --name "openldap" --port 1388
 ./boomi.sh ADDON --add --name "openldap"
-./boomi.sh ADDON --add --name "open*"
-./boomi.sh ADDON --add --name "*"
+./boomi.sh ADDON --add --name "openldap" --port 1388
+./boomi.sh ADDON --add --name "mysql" --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/mysql-default
 ```
 
 ### Delete
 
 ```
 ./boomi.sh ADDON --delete --name "openldap"
-./boomi.sh ADDON --delete --name "openldap"
-./boomi.sh ADDON --delete --name "open*"
-./boomi.sh ADDON --delete --name "*"
+./boomi.sh ADDON --delete --name "openldap" --port 1388
+./boomi.sh ADDON --delete --name "mysql"
 ```

@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: openldap
-  namespace: addons-openldap
+  name: openldap-{{port}}
+  namespace: addons-openldap-{{port}}
   labels:
-    app.kubernetes.io/name: openldap
+    app.kubernetes.io/name: openldap-{{port}}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: openldap
+      app.kubernetes.io/name: openldap-{{port}}
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: openldap
+        app.kubernetes.io/name: openldap-{{port}}
     spec:
       containers:
-        - name: openldap
+        - name: openldap-{{port}}
           image: docker.io/bitnami/openldap:latest
           imagePullPolicy: "Always"
           env:
@@ -25,9 +25,9 @@ spec:
             - name: LDAP_ADMIN_PASSWORD
               value: "password"
             - name: LDAP_USERS
-              value: "user01,user02"
+              value: "user01,user02,user{{port}}"
             - name: LDAP_PASSWORDS
-              value: "password01,password02"
+              value: "password01,password02,password{{port}}"
           ports:
-            - name: tcp-ldap
-              containerPort: {{port}}
+            - name: tcp-ldap-{{port}}
+              containerPort: 1389

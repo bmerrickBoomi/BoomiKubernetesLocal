@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: addons-openldap-{{port}}
+  name: addons-mysql-{{port}}

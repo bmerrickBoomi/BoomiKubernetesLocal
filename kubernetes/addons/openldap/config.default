@@ -1,3 +1,4 @@
 {
-  "port": "1389"
+  "port": "1389",
+  "storage": false
 }

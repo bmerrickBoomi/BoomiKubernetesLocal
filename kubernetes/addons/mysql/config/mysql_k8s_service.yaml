@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-{{port}}
+  namespace: addons-mysql-{{port}}
+  labels:
+    app.kubernetes.io/name: mysql-{{port}}
+spec:
+  type: ClusterIP
+  ports:
+    - name: tcp-mysql-{{port}}
+      port: {{port}}
+      targetPort: tcp-mysql-{{port}}
+  selector:
+    app.kubernetes.io/name: mysql-{{port}}

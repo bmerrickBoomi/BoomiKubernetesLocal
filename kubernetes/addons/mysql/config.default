@@ -1,0 +1,4 @@
+{
+  "port": "3306",
+  "storage": true
+}
