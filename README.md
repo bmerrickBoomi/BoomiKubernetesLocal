@@ -212,6 +212,12 @@ mySQL
   Username: root
   Password: password
   
+OpenLDAP
+  Hostname: 127.0.0.1
+  Port: 30010
+  User DN: cn=admin,dc=example,dc=org
+  Password: password
+  
 Oracle
   Username: sys as sysdba
   Password: Oradoc_db1
@@ -221,10 +227,12 @@ Oracle
   
 SFTP
   Hostname: 127.0.0.1
+  Port: 30040
   Username: user1
   Password: password1
   
   Hostname: 127.0.0.1
+  Port: 30040
   Username: user2
   Password: password2
 ```
