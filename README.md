@@ -90,6 +90,8 @@ https://localhost/molecule/NAME
 
 ## Add
 
+Sample datasets can be found under addons/SERVICE/datasets
+
 ```
 ./boomi.sh ATOM --add --name NAME --path /run/desktop/mnt/host/c/Boomi\ AtomSphere --token INSTALLER_TOKEN
 ```
