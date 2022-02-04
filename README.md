@@ -122,7 +122,9 @@ Additional services can be installed to create integrations from. They can be ac
 
 For services with paths, they need to be manually created before deployment.
 
-Sample datasets can be found under kubernetes/addons/SERVICE/datasets
+Sample datasets can be found under kubernetes/addons/SERVICE/datasets.
+
+Local connections would use 127.0.0.1 as the host
 
 ```
 SERVICE.NAMESPACE.svc.cluster.local
