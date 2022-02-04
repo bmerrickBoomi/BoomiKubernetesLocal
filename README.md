@@ -130,16 +130,22 @@ Sample datasets can be found under kubernetes/addons/SERVICE/datasets.
 SERVICE.NAMESPACE.svc.cluster.local:PORT
 ```
 
+### Example
+
+```
+openldap-1389.addons-openldap-1389.svc.cluster.local
+```
+
 ## External Host
 
 ```
 127.0.0.1:NODEPORT
 ```
 
-## Example
+### Example
 
 ```
-openldap-1389.addons-openldap-1389.svc.cluster.local
+127.0.0.1:30000
 ```
 
 ## Boomi Connection Samples
