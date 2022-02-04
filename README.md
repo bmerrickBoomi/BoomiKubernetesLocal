@@ -118,7 +118,7 @@ https://localhost/atom/NAME
 
 # Addons
 
-Additional services can be installed to create integrations from. They can be accessed from within a Atom/Molecule from the internal DNS name.
+Additional services can be installed to create integrations from. They can be accessed from within a Atom/Molecule from the internal DNS name or externally from the NodePort defined.
 
 For services with paths, they need to be manually created before deployment.
 
