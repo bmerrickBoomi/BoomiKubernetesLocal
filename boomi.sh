@@ -372,7 +372,7 @@ then
         fileReplace $f | kubectl apply -f -
       done
 
-      echo "$_arg_name is running internally on port $xport and can accessed locally on port $xnode"
+      echo "$_arg_name is running internally on port $xport and can be accessed locally on port $xnode"
     done
   elif [ "$_arg_delete" = on ];
   then

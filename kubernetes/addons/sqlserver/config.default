@@ -1,0 +1,5 @@
+{
+  "port": "1433",
+  "storage": true,
+  "node": "30030"
+}

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlserver-{{port}}
+  namespace: addons-sqlserver-{{port}}
+  labels:
+    app.kubernetes.io/name: sqlserver-{{port}}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sqlserver-{{port}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sqlserver-{{port}}
+    spec:
+      containers:
+      - image: mcr.microsoft.com/mssql/server:latest
+        name: sqlserver-{{port}}
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: Password123!
+        ports:
+        - containerPort: 1433
+          name: sqlserver-{{port}}
+        volumeMounts:
+        - name: sqlserver-{{port}}-storage
+          mountPath: /var/lib/sqlserver
+      volumes:
+      - name: sqlserver-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: sqlserver-{{port}}-claim
