@@ -132,6 +132,10 @@ On your laptop, you must authenticate with a registry in order to pull a private
 
 Use the docker tool to log in to Docker Hub. See the log in section of Docker ID accounts for more information.
 
+```
+docker login
+```
+
 ## Database Management
 
 [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15) can be used to manage all JDBC compliant databases.
@@ -139,10 +143,6 @@ Use the docker tool to log in to Docker Hub. See the log in section of Docker ID
 [Oracle](https://www.devart.com/odbc/oracle/docs/microsoft_sql_server_manager_s.htm)
 
 [mySQL](https://www.devart.com/odbc/mysql/docs/microsoft_sql_server_manager_s.htm)
-
-```
-docker login
-```
 
 ## Boomi Connection Samples
 
