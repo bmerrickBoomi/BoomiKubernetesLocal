@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sftp-{{port}}-claim
+  namespace: addons-sftp-{{port}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: sftp-{{port}}-storage
+  resources:
+    requests:
+      storage: 5Gi

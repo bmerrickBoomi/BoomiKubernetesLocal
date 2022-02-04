@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sftp-{{port}}
+  namespace: addons-sftp-{{port}}
+  labels:
+    app.kubernetes.io/name: sftp-{{port}}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sftp-{{port}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sftp-{{port}}
+    spec:
+      containers:
+      - name: sftp-{{port}}
+        image: atmoz/sftp:latest
+        imagePullPolicy: "Always"
+        args: ["user1:password1:1001:100:incoming,outgoing", "user2:password2:1002:100:incoming,outgoing"] 
+        ports:
+          - name: sftp-{{port}}
+            containerPort: 22
+        volumeMounts:
+        - mountPath: /home
+          name: sftp-{{port}}-storage
+        securityContext:
+          capabilities:
+            add: ["SYS_ADMIN"]
+      volumes:
+      - name: sftp-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: sftp-{{port}}-claim
+          

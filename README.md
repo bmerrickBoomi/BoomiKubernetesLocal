@@ -194,6 +194,7 @@ Create the following folders under your root path
 addons/mysql-default
 addons/oracledb-default
 addons/sqlserver-default
+addons/sftp-default
 ```
 
 ### Connection Strings
@@ -217,6 +218,15 @@ Oracle
   Hostname: 127.0.0.1
   Port: 30020
   SID: ORCLCDB
+  
+SFTP
+  Hostname: 127.0.0.1
+  Username: user1
+  Password: password1
+  
+  Hostname: 127.0.0.1
+  Username: user2
+  Password: password2
 ```
 
 ### Commands
@@ -226,6 +236,7 @@ Oracle
 ./boomi.sh ADDON --add --name "mysql"     --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/mysql-default
 ./boomi.sh ADDON --add --name "oracledb"  --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/oracledb-default
 ./boomi.sh ADDON --add --name "sqlserver" --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/sqlserver-default
+./boomi.sh ADDON --add --name "sftp"      --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/sftp-default
 ```
 
 ## Delete
@@ -235,4 +246,5 @@ Oracle
 ./boomi.sh ADDON --delete --name "mysql"
 ./boomi.sh ADDON --delete --name "oracledb"
 ./boomi.sh ADDON --delete --name "sqlserver"
+./boomi.sh ADDON --delete --name "sftp"
 ```
