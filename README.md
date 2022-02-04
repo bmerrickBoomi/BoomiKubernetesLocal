@@ -124,10 +124,16 @@ For services with paths, they need to be manually created before deployment.
 
 Sample datasets can be found under kubernetes/addons/SERVICE/datasets.
 
-Local connections would use 127.0.0.1 as the host
+## Internal Host
 
 ```
-SERVICE.NAMESPACE.svc.cluster.local
+SERVICE.NAMESPACE.svc.cluster.local:PORT
+```
+
+## External Host
+
+```
+127.0.0.1:NODEPORT
 ```
 
 ## Example
