@@ -90,8 +90,6 @@ https://localhost/molecule/NAME
 
 ## Add
 
-Sample datasets can be found under addons/SERVICE/datasets
-
 ```
 ./boomi.sh ATOM --add --name NAME --path /run/desktop/mnt/host/c/Boomi\ AtomSphere --token INSTALLER_TOKEN
 ```
@@ -121,7 +119,10 @@ https://localhost/atom/NAME
 # Addons
 
 Additional services can be installed to create integrations from. They can be accessed from within a Atom/Molecule from the internal DNS name.
+
 For services with paths, they need to be manually created before deployment.
+
+Sample datasets can be found under addons/SERVICE/datasets
 
 ```
 SERVICE.NAMESPACE.svc.cluster.local
