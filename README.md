@@ -138,7 +138,7 @@ docker login
 
 ## Database Management
 
-[SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15) can be used to manage all JDBC compliant databases.
+[SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
 
 [Oracle SQL Developer](https://www.oracle.com/tools/downloads/sqldev-downloads.html)
 
@@ -148,7 +148,7 @@ docker login
 
 [Boomi Kubernetes Demo](https://platform.boomi.com/AtomSphere.html#build;accountId=boomi_brianmerrick-4SYB9W;components=61eddde4-c766-4e0a-902d-f4a26cb47811;componentIdOnFocus=61eddde4-c766-4e0a-902d-f4a26cb47811)
 
-Upload the assets under kubernetes/addons/*/jdbc/* to your account and deploy the following libraries to access the database connections.
+Upload the assets under kubernetes/addons/NAME/jdbc to your account and deploy the following Boomi libraries to access the database connections.
 
 ```
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/mysql/JDBC mysql 8.0.27
@@ -158,27 +158,23 @@ Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/sqlserver/JDBC sqlserver 1
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/sqlserver/JDBC sqlserver 10.2.0 jre11 v2
 ```
 
-## Internal Host
+## Hosts
 
 ```
+Internal Host
+
 SERVICE.NAMESPACE.svc.cluster.local:PORT
-```
 
-### Example
+Example
 
-```
 openldap-1389.addons-openldap-1389.svc.cluster.local
-```
 
-## External Host
+External Host
 
-```
 127.0.0.1:NODEPORT
-```
 
-### Example
+Example
 
-```
 127.0.0.1:30000
 ```
 
