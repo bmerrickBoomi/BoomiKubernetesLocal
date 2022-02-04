@@ -10,8 +10,9 @@
 # ARG_OPTIONAL_SINGLE([token], t, [The Installer Token for the Atom/Molecule])
 # ARG_OPTIONAL_SINGLE([vm], v, [ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation])
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
+# ARG_OPTIONAL_SINGLE([node], e, [External port to access the service outside the cluster])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
+# ARG_HELP([boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -20,7 +21,7 @@ SCRIPTPATH=`dirname $SCRIPT`
 # [ <-- needed because of Argbash
 
 function fileReplace() {
-  cat $1 | sed "s#{{uname}}#${_arg_name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${_arg_path}#g" | sed "s#{{token}}#${_arg_token}#g" | sed "s#{{vm}}#${_arg_vm}#g" | sed "s#{{container}}#${_arg_container}#g" | sed "s#{{port}}#${xport}#g"
+  cat $1 | sed "s#{{uname}}#${_arg_name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${_arg_path}#g" | sed "s#{{token}}#${_arg_token}#g" | sed "s#{{vm}}#${_arg_vm}#g" | sed "s#{{container}}#${_arg_container}#g" | sed "s#{{port}}#${xport}#g" | sed "s#{{node}}#${xnode}#g"
 }
 
 if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ];
@@ -109,6 +110,7 @@ then
         continue
       fi
 
+      # Compute port
       xport=$_arg_port
       if [ "$_arg_port" = "" ];
       then
@@ -116,6 +118,7 @@ then
         echo "default port: ${xport}"
       fi
 
+      # Compute storage
       storage=$(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.storage')
       if [ $storage = "true" ] && [ "$_arg_path" = "" ];
       then
@@ -126,6 +129,14 @@ then
         fi
       fi
 
+      # Get external nodeport
+      xnode=$_arg_node
+      if [ "$_arg_node" = "" ];
+      then
+        xnode=$(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.node')
+        echo "node port: ${xnode}"
+      fi
+
       FILES="$SCRIPTPATH/kubernetes/addons/${dpath}/config/*"
 
       fileReplace "$SCRIPTPATH/kubernetes/addons/${dpath}/config/*_namespace.yaml" | kubectl apply -f -
@@ -133,6 +144,8 @@ then
       do
         fileReplace $f | kubectl apply -f -
       done
+
+      echo "$_arg_name is running internally on port $xport and can accessed locally on port $xnode"
     done
   elif [ "$_arg_delete" = on ];
   then

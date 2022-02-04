@@ -44,13 +44,14 @@ Operation [ATOM | MOLECULE | ADDON]
 --delete Delete
 --path Path
 --token Installer Token   
---port Port override for service. If ommitted, the service default port will be used.
---vm ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.                                                                                                                                                                                  -v ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation.
---container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation.
+--port Port override for service. If ommitted, the service default port will be used
+--node Externally accesible port for the service
+--vm ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation
+--container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation
 
 boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
 boomi [ATOM | MOLECULE] --delete --name NAME
-boomi ADDON --add --name NAME [--port PORT] [--path PATH]
+boomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]
 boomi ADDON --delete --name NAME
 boomi ADDON --list
 ```
@@ -141,6 +142,8 @@ openldap-1389.addons-openldap-1389.svc.cluster.local
 ```
 
 ### Add
+
+If adding a service with storage requirements, ensure that the install path fully exists before deployment.
 
 ```
 ./boomi.sh ADDON --add --name "openldap"
