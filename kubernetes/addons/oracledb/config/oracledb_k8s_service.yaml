@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oracledb-{{port}}
+  namespace: addons-oracledb-{{port}}
+  labels:
+    app.kubernetes.io/name: oracledb-{{port}}
+spec:
+  type: NodePort
+  ports:
+    - name: oracledb-{{port}}
+      port: {{port}}
+      targetPort: oracledb-{{port}}
+      nodePort: {{node}}
+  selector:
+    app.kubernetes.io/name: oracledb-{{port}}

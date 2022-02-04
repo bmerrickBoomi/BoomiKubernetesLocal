@@ -124,6 +124,22 @@ For services with paths, they need to be manually created before deployment.
 
 Sample datasets can be found under kubernetes/addons/SERVICE/datasets.
 
+## Docker Login
+
+Some services require login to Docker Hub to pull images.
+
+On your laptop, you must authenticate with a registry in order to pull a private image.
+
+Use the docker tool to log in to Docker Hub. See the log in section of Docker ID accounts for more information.
+
+```
+docker login
+```
+
+## Boomi Connection Samples
+
+[Boomi Kubernetes Demo](https://platform.boomi.com/AtomSphere.html#build;accountId=boomi_brianmerrick-4SYB9W;components=61eddde4-c766-4e0a-902d-f4a26cb47811;componentIdOnFocus=61eddde4-c766-4e0a-902d-f4a26cb47811)
+
 ## Internal Host
 
 ```
@@ -147,10 +163,6 @@ openldap-1389.addons-openldap-1389.svc.cluster.local
 ```
 127.0.0.1:30000
 ```
-
-## Boomi Connection Samples
-
-[Boomi Kubernetes Demo](https://platform.boomi.com/AtomSphere.html#build;accountId=boomi_brianmerrick-4SYB9W;components=61eddde4-c766-4e0a-902d-f4a26cb47811;componentIdOnFocus=61eddde4-c766-4e0a-902d-f4a26cb47811)
 
 ### List
 
