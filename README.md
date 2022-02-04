@@ -122,7 +122,7 @@ Additional services can be installed to create integrations from. They can be ac
 
 For services with paths, they need to be manually created before deployment.
 
-Sample datasets can be found under addons/SERVICE/datasets
+Sample datasets can be found under kubernetes/addons/SERVICE/datasets
 
 ```
 SERVICE.NAMESPACE.svc.cluster.local
