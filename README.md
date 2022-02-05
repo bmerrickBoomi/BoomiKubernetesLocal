@@ -118,9 +118,7 @@ https://localhost/atom/NAME
 
 # Addons
 
-Additional services can be installed to create integrations from. 
-
-They can be accessed from within a Atom/Molecule from the internal DNS name or externally from the NodePort defined.
+Additional services can be installed to create integrations from and they can be accessed from within a Atom/Molecule from the internal DNS name or externally from the NodePort defined.
 
 Sample datasets can be found under kubernetes/addons/SERVICE/datasets.
 
