@@ -10,7 +10,7 @@
 # ARG_OPTIONAL_SINGLE([token],[t],[The Installer Token for the Atom/Molecule])
 # ARG_OPTIONAL_SINGLE([vm],[v],[ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation])
 # ARG_OPTIONAL_SINGLE([container],[c],[CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
-# ARG_OPTIONAL_SINGLE([node],[e],[External port to access the service outside the cluster])
+# ARG_OPTIONAL_SINGLE([node],[e],[Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS()
 # ARG_HELP([boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
 # ARGBASH_GO()
@@ -70,7 +70,7 @@ boomi ADDON --list"
 	printf '\t%s\n' "-t, --token: The Installer Token for the Atom/Molecule (no default)"
 	printf '\t%s\n' "-v, --vm: ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation (no default)"
 	printf '\t%s\n' "-c, --container: CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation (no default)"
-	printf '\t%s\n' "-e, --node: External port to access the service outside the cluster (no default)"
+	printf '\t%s\n' "-e, --node: Externally accesible port for the service > must be between 30000 - 32767 (no default)"
 	printf '\t%s\n' "-h, --help: Prints help"
 }
 
@@ -347,13 +347,20 @@ then
 
       # Compute storage
       storage=$(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.storage')
-      if [ $storage = "true" ] && [ "$_arg_path" = "" ];
+      if [ $storage = "true" ];
       then
         if [ "$_arg_path" = "" ];
         then
           echo "--path is required"
           exit
         fi
+
+        xaddon="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
+        _arg_path="$_arg_path/addons/$_arg_name-$xport"
+
+        echo "addon host path $xaddon"
+        echo "addon container path $_arg_path"
+        mkdir -p "$xaddon/addons/$_arg_name-$xport"
       fi
 
       # Get external nodeport
@@ -361,8 +368,15 @@ then
       if [ "$_arg_node" = "" ];
       then
         xnode=$(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.node')
-        echo "node port: ${xnode}"
       fi
+
+      if ! ((xnode >= 30000 && xnode <= 32767));
+      then
+        echo "--node must be between 30000 - 32767"
+        exit
+      fi
+
+      echo "node port: ${xnode}"
 
       FILES="$SCRIPTPATH/kubernetes/addons/${dpath}/config/*"
 

@@ -45,7 +45,7 @@ Operation [ATOM | MOLECULE | ADDON]
 --path Path
 --token Installer Token   
 --port Port override for service. If ommitted, the service default port will be used
---node Externally accesible port for the service
+--node Externally accesible port for the service > must be between 30000 - 32767
 --vm ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation
 --container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation
 
@@ -118,9 +118,9 @@ https://localhost/atom/NAME
 
 # Addons
 
-Additional services can be installed to create integrations from. They can be accessed from within a Atom/Molecule from the internal DNS name or externally from the NodePort defined.
+Additional services can be installed to create integrations from. 
 
-For services with paths, they need to be manually created before deployment.
+They can be accessed from within a Atom/Molecule from the internal DNS name or externally from the NodePort defined.
 
 Sample datasets can be found under kubernetes/addons/SERVICE/datasets.
 
@@ -186,17 +186,6 @@ Example
 
 ## Add
 
-If adding a service with storage requirements, ensure that the install path fully exists before deployment.
-
-Create the following folders under your root path
-
-```
-addons/mysql-default
-addons/oracledb-default
-addons/sqlserver-default
-addons/sftp-default
-```
-
 ### Connection Strings
 
 ```
@@ -241,10 +230,10 @@ SFTP
 
 ```
 ./boomi.sh ADDON --add --name "openldap"
-./boomi.sh ADDON --add --name "mysql"     --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/mysql-default
-./boomi.sh ADDON --add --name "oracledb"  --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/oracledb-default
-./boomi.sh ADDON --add --name "sqlserver" --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/sqlserver-default
-./boomi.sh ADDON --add --name "sftp"      --path /run/desktop/mnt/host/c/Boomi\ AtomSphere/addons/sftp-default
+./boomi.sh ADDON --add --name "mysql"
+./boomi.sh ADDON --add --name "oracledb"
+./boomi.sh ADDON --add --name "sqlserver"
+./boomi.sh ADDON --add --name "sftp"      --path /run/desktop/mnt/host/c/Boomi\ AtomSphere
 ```
 
 ## Delete

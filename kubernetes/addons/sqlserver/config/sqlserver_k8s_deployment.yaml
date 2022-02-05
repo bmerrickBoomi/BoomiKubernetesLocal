@@ -26,10 +26,3 @@ spec:
         ports:
         - containerPort: 1433
           name: sqlserver-{{port}}
-        volumeMounts:
-        - name: sqlserver-{{port}}-storage
-          mountPath: /var/lib/sqlserver
-      volumes:
-      - name: sqlserver-{{port}}-storage
-        persistentVolumeClaim:
-          claimName: sqlserver-{{port}}-claim

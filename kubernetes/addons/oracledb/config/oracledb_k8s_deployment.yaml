@@ -21,10 +21,3 @@ spec:
         ports:
         - containerPort: 1521
           name: oracledb-{{port}}
-        volumeMounts:
-        - name: oracledb-{{port}}-storage
-          mountPath: /ORCL
-      volumes:
-      - name: oracledb-{{port}}-storage
-        persistentVolumeClaim:
-          claimName: oracledb-{{port}}-claim

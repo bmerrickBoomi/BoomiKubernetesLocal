@@ -41,15 +41,10 @@ spec:
         - containerPort: 3306
           name: tcp-mysql-{{port}}
         volumeMounts:
-        - name: mysql-{{port}}-storage
-          mountPath: /var/lib/mysql
         - name: mysql-{{port}}-config
           mountPath: /etc/mysql/conf.d/custom.my.cnf
           subPath: custom.my.cnf
       volumes:
-      - name: mysql-{{port}}-storage
-        persistentVolumeClaim:
-          claimName: mysql-{{port}}-claim
       - name: mysql-{{port}}-config
         configMap:
           name: mysql-{{port}}-config
