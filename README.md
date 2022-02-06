@@ -217,11 +217,6 @@ SFTP
   Port: 30040
   Username: user1
   Password: password1
-  
-  Hostname: 127.0.0.1
-  Port: 30040
-  Username: user2
-  Password: password2
 ```
 
 ### Commands

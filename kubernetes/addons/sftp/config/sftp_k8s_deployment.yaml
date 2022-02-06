@@ -19,12 +19,12 @@ spec:
       - name: sftp-{{port}}
         image: atmoz/sftp:latest
         imagePullPolicy: "Always"
-        args: ["user1:password1:1001:100:incoming,outgoing", "user2:password2:1002:100:incoming,outgoing"] 
+        args: ["user1:password1:1001:100:incoming,outgoing"] 
         ports:
           - name: sftp-{{port}}
             containerPort: 22
         volumeMounts:
-        - mountPath: /home
+        - mountPath: /home/user1
           name: sftp-{{port}}-storage
         securityContext:
           capabilities:

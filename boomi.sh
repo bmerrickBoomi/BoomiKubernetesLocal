@@ -300,6 +300,11 @@ then
     kubectl delete pv ${op}-${lname}-pv
   elif [ "$_arg_add" = on ];
   then
+    xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
+
+    echo "host path $xhostpath"
+    mkdir -p "$xhostpath"
+
     FILES="$SCRIPTPATH/kubernetes/${op}/config/*"
 
     fileReplace "$SCRIPTPATH/kubernetes/${op}/config/boomi_${op}_k8s_namespace.yaml" | kubectl apply -f -
