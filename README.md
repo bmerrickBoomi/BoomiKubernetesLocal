@@ -219,11 +219,18 @@ SFTP
   Port: 30040
   Username: user1
   Password: password1
+  
+MongoDB
+  Hostname: 127.0.0.1
+  Port: 30050
+  Username: root
+  Password: password
 ```
 
 ### Commands
 
 ```
+./boomi.sh ADDON --add --name "mongodb"
 ./boomi.sh ADDON --add --name "openldap"
 ./boomi.sh ADDON --add --name "mysql"
 ./boomi.sh ADDON --add --name "oracledb"
@@ -234,6 +241,7 @@ SFTP
 ## Delete
 
 ```
+./boomi.sh ADDON --delete --name "mongodb"
 ./boomi.sh ADDON --delete --name "openldap"
 ./boomi.sh ADDON --delete --name "mysql"
 ./boomi.sh ADDON --delete --name "oracledb"
