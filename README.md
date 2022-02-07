@@ -24,6 +24,8 @@ sudo apt update
 sudo apt install jq
 ```
 
+**Be sure to be running as a local administrator!**
+
 # Start Kubernetes forwarding
 
 To access the Kubernetes dashboard, start the proxy and navigate to the link below. 
