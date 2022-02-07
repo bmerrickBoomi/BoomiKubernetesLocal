@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: oracledb-{{port}}
   namespace: addons-oracledb-{{port}}
   labels:
     app.kubernetes.io/name: oracledb-{{port}}
 spec:
+  serviceName: oracledb-{{port}}
   selector:
     matchLabels:
       app.kubernetes.io/name: oracledb-{{port}}
@@ -21,3 +22,10 @@ spec:
         ports:
         - containerPort: 1521
           name: oracledb-{{port}}
+        volumeMounts:
+        - mountPath: /opt/oracle/oradata
+          name: oracledb-{{port}}-storage
+      volumes:
+      - name: oracledb-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: oracledb-{{port}}-claim

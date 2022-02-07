@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: openldap-{{port}}
   namespace: addons-openldap-{{port}}
   labels:
     app.kubernetes.io/name: openldap-{{port}}
 spec:
+  serviceName: openldap-{{port}}
   selector:
     matchLabels:
       app.kubernetes.io/name: openldap-{{port}}
@@ -16,18 +17,25 @@ spec:
         app.kubernetes.io/name: openldap-{{port}}
     spec:
       containers:
-        - name: openldap-{{port}}
-          image: docker.io/bitnami/openldap:latest
-          imagePullPolicy: "Always"
-          env:
-            - name: LDAP_ADMIN_USERNAME
-              value: "admin"
-            - name: LDAP_ADMIN_PASSWORD
-              value: "password"
-            - name: LDAP_USERS
-              value: "user01,user02,user{{port}}"
-            - name: LDAP_PASSWORDS
-              value: "password01,password02,password{{port}}"
-          ports:
-            - name: tcp-ldap-{{port}}
-              containerPort: 1389
+      - name: openldap-{{port}}
+        image: docker.io/bitnami/openldap:latest
+        imagePullPolicy: "Always"
+        env:
+        - name: LDAP_ADMIN_USERNAME
+          value: "admin"
+        - name: LDAP_ADMIN_PASSWORD
+          value: "password"
+        - name: LDAP_USERS
+          value: "user01,user02,user{{port}}"
+        - name: LDAP_PASSWORDS
+          value: "password01,password02,password{{port}}"
+        ports:
+        - name: tcp-ldap-{{port}}
+          containerPort: 1389
+        volumeMounts:
+        - mountPath: /var/lib/ldap
+          name: openldap-{{port}}-storage
+      volumes:
+      - name: openldap-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: openldap-{{port}}-claim

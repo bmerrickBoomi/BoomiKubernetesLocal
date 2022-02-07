@@ -9,13 +9,14 @@ data:
     bind-address=0.0.0.0
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mysql-{{port}}
   namespace: addons-mysql-{{port}}
   labels:
     app.kubernetes.io/name: mysql-{{port}}
 spec:
+  serviceName: mysql-{{port}}
   selector:
     matchLabels:
       app.kubernetes.io/name: mysql-{{port}}
@@ -44,7 +45,12 @@ spec:
         - name: mysql-{{port}}-config
           mountPath: /etc/mysql/conf.d/custom.my.cnf
           subPath: custom.my.cnf
+        - mountPath: /var/lib/mysql
+          name: mysql-{{port}}-storage
       volumes:
       - name: mysql-{{port}}-config
         configMap:
           name: mysql-{{port}}-config
+      - name: mysql-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: mysql-{{port}}-claim

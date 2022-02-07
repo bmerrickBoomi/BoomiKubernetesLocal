@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mongodb-{{port}}
   namespace: addons-mongodb-{{port}}
   labels:
     app.kubernetes.io/name: mongodb-{{port}}
 spec:
+  serviceName: mongodb-{{port}}
   selector:
     matchLabels:
       app.kubernetes.io/name: mongodb-{{port}}
@@ -26,6 +27,9 @@ spec:
         ports:
         - containerPort: 27017
           name: mongodb-{{port}}
+        volumeMounts:
+        - mountPath: /data/db
+          name: mongodb-{{port}}-storage
       - image: mongo-express:latest
         name: express-{{port}}
         env:
@@ -40,5 +44,9 @@ spec:
         ports:
         - containerPort: 8081
           name: express-{{port}}
+      volumes:
+      - name: mongodb-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: mongodb-{{port}}-claim
       
           

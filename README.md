@@ -44,7 +44,7 @@ Operation [ATOM | MOLECULE | ADDON]
 --add Add
 --name Name
 --delete Delete
---path Path
+--path default /run/desktop/mnt/host/c/Boomi\ AtomSphere
 --token Installer Token   
 --port Port override for service. If ommitted, the service default port will be used
 --node Externally accesible port for the service > must be between 30000 - 32767
@@ -63,7 +63,7 @@ boomi ADDON --list
 ## Add
 
 ```
-./boomi.sh MOLECULE --add --name NAME --path /run/desktop/mnt/host/c/Boomi\ AtomSphere --token INSTALLER_TOKEN
+./boomi.sh MOLECULE --add --name NAME --token INSTALLER_TOKEN
 ```
 
 ## Delete
@@ -93,7 +93,7 @@ https://localhost/molecule/NAME
 ## Add
 
 ```
-./boomi.sh ATOM --add --name NAME --path /run/desktop/mnt/host/c/Boomi\ AtomSphere --token INSTALLER_TOKEN
+./boomi.sh ATOM --add --name NAME --token INSTALLER_TOKEN
 ```
 
 ## Delete
@@ -235,7 +235,7 @@ MongoDB
 ./boomi.sh ADDON --add --name "mysql"
 ./boomi.sh ADDON --add --name "oracledb"
 ./boomi.sh ADDON --add --name "sqlserver"
-./boomi.sh ADDON --add --name "sftp"      --path /run/desktop/mnt/host/c/Boomi\ AtomSphere
+./boomi.sh ADDON --add --name "sftp"
 ```
 
 ## Delete

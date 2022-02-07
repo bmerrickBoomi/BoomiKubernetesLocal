@@ -5,14 +5,14 @@
 # ARG_OPTIONAL_BOOLEAN([list], l, [List available resources])
 # ARG_POSITIONAL_SINGLE([operation], o, [ATOM, MOLECULE or ADDON])
 # ARG_OPTIONAL_SINGLE([name], n, [The name of the Atom/Molecule])
-# ARG_OPTIONAL_SINGLE([path], p, [The path to store the Atom/Molecule])
+# ARG_OPTIONAL_SINGLE([path], p, [Default /run/desktop/mnt/host/c/Boomi\ AtomSphere])
 # ARG_OPTIONAL_SINGLE([port], x, [The port to use for the service])
 # ARG_OPTIONAL_SINGLE([token], t, [The Installer Token for the Atom/Molecule])
 # ARG_OPTIONAL_SINGLE([vm], v, [ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation])
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
 # ARG_OPTIONAL_SINGLE([node], e, [Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi [ATOM | MOLECULE] --add --name NAME --path PATH --token TOKEN [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
+# ARG_HELP([boomi [ATOM | MOLECULE] --add --name NAME --token TOKEN [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -23,6 +23,12 @@ SCRIPTPATH=`dirname $SCRIPT`
 function fileReplace() {
   cat $1 | sed "s#{{uname}}#${_arg_name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${_arg_path}#g" | sed "s#{{token}}#${_arg_token}#g" | sed "s#{{vm}}#${_arg_vm}#g" | sed "s#{{container}}#${_arg_container}#g" | sed "s#{{port}}#${xport}#g" | sed "s#{{node}}#${xnode}#g"
 }
+
+if [ "$_arg_path" = "" ];
+then
+  _arg_path="/run/desktop/mnt/host/c/Boomi AtomSphere"
+  echo "default path $_arg_path"
+fi
 
 if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ];
 then
@@ -66,11 +72,17 @@ then
 
   lname=${_arg_name,,}
 
+  xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
+  echo "host path $xhostpath"
+  mkdir -p "$xhostpath"
+
   if [ "$_arg_delete" = on ];
   then
     kubectl delete all --all -n ${op}-${lname}
     kubectl delete namespace ${op}-${lname}
     kubectl delete pv ${op}-${lname}-pv
+    kubectl delete sc ${op}-${lname}-storage
+    rm -rf "$xhostpath/${op}_${_arg_name}"
   elif [ "$_arg_add" = on ];
   then
     xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
@@ -139,6 +151,13 @@ then
         echo "addon host path $xaddon"
         echo "addon container path $_arg_path"
         mkdir -p "$xaddon/addons/$_arg_name-$xport"
+
+        if [ "$_arg_name" = "magento" ];
+        then
+          mkdir -p "$xaddon/addons/$_arg_name-$xport/magento"
+          mkdir -p "$xaddon/addons/$_arg_name-$xport/mariadb"
+          mkdir -p "$xaddon/addons/$_arg_name-$xport/elasticsearch"
+        fi
       fi
 
       # Get external nodeport
@@ -159,6 +178,13 @@ then
       FILES="$SCRIPTPATH/kubernetes/addons/${dpath}/config/*"
 
       fileReplace "$SCRIPTPATH/kubernetes/addons/${dpath}/config/*_namespace.yaml" | kubectl apply -f -
+
+      if [ -n "$(ls -A "$SCRIPTPATH/kubernetes/addons/${dpath}/config/*_pv*" 2>/dev/null)" ];
+      then
+        fileReplace "$SCRIPTPATH/kubernetes/addons/${dpath}/config/*_pv.yaml" | kubectl apply -f -
+        fileReplace "$SCRIPTPATH/kubernetes/addons/${dpath}/config/*_pvclaim.yaml" | kubectl apply -f -
+      fi
+
       for f in $FILES
       do
         fileReplace $f | kubectl apply -f -
@@ -183,10 +209,25 @@ then
         echo "default port: ${xport}"
       fi
 
+      xaddon="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
+      _arg_path="$xaddon/addons/$_arg_name-$xport"
+
       echo "Deleting $dpath"
       kubectl delete all --all -n addons-${dpath}-${xport}
       kubectl delete namespace addons-${dpath}-${xport}
       kubectl delete pv ${dpath}-${xport}-pv
+      kubectl delete sc ${dpath}-${xport}-storage
+
+      echo "cleaning up $_arg_path"
+      sudo rm -rf "$_arg_path"
+
+      if [ "$_arg_name" = "magento" ];
+      then
+        kubectl delete pv ${dpath}-mariadb-${xport}-pv
+        kubectl delete sc ${dpath}-mariadb-${xport}-storage
+        kubectl delete pv ${dpath}-es-${xport}-pv
+        kubectl delete sc ${dpath}-es-${xport}-storage
+      fi
     done
   fi
 else

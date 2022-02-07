@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: sftp-{{port}}
   namespace: addons-sftp-{{port}}
   labels:
     app.kubernetes.io/name: sftp-{{port}}
 spec:
+  serviceName: sftp-{{port}}
   selector:
     matchLabels:
       app.kubernetes.io/name: sftp-{{port}}

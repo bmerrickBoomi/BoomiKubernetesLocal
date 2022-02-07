@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: sqlserver-{{port}}
   namespace: addons-sqlserver-{{port}}
   labels:
     app.kubernetes.io/name: sqlserver-{{port}}
 spec:
+  serviceName: sqlserver-{{port}}
   selector:
     matchLabels:
       app.kubernetes.io/name: sqlserver-{{port}}
@@ -26,3 +27,10 @@ spec:
         ports:
         - containerPort: 1433
           name: sqlserver-{{port}}
+        volumeMounts:
+        - mountPath: /var/opt/mssql/data
+          name: sqlserver-{{port}}-storage
+      volumes:
+      - name: sqlserver-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: sqlserver-{{port}}-claim

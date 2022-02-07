@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{name}}
   labels:
     app: {{name}}
   namespace: molecule-{{name}}
 spec:
+  serviceName: {{name}}
   selector:
     matchLabels:
       app: {{name}}

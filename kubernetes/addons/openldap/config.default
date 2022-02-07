@@ -1,5 +1,5 @@
 {
   "port": "1389",
-  "storage": false,
+  "storage": true,
   "node": "30010"
 }
