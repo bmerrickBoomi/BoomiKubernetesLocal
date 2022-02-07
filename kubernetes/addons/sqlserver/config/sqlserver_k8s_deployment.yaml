@@ -16,6 +16,8 @@ spec:
       labels:
         app.kubernetes.io/name: sqlserver-{{port}}
     spec:
+      securityContext:
+        fsGroup: 2000
       containers:
       - image: mcr.microsoft.com/mssql/server:latest
         name: sqlserver-{{port}}
