@@ -10,6 +10,8 @@ This repository contains all Runtime containerization reference architectures, g
 
 # Setup
 
+**Be sure to be running as a local administrator!**
+
 [Install Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
 
 [Enable Kubernetes for Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
@@ -24,7 +26,12 @@ sudo apt update
 sudo apt install jq
 ```
 
-**Be sure to be running as a local administrator!**
+Run nginx and kubernetes-dashboard
+
+```
+kubectl apply -f tools/dashboard
+kubectl apply -f tools/nginx
+```
 
 # Start Kubernetes forwarding
 
@@ -221,6 +228,7 @@ SFTP
   Password: password1
   
 MongoDB
+  UI: https://localhost/addons/mongo
   Hostname: 127.0.0.1
   Port: 30050
   Username: root

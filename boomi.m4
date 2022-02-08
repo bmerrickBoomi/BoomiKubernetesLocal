@@ -55,10 +55,10 @@ then
   fi
  
   # Apply Dashboard
-  kubectl apply -f $SCRIPTPATH/tools/dashboard
+  #kubectl apply -f $SCRIPTPATH/tools/dashboard
 
   # Apply nginx
-  kubectl apply -f $SCRIPTPATH/tools/nginx
+  #kubectl apply -f $SCRIPTPATH/tools/nginx
 
   if [ "$_arg_operation" = "MOLECULE" ];
   then
@@ -219,7 +219,7 @@ then
       kubectl delete sc ${dpath}-${xport}-storage
 
       echo "cleaning up $_arg_path"
-      sudo rm -rf "$_arg_path"
+      rm -rf "$_arg_path"
 
       if [ "$_arg_name" = "magento" ];
       then
