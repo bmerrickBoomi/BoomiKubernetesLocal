@@ -141,6 +141,7 @@ Use the docker tool to log in to Docker Hub. See the log in section of Docker ID
 
 ```
 docker login
+docker pull store/oracle/database-enterprise:12.2.0.1
 ```
 
 ## Database Management
