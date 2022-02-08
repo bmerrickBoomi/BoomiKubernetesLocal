@@ -5,7 +5,7 @@ metadata:
   namespace: addons-sftp-{{port}}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: sftp-{{port}}-storage
   resources:
     requests:

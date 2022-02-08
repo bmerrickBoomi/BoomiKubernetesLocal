@@ -16,7 +16,7 @@ spec:
     storage: 20Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Delete
   storageClassName: sftp-{{port}}-storage
   local:

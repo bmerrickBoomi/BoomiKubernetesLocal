@@ -5,7 +5,7 @@ metadata:
   namespace: addons-sqlserver-{{port}}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: sqlserver-{{port}}-storage
   resources:
     requests:

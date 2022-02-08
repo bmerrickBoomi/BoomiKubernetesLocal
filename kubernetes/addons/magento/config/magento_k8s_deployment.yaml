@@ -17,18 +17,18 @@ spec:
         app.kubernetes.io/name: magento-{{port}}
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 3000
         fsGroup: 2000
       containers:
       - name: magento-{{port}}
         image: bitnami/magento:latest
         imagePullPolicy: "Always"
         env:
+        - name: BITNAMI_DEBUG
+          value: "true"
         - name: MAGENTO_USERNAME
           value: user
         - name: MAGENTO_PASSWORD
-          value: password
+          value: Password123!
         - name: MAGENTO_DATABASE_HOST
           value: 127.0.0.1
         - name: MAGENTO_DATABASE_PORT_NUMBER
@@ -38,26 +38,26 @@ spec:
         - name: MAGENTO_DATABASE_USER
           value: admin
         - name: MAGENTO_DATABASE_PASSWORD
-          value: password
+          value: Password123!
         - name: MAGENTO_ELASTICSEARCH_HOST
           value: 127.0.0.1
         ports:
           - name: magento-{{port}}
-            containerPort: 8080
+            containerPort: 80
         volumeMounts:
         - mountPath: /bitnami/magento
           name: magento-{{port}}-storage
           
       - name: mariadb-{{port}}
-        image: mariadb:latest
+        image: mariadb:10.4
         imagePullPolicy: "Always"
         env:
         - name: MARIADB_USER
           value: admin
         - name: MARIADB_PASSWORD
-          value: password
+          value: Password123!
         - name: MARIADB_ROOT_PASSWORD
-          value: password
+          value: Password123!
         - name: MARIADB_DATABASE
           value: magento
         ports:

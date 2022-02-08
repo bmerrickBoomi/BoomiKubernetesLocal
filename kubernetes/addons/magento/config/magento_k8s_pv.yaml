@@ -16,7 +16,7 @@ spec:
     storage: 20Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Delete
   storageClassName: magento-{{port}}-storage
   local:
@@ -48,7 +48,7 @@ spec:
     storage: 20Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Delete
   storageClassName: magento-mariadb-{{port}}-storage
   local:
@@ -80,7 +80,7 @@ spec:
     storage: 20Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Delete
   storageClassName: magento-es-{{port}}-storage
   local:
