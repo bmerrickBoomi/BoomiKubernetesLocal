@@ -6,19 +6,22 @@ metadata:
 data:
   sftp.json: |
     {
-      "Global": {
-          "Chroot": {
-              "Directory": "%h",
-              "StartPath": "sftp"
-          },
-          "Directories": ["sftp"]
-      },
-      "Users": [
-          {
-              "Username": "user1",
-              "Password": "password1"
-          }
-      ]
+        "Global": {
+            "Chroot": {
+                "Directory": "%h",
+                "StartPath": "sftp"
+            },
+            "Directories": [
+              "sftp/incoming",
+              "sftp/outgoing"
+            ]
+        },
+        "Users": [
+            {
+                "Username": "user1",
+                "Password": "password1"
+            }
+        ]
     }
 ---
 apiVersion: apps/v1
@@ -47,13 +50,12 @@ spec:
       - name: sftp-{{port}}
         image: emberstack/sftp:latest
         imagePullPolicy: "Always"
-        args: ["user1:password1:1001:100:incoming,outgoing"] 
         ports:
           - name: sftp-{{port}}
             containerPort: 22
         volumeMounts:
         - name: sftp-{{port}}-storage
-          mountPath: /home/user1
+          mountPath: /home/user1/sftp
         - name: sftp-{{port}}-config
           mountPath: /app/config/sftp.json
           subPath: sftp.json
