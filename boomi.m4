@@ -127,6 +127,14 @@ then
         continue
       fi
 
+      # Compute ready
+      xready=$(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.ready')
+      if [ "$xready" = "false" ];
+      then
+        echo "service is not ready, exiting."
+        exit
+      fi
+
       # Compute port
       xport=$_arg_port
       if [ "$_arg_port" = "" ];
