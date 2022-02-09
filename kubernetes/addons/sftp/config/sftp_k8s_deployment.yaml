@@ -1,3 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sftp-{{port}}-config
+  namespace: addons-sftp-{{port}}
+data:
+  sftp.json: |
+    {
+      "Global": {
+          "Chroot": {
+              "Directory": "%h",
+              "StartPath": "sftp"
+          },
+          "Directories": ["sftp"]
+      },
+      "Users": [
+          {
+              "Username": "user1",
+              "Password": "password1"
+          }
+      ]
+    }
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -16,21 +39,28 @@ spec:
       labels:
         app.kubernetes.io/name: sftp-{{port}}
     spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 3000
+        fsGroup: 2000
       containers:
       - name: sftp-{{port}}
-        image: atmoz/sftp:latest
+        image: emberstack/sftp:latest
         imagePullPolicy: "Always"
         args: ["user1:password1:1001:100:incoming,outgoing"] 
         ports:
           - name: sftp-{{port}}
             containerPort: 22
         volumeMounts:
-        - mountPath: /home/user1
-          name: sftp-{{port}}-storage
-        securityContext:
-          capabilities:
-            add: ["SYS_ADMIN"]
+        - name: sftp-{{port}}-storage
+          mountPath: /home/user1
+        - name: sftp-{{port}}-config
+          mountPath: /app/config/sftp.json
+          subPath: sftp.json
       volumes:
+      - name: sftp-{{port}}-config
+        configMap:
+          name: sftp-{{port}}-config
       - name: sftp-{{port}}-storage
         persistentVolumeClaim:
           claimName: sftp-{{port}}-claim

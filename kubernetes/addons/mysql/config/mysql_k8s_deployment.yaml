@@ -26,6 +26,10 @@ spec:
       labels:
         app.kubernetes.io/name: mysql-{{port}}
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
       containers:
       - image: mysql:8.0
         name: mysql-{{port}}

@@ -16,6 +16,10 @@ spec:
       labels:
         app.kubernetes.io/name: oracledb-{{port}}
     spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 3000
+        fsGroup: 2000
       containers:
       - image: store/oracle/database-enterprise:12.2.0.1
         name: oracledb-{{port}}
