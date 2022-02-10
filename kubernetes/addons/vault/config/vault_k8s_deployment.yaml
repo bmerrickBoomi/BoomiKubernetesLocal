@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vault-{{port}}
+  namespace: addons-vault-{{port}}
+  labels:
+    app.kubernetes.io/name: vault-{{port}}
+spec:
+  serviceName: vault-{{port}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault-{{port}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vault-{{port}}
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+      - name: vault-{{port}}
+        env:
+        - name: VAULT_LOCAL_CONFIG
+          value: '{"backend":{"file":{"path":"/vault/file"}},"ui":true,"disable_mlock":true}'
+        image: vault:latest
+        imagePullPolicy: "Always"
+        ports:
+          - name: vault-{{port}}
+            containerPort: 8200
+          
