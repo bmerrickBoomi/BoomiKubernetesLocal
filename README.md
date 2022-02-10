@@ -248,6 +248,7 @@ MongoDB
 ./boomi.sh ADDON --add --name "oracledb"
 ./boomi.sh ADDON --add --name "sqlserver"
 ./boomi.sh ADDON --add --name "sftp"
+./boomi.sh ADDON --add --name "vault"
 ```
 
 ## Delete
@@ -259,4 +260,5 @@ MongoDB
 ./boomi.sh ADDON --delete --name "oracledb"
 ./boomi.sh ADDON --delete --name "sqlserver"
 ./boomi.sh ADDON --delete --name "sftp"
+./boomi.sh ADDON --delete --name "vault"
 ```
