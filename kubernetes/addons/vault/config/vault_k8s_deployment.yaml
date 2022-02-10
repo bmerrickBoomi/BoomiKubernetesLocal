@@ -25,6 +25,8 @@ spec:
         env:
         - name: VAULT_LOCAL_CONFIG
           value: '{"backend":{"file":{"path":"/vault/file"}},"ui":true,"disable_mlock":true}'
+        - name: VAULT_DEV_ROOT_TOKEN_ID
+          value: OnIBNb78YqEXzEtbReUi3kDj
         image: vault:latest
         imagePullPolicy: "Always"
         ports:

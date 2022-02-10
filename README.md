@@ -242,7 +242,7 @@ Vault
   UI: https://localhost/ui
   Hostname: 127.0.0.1
   Port: 30070
-  Token: From Pod Logs > ex: Root Token: s.OnIBNb78YqEXzEtbReUi3kDj
+  Token: OnIBNb78YqEXzEtbReUi3kDj
 ```
 
 ### Commands
