@@ -22,14 +22,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{name}}-ingress
+  name: {{name}}-ingress-api
   namespace: apim-{{name}}
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^(/portal/demo)$ $1/ redirect;
 spec:
   rules:
   - host: localhost
@@ -42,8 +40,53 @@ spec:
             name: {{name}}
             port: 
               number: 8077
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{name}}-ingress-portal
+  namespace: apim-{{name}}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/portal/{{name}})$ $1/ redirect;
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
       - pathType: Prefix
         path: /portal/{{name}}(/|$)(.*)
+        backend:
+          service:
+            name: {{name}}
+            port: 
+              number: 18077
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{name}}-ingress-login
+  namespace: apim-{{name}}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - pathType: Prefix
+        path: /management
+        backend:
+          service:
+            name: {{name}}
+            port: 
+              number: 18077
+      - pathType: Prefix
+        path: /graphql
         backend:
           service:
             name: {{name}}
