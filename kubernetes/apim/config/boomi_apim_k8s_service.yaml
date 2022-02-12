@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{name}}
+  labels:
+    app: {{name}}
+  namespace: apim-{{name}}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{name}}
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8077
+    targetPort: 8077
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{name}}-ingress
+  namespace: apim-{{name}}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - pathType: Prefix
+        path: /apim/{{name}}(/|$)(.*)
+        backend:
+          service:
+            name: {{name}}
+            port: 
+              number: 8077
+      - pathType: Prefix
+        path: /apim/portal/{{name}}(/|$)(.*)
+        backend:
+          service:
+            name: {{name}}
+            port: 
+              number: 18077

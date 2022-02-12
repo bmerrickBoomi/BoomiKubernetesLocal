@@ -12,7 +12,7 @@
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
 # ARG_OPTIONAL_SINGLE([node], e, [Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi [ATOM | MOLECULE] --add --name NAME --token TOKEN [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
+# ARG_HELP([boomi [ATOM | MOLECULE | APIM] --add --name NAME --token TOKEN [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -30,7 +30,7 @@ then
   echo "default path $_arg_path"
 fi
 
-if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ];
+if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ] || [ "$_arg_operation" = "APIM" ];
 then
   # Checking for ${add} and ${delete} not set
   if [ "$_arg_add" != on ] && [ "$_arg_delete" != on ];
@@ -54,18 +54,22 @@ then
     exit
   fi
  
-  # Apply Dashboard
-  #kubectl apply -f $SCRIPTPATH/tools/dashboard
-
-  # Apply nginx
-  #kubectl apply -f $SCRIPTPATH/tools/nginx
-
   if [ "$_arg_operation" = "MOLECULE" ];
   then
     op="molecule"
   elif [ "$_arg_operation" = "ATOM" ];
   then
     op="atom"
+  elif [ "$_arg_operation" = "APIM" ];
+  then
+    op="apim"
+    if [ "$_arg_add" = on ];
+    then
+      location=$PWD
+      cd kubernetes/apim/docker
+      make
+      cd $location
+    fi
   fi
 
   # Apply ${operation} with Replacements
@@ -82,7 +86,13 @@ then
     kubectl delete namespace ${op}-${lname}
     kubectl delete pv ${op}-${lname}-pv
     kubectl delete sc ${op}-${lname}-storage
-    rm -rf "$xhostpath/${op}_${_arg_name}"
+    
+    if [ "$_arg_operation" = "APIM" ];
+    then
+      rm -rf "$xhostpath/Gateway_${_arg_name}"
+    else
+      rm -rf "$xhostpath/${op}_${_arg_name}"
+    fi
   elif [ "$_arg_add" = on ];
   then
     xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"

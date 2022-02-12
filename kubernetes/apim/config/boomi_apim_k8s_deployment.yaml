@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{name}}
+  labels:
+    app: {{name}}
+  namespace: apim-{{name}}
+spec:
+  serviceName: {{name}}
+  selector:
+    matchLabels:
+      app: {{name}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{name}}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: apim-{{name}}-storage
+          persistentVolumeClaim:
+            claimName: apim-{{name}}-claim
+      containers:
+      - image: boomi/local-gateway:latest
+        imagePullPolicy: IfNotPresent
+        name: apim-{{name}}-node
+        ports:
+        - containerPort: 8077
+          protocol: TCP
+        - containerPort: 18077
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+          requests:
+            cpu: "500m"
+            memory: "768Mi"
+        volumeMounts:
+          - name: apim-{{name}}-storage
+            mountPath: /mnt/boomi
+        env:
+        - name: ATOM_HOME
+          value: /mnt/boomi
+        - name: BOOMI_ATOMNAME
+          value: {{uname}}
+        - name: ATOM_VMOPTIONS_OVERRIDES
+          value: {{vm}}
+        - name: CONTAINER_PROPERTIES_OVERRIDES
+          value: "{{container}}"
+        - name: ATOM_LOCALHOSTID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: INSTALL_TOKEN 
+          valueFrom:
+            secretKeyRef:
+              name: boomi-secret-{{name}}
+              key: token
