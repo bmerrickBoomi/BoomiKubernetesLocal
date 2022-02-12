@@ -33,7 +33,7 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: /apim/{{name}}
+        path: /apim
         backend:
           service:
             name: {{name}}
@@ -55,7 +55,7 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: /apim/{{name}}/node(/|$)(.*)
+        path: /apim/node(/|$)(.*)
         backend:
           service:
             name: {{name}}
@@ -72,14 +72,14 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^(/portal/{{name}})$ $1/ redirect;
+      rewrite ^(/portal)$ $1/ redirect;
 spec:
   rules:
   - host: localhost
     http:
       paths:
       - pathType: Prefix
-        path: /portal/{{name}}(/|$)(.*)
+        path: /portal(/|$)(.*)
         backend:
           service:
             name: {{name}}
