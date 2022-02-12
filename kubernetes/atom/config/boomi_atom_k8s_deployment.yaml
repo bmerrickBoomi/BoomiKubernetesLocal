@@ -1,67 +1,77 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: {{name}}
   labels:
     app: {{name}}
   namespace: atom-{{name}}
 spec:
-  securityContext:
-    runAsUser: 1000
-    runAsGroup: 3000
-    fsGroup: 2000
-  terminationGracePeriodSeconds: 60
-  volumes:
-    - name: atom-{{name}}-storage
-      persistentVolumeClaim:
-        claimName: atom-{{name}}-claim
-  containers:
-  - image: boomi/atom:4.0.0
-    imagePullPolicy: Always
-    name: atom-{{name}}-node
-    ports:
-    - containerPort: 9090
-      protocol: TCP
-    lifecycle:
-      preStop:
-        exec:
-          command:
-            - sh
-            - /home/boomi/scaledown.sh
-    resources:
-      limits:
-        cpu: "1000m"
-        memory: "1024Mi"
-      requests:
-        cpu: "500m"
-        memory: "768Mi"
-    volumeMounts:
-      - name: atom-{{name}}-storage
-        mountPath: /mnt/boomi
-    readinessProbe:
-      periodSeconds: 10
-      initialDelaySeconds: 60
-      httpGet:
-        path: /_admin/readiness
-        port: 9090
-    livenessProbe:
-      periodSeconds: 60
-      httpGet:
-        path: /_admin/liveness
-        port: 9090
-    env:
-    - name: BOOMI_ATOMNAME
-      value: {{uname}}
-    - name: ATOM_VMOPTIONS_OVERRIDES
-      value: {{vm}}
-    - name: CONTAINER_PROPERTIES_OVERRIDES
-      value: "{{container}}"
-    - name: ATOM_LOCALHOSTID
-      valueFrom:
-        fieldRef:
-          fieldPath: metadata.name
-    - name: INSTALL_TOKEN 
-      valueFrom:
-        secretKeyRef:
-          name: boomi-secret-{{name}}
-          key: token
+  serviceName: {{name}}
+  selector:
+    matchLabels:
+      app: {{name}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{name}}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: atom-{{name}}-storage
+          persistentVolumeClaim:
+            claimName: atom-{{name}}-claim
+      containers:
+      - image: boomi/atom:4.0.0
+        imagePullPolicy: Always
+        name: atom-{{name}}-node
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - sh
+                - /home/boomi/scaledown.sh
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
+          requests:
+            cpu: "500m"
+            memory: "768Mi"
+        volumeMounts:
+          - name: atom-{{name}}-storage
+            mountPath: /mnt/boomi
+        readinessProbe:
+          periodSeconds: 10
+          initialDelaySeconds: 60
+          httpGet:
+            path: /_admin/readiness
+            port: 9090
+        livenessProbe:
+          periodSeconds: 60
+          httpGet:
+            path: /_admin/liveness
+            port: 9090
+        env:
+        - name: BOOMI_ATOMNAME
+          value: {{uname}}
+        - name: ATOM_VMOPTIONS_OVERRIDES
+          value: {{vm}}
+        - name: CONTAINER_PROPERTIES_OVERRIDES
+          value: "{{container}}"
+        - name: ATOM_LOCALHOSTID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: INSTALL_TOKEN 
+          valueFrom:
+            secretKeyRef:
+              name: boomi-secret-{{name}}
+              key: token
