@@ -41,7 +41,7 @@ spec:
             port: 
               number: 8077
       - pathType: Prefix
-        path: /apim/portal/{{name}}(/|$)(.*)
+        path: /portal/{{name}}(/|$)(.*)
         backend:
           service:
             name: {{name}}
