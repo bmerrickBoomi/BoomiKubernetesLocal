@@ -125,6 +125,57 @@ In order to access the API, the Shared Web Server API Type needs to be set to [A
 https://localhost/atom/NAME
 ```
 
+# APIM
+
+## Add
+
+```
+./boomi.sh APIM --add --name NAME --token INSTALLER_TOKEN
+```
+
+## Delete
+
+```
+./boomi.sh APIM --delete --name NAME
+```
+
+## Access API
+
+In order to access the API, the Shared Web Server API Type needs to be set to Gateway on the migrated Boomi runtime.
+
+The Public URL for the Location Settings in APIM should be set to
+
+```
+https://localhost:443
+```
+
+The APIM Environment endpoints need to be prefixed with apim/{Environment Name}, where {Environment Name} is optional if your APIM will support multiple environments. for example
+
+```
+REST
+apim/ws/rest
+
+SOAP
+apim/ws/soap
+
+SOAP 1.2
+apim/ws/soap12
+
+OData
+apim/ws/odata2
+```
+
+### Node Status
+
+```
+https://localhost/apim/node/_admin/status
+```
+
+### Developer Portal
+```
+https://localhost/portal
+```
+
 # Addons
 
 Additional services can be installed to create integrations from and they can be accessed from within a Atom/Molecule from the internal DNS name or externally from the NodePort defined.
