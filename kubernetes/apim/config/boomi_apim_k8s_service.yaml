@@ -14,6 +14,10 @@ spec:
     protocol: TCP
     port: 8077
     targetPort: 8077
+  - name: portal
+    protocol: TCP
+    port: 18077
+    targetPort: 18077
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

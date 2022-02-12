@@ -14,7 +14,6 @@ USER boomi
 ENV EXTRA_OPTIONS="--build-number-file=bin/build.number --user-lib-dir=userlib"
 ENV AMC="Gateway"
 
-EXPOSE 8077
-EXPOSE 18077
+EXPOSE 8077 18077
 
 CMD ["/home/boomi/install.sh"]
