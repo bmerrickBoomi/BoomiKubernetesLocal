@@ -10,3 +10,16 @@ spec:
   resources:
     requests:
       storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openldap-slapd-{{port}}-claim
+  namespace: addons-openldap-{{port}}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: openldap-slapd-{{port}}-storage
+  resources:
+    requests:
+      storage: 5Gi

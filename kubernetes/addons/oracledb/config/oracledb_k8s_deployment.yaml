@@ -17,12 +17,15 @@ spec:
         app.kubernetes.io/name: oracledb-{{port}}
     spec:
       securityContext:
-        runAsUser: 0
+        runAsUser: 54321
         runAsGroup: 3000
         fsGroup: 2000
       containers:
-      - image: store/oracle/database-enterprise:12.2.0.1
+      - image: gvenzl/oracle-xe:21.3.0
         name: oracledb-{{port}}
+        env:
+        - name: ORACLE_PASSWORD
+          value: Password123!
         ports:
         - containerPort: 1521
           name: oracledb-{{port}}

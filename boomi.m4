@@ -170,11 +170,12 @@ then
         echo "addon container path $_arg_path"
         mkdir -p "$xaddon/addons/$_arg_name-$xport"
 
-        if [ "$_arg_name" = "magento" ];
+        if [ $(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq 'has("folders")') = "true" ];
         then
-          mkdir -p "$xaddon/addons/$_arg_name-$xport/magento"
-          mkdir -p "$xaddon/addons/$_arg_name-$xport/mariadb"
-          mkdir -p "$xaddon/addons/$_arg_name-$xport/elasticsearch"
+          for xfolder in $(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.folders[]')
+          do
+            mkdir -p "$xaddon/addons/$_arg_name-$xport/$xfolder"
+          done
         fi
       fi
 
@@ -239,12 +240,13 @@ then
       echo "cleaning up $_arg_path"
       rm -rf "$_arg_path"
 
-      if [ "$_arg_name" = "magento" ];
+      if [ $(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq 'has("volumes")') = "true" ];
       then
-        kubectl delete pv ${dpath}-mariadb-${xport}-pv
-        kubectl delete sc ${dpath}-mariadb-${xport}-storage
-        kubectl delete pv ${dpath}-es-${xport}-pv
-        kubectl delete sc ${dpath}-es-${xport}-storage
+        for xfolder in $(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.volumes[]')
+        do
+          kubectl delete pv ${dpath}-${xfolder}-${xport}-pv
+          kubectl delete sc ${dpath}-${xfolder}-${xport}-storage
+        done
       fi
     done
   fi

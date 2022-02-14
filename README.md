@@ -182,22 +182,6 @@ Additional services can be installed to create integrations from and they can be
 
 Sample datasets can be found under kubernetes/addons/SERVICE/datasets.
 
-## Docker Login
-
-Some services require login to Docker Hub to pull images.
-
-On your laptop, you must authenticate with a registry in order to pull a private image.
-
-Use the docker tool to log in to Docker Hub. See the log in section of Docker ID accounts for more information.
-
-```
-docker login
-
-Oracle Database Enterprise Edition
-  https://hub.docker.com/_/oracle-database-enterprise-edition
-  docker pull store/oracle/database-enterprise:12.2.0.1
-```
-
 ## Database Management
 
 [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
@@ -271,10 +255,10 @@ OpenLDAP
   
 Oracle
   Username: sys as sysdba
-  Password: Oradoc_db1
+  Password: Password123!
   Hostname: 127.0.0.1
   Port: 30020
-  SID: ORCLCDB
+  SID: XE
   
 SFTP
   Hostname: 127.0.0.1

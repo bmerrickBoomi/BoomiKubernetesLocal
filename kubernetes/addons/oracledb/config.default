@@ -1,5 +1,8 @@
 {
   "port": "1521",
   "storage": true,
-  "node": "30020"
+  "node": "30020",
+  "folders": [
+    "XE"
+  ]
 }

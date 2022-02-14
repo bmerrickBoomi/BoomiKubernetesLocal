@@ -37,7 +37,12 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/ldap
           name: openldap-{{port}}-storage
+        - mountPath: /etc/ldap/slapd.d
+          name: openldap-slapd-{{port}}-storage
       volumes:
       - name: openldap-{{port}}-storage
         persistentVolumeClaim:
           claimName: openldap-{{port}}-claim
+      - name: openldap-slapd-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: openldap-slapd-{{port}}-claim

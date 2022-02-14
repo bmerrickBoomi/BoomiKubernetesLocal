@@ -12,8 +12,7 @@ data:
                 "StartPath": "sftp"
             },
             "Directories": [
-              "sftp/incoming",
-              "sftp/outgoing"
+              "sftp"
             ]
         },
         "Users": [

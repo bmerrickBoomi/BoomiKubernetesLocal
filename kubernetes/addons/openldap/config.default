@@ -1,5 +1,12 @@
 {
   "port": "1389",
   "storage": true,
-  "node": "30010"
+  "node": "30010",
+  "folders": [
+    "ldap",
+    "slapd"
+  ],
+  "volumes": [
+    "slapd"
+  ]
 }
