@@ -27,7 +27,7 @@ function fileReplace() {
 if [ "$_arg_path" = "" ];
 then
   _arg_path="/run/desktop/mnt/host/c/Boomi AtomSphere"
-  echo "default path $_arg_path"
+  printf "default path $_arg_path\n"
 fi
 
 if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ] || [ "$_arg_operation" = "APIM" ];
@@ -120,7 +120,19 @@ then
 
   if [ "$_arg_list" = on ];
   then
-    ls $SCRIPTPATH/kubernetes/addons    
+    printf "addons:\n"
+    for xd in $(find $SCRIPTPATH/kubernetes/addons/* -maxdepth 0 -type d);
+    do
+      if [ $(basename $xd) = "demo" ];
+      then
+        for xdd in $(find $SCRIPTPATH/kubernetes/addons/demo/* -maxdepth 0 -type d);
+        do
+          echo demo/$(basename $xdd)
+        done
+      else
+        echo $(basename $xd)
+      fi
+    done
   elif [ "$_arg_add" = on ];
   then
     if [ "$_arg_name" = "" ];
@@ -132,9 +144,39 @@ then
     for d in $(find $SCRIPTPATH/kubernetes/addons/* -maxdepth 0 -type d)
     do
       dpath=$(basename $d)
-      if [ ! -d "$SCRIPTPATH/kubernetes/addons/${dpath}/" ] || [ $dpath != $_arg_name ];
+      dhypepath="$dpath"
+      if [ ! -d "$SCRIPTPATH/kubernetes/addons/${dpath}/" ];
       then
         continue
+      fi
+
+      if [ "$dpath" = "demo" ] && [[ "${_arg_name:0:4}" = "demo" ]];
+      then
+        for d2 in $(find $SCRIPTPATH/kubernetes/addons/$dpath/* -maxdepth 0 -type d)
+        do
+          d2path=$(basename $d2)
+          if [ "$dpath/$d2path" != $_arg_name ];
+          then
+            continue
+          else
+            dhypepath="$dpath-$d2path"
+            dpath="$dpath/$d2path"
+          fi
+        done
+      else 
+        if [ $dpath != $_arg_name ];
+        then
+          continue
+        fi
+      fi
+
+      xdocker=$(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.docker')
+      if [ "$xdocker" = "true" ];
+      then
+        location=$PWD
+        cd $SCRIPTPATH/kubernetes/addons/${dpath}/docker
+        make
+        cd $location
       fi
 
       # Compute ready
@@ -164,17 +206,17 @@ then
         fi
 
         xaddon="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
-        _arg_path="$_arg_path/addons/$_arg_name-$xport"
+        _arg_path="$_arg_path/addons/$dpath-$xport"
 
         echo "addon host path $xaddon"
         echo "addon container path $_arg_path"
-        mkdir -p "$xaddon/addons/$_arg_name-$xport"
+        mkdir -p "$xaddon/addons/$dhypepath-$xport"
 
         if [ $(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq 'has("folders")') = "true" ];
         then
           for xfolder in $(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.folders[]')
           do
-            mkdir -p "$xaddon/addons/$_arg_name-$xport/$xfolder"
+            mkdir -p "$xaddon/addons/$dhypepath-$xport/$xfolder"
           done
         fi
       fi
@@ -216,10 +258,31 @@ then
     for d in $(find $SCRIPTPATH/kubernetes/addons/* -maxdepth 0 -type d)
     do
       dpath=$(basename $d)
-      if [ ! -d "$SCRIPTPATH/kubernetes/addons/${dpath}/" ] || [ $dpath != $_arg_name ];
+      dhypepath="$dpath"
+      if [ ! -d "$SCRIPTPATH/kubernetes/addons/${dpath}/" ];
       then
         continue 
       fi 
+
+      if [ "$dpath" = "demo" ] && [[ "${_arg_name:0:4}" = "demo" ]];
+      then
+        for d2 in $(find $SCRIPTPATH/kubernetes/addons/$dpath/* -maxdepth 0 -type d)
+        do
+          d2path=$(basename $d2)
+          if [ "$dpath/$d2path" != $_arg_name ];
+          then
+            continue
+          else
+            dhypepath="$dpath-$d2path"
+            dpath="$dpath/$d2path"
+          fi
+        done
+      else
+        if [ $dpath != $_arg_name ];
+        then
+          continue
+        fi
+      fi
 
       xport=$_arg_port
       if [ "$_arg_port" = "" ];
@@ -229,13 +292,13 @@ then
       fi
 
       xaddon="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
-      _arg_path="$xaddon/addons/$_arg_name-$xport"
+      _arg_path="$xaddon/addons/$dhypepath-$xport"
 
       echo "Deleting $dpath"
-      kubectl delete all --all -n addons-${dpath}-${xport}
-      kubectl delete namespace addons-${dpath}-${xport}
-      kubectl delete pv ${dpath}-${xport}-pv
-      kubectl delete sc ${dpath}-${xport}-storage
+      kubectl delete all --all -n addons-${dhypepath}-${xport}
+      kubectl delete namespace addons-${dhypepath}-${xport}
+      kubectl delete pv ${dhypepath}-${xport}-pv
+      kubectl delete sc ${dhypepath}-${xport}-storage
 
       echo "cleaning up $_arg_path"
       rm -rf "$_arg_path"
@@ -244,8 +307,8 @@ then
       then
         for xfolder in $(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq --raw-output '.volumes[]')
         do
-          kubectl delete pv ${dpath}-${xfolder}-${xport}-pv
-          kubectl delete sc ${dpath}-${xfolder}-${xport}-storage
+          kubectl delete pv ${dhypepath}-${xfolder}-${xport}-pv
+          kubectl delete sc ${dhypepath}-${xfolder}-${xport}-storage
         done
       fi
     done

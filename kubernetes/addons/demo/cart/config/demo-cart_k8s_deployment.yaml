@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: demo-cart-{{port}}
+  namespace: addons-demo-cart-{{port}}
+  labels:
+    app.kubernetes.io/name: demo-cart-{{port}}
+spec:
+  serviceName: demo-cart-{{port}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: demo-cart-{{port}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: demo-cart-{{port}}
+    spec:
+      containers:
+      - image: boomi/apim-cart-demo:latest
+        imagePullPolicy: IfNotPresent
+        name: demo-cart-{{port}}
+        env:
+        - name: PUBLIC_URL
+          value: /addons/demo/cart
+        ports:
+        - containerPort: 3000
+          name: demo-cart-{{port}}
