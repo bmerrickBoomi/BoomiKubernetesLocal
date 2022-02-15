@@ -8,16 +8,15 @@ export default class Auth extends React.Component {
   componentDidMount() {
     let code = new URLSearchParams(window.location.search).get("code");
     const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: code })
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
     };
 
-    fetch('https://localhost/apim/ws/rest/v1/Authentication/token', requestOptions)
+    fetch(process.env.REACT_APP_API_HOST + "/v1/Authentication/token/auth0?code=" + code, requestOptions)
       .then(response => response.json())
       .then(data => {
           window.sessionStorage.setItem("id_token", data.id_token);
-	  window.location.href = "/addons/demo/cart/checkout";
+	        window.location.href = "/addons/demo/cart/checkout";
         }
       );
   }

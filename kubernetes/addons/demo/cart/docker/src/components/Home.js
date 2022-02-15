@@ -6,13 +6,13 @@ export default class Home extends React.Component {
   submit(e) {
     var attrs = {
       'response_type': 'code',
-      'client_id': 'Sg8KL8SivenHS5wrw1IOnaw1pCJvyu4d',
-      'redirect_uri': 'https%3A%2F%2Flocalhost%2Faddons%2Fdemo%2Fcart%2Fauth',
+      'client_id': process.env.REACT_APP_CLIENT_ID,
+      'redirect_uri': encodeURI(process.env.REACT_APP_REDIRECT_URI),
       'scope': 'openid',
       'state': Math.random().toString(36)
     };
 	  
-    window.location.href = `https://boomi-demo.us.auth0.com/authorize?response_type=${attrs.response_type}&client_id=${attrs.client_id}&redirect_uri=${attrs.redirect_uri}&scope=${attrs.scope}&state=${attrs.state}`
+    window.location.href = `${process.env.REACT_APP_IDP_HOST}/authorize?response_type=${attrs.response_type}&client_id=${attrs.client_id}&redirect_uri=${attrs.redirect_uri}&scope=${attrs.scope}&state=${attrs.state}`
     e.preventDefault();
     return false;
   }
