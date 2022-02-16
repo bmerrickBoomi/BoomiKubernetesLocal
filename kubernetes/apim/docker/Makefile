@@ -1,6 +1,6 @@
 all: 
-	docker build -t boomi/local-gateway .
-	docker image prune -f
+	docker.exe build -t boomi/local-gateway .
+	docker.exe image prune -f
 
 clean:
-	docker image prune -f
+	docker.exe image prune -f

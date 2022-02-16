@@ -20,40 +20,12 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Install WSL](https://ubuntu.com/wsl)
 
-[Install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
-
-Install jq to parse JSON files
-
-```
-sudo apt update
-```
-
-```
-sudo apt install jq
-```
-
-Install make
-
-```
-sudo apt install make
-```
-
-Ensure that nothing is listening on port 80/443
-
-```
-ss -tulpn | grep :443
-```
-
-```
-ss -tulpn | grep :80
-```
-
 # Start Kubernetes forwarding
 
-Append the kubectl alias to your ~/.bashrc
+Run the install script
 
 ```
-echo 'alias kubectl=kubectl.exe' >> ~/.bashrc
+./install.sh
 ```
 
 Reload ~/.bashrc
@@ -109,6 +81,10 @@ boomi ADDON --list
 ```
 ./boomi.sh MOLECULE --add --name NAME --token INSTALLER_TOKEN
 ```
+
+**Wait until the Molecule is registered in Boomi before scaling out nodes!**
+
+![Scale out Molecule Nodes](images/scale_molecule.PNG)
 
 ## Delete
 
@@ -173,6 +149,10 @@ https://localhost/atom/NAME
 ```
 ./boomi.sh APIM --add --name NAME --token INSTALLER_TOKEN
 ```
+
+**Wait until the Gateway is registered in Boomi before scaling out nodes!**
+
+![Scale out Gateway Nodes](images/scale_gateway.PNG)
 
 ## Delete
 
