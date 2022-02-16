@@ -51,7 +51,7 @@ kubectl apply -f tools/dashboard
 kubectl apply -f tools/nginx
 ```
 
-Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
+Navigate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 
 # Installer
 
@@ -150,7 +150,7 @@ https://localhost/atom/NAME
 ./boomi.sh APIM --add --name NAME --token INSTALLER_TOKEN
 ```
 
-**Wait until the Gateway is registered in Boomi before scaling out nodes!**
+**Wait until the Gateway is registered in Boomi and developer portal loads before scaling out nodes!**
 
 ![Scale out Gateway Nodes](images/scale_gateway.PNG)
 
