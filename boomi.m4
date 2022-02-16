@@ -18,6 +18,10 @@
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
 
+kubectl() {
+  kubectl.exe "$@"
+}
+
 # [ <-- needed because of Argbash
 
 function fileReplace() {

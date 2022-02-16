@@ -14,32 +14,69 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Install Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
 
+[Start Docker Desktop when you log in](https://docs.docker.com/desktop/windows/#general)
+
 [Enable Kubernetes for Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
 
-[Install WSL](https://docs.microsoft.com/en-us/windows/wsl/install)
+[Install WSL](https://ubuntu.com/wsl)
 
 [Install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
 Install jq to parse JSON files
+
 ```
 sudo apt update
+```
+
+```
 sudo apt install jq
 ```
 
-Run nginx and kubernetes-dashboard
+Install make
 
 ```
-kubectl apply -f tools/dashboard
-kubectl apply -f tools/nginx
+sudo apt install make
+```
+
+Ensure that nothing is listening on port 80/443
+
+```
+ss -tulpn | grep :443
+```
+
+```
+ss -tulpn | grep :80
 ```
 
 # Start Kubernetes forwarding
+
+Append the kubectl alias to your ~/.bashrc
+
+```
+echo 'alias kubectl=kubectl.exe' >> ~/.bashrc
+```
+
+Reload ~/.bashrc
+
+```
+source ~/.bashrc
+```
 
 To access the Kubernetes dashboard, start the proxy and navigate to the link below. 
 The Boomi APIs should be accessible without port forwarding, but any modifications require this to be running.
 
 ```
 kubectl proxy &
+```
+
+Run nginx and kubernetes-dashboard
+
+```
+kubectl apply -f tools/dashboard
+```
+
+```
+kubectl apply -f tools/nginx
 ```
 
 Naviate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
@@ -83,7 +120,9 @@ boomi ADDON --list
 
 ```
 --vm "-Xmx2048m" --container "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
+```
 
+```
 --vm $(cat kubernetes/molecule/atom-default.vmoptions | xargs | sed -e 's/ /|/g') --container $(cat kubernetes/molecule/container-default.properties | xargs | sed -e 's/ /|/g')
 ```
 
@@ -113,7 +152,9 @@ https://localhost/molecule/NAME
 
 ```
 --vm "-Xmx2048m" --container "com.boomi.container.sharedServer.http.maxConnectionThreadPoolSize=500|com.boomi.container.sharedServer.http.connector.authType=BASIC"
+```
 
+```
 --vm $(cat kubernetes/atom/atom-default.vmoptions | xargs | sed -e 's/ /|/g') --container $(cat kubernetes/atom/container-default.properties | xargs | sed -e 's/ /|/g')
 ```
 

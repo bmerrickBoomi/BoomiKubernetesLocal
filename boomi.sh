@@ -246,6 +246,10 @@ assign_positional_args 1 "${_positionals[@]}"
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`
 
+kubectl() {
+  kubectl.exe "$@"
+}
+
 
 function fileReplace() {
   cat $1 | sed "s#{{uname}}#${_arg_name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${_arg_path}#g" | sed "s#{{token}}#${_arg_token}#g" | sed "s#{{vm}}#${_arg_vm}#g" | sed "s#{{container}}#${_arg_container}#g" | sed "s#{{port}}#${xport}#g" | sed "s#{{node}}#${xnode}#g"
