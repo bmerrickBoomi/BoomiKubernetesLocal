@@ -164,7 +164,7 @@ https://localhost/atom/NAME
 
 In order to access the API, the Shared Web Server API Type needs to be set to Gateway on the migrated Boomi runtime.
 
-The Public URL for the Location Settings in APIM should be set to
+The Public URL for the Location Settings and Developer Portal in APIM should be set to
 
 ```
 https://localhost:443
@@ -194,7 +194,7 @@ https://localhost/apim/node/_admin/status
 
 ### Developer Portal
 ```
-https://localhost/portal
+https://localhost/
 ```
 
 # Addons
