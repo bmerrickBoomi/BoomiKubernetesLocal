@@ -1,0 +1,6 @@
+{
+  "port": "8080",
+  "storage": true,
+  "node": "30090",
+  "ready": false
+}

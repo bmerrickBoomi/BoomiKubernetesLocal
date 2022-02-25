@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rules-{{port}}
+  namespace: addons-rules-{{port}}
+  labels:
+    app.kubernetes.io/name: rules-{{port}}
+spec:
+  serviceName: rules-{{port}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: rules-{{port}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: rules-{{port}}
+    spec:
+      securityContext:
+        fsGroup: 2000
+      containers:
+      - image: postgres:latest
+        name: rules-pg-{{port}}
+        env:
+        - name: POSTGRES_USER
+          value: root
+        - name: POSTGRES_PASSWORD
+          value: password
+        - name: POSTGRES_DB
+          value: quarkus
+        securityContext:
+          runAsUser: 1000
+        ports:
+        - containerPort: 5432
+          name: rules-pg-{{port}}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: rules-{{port}}-storage
+      - image: quay.io/kiegroup/kogito-runtime-jvm:latest
+        name: rules-{{port}}
+        ports:
+        - containerPort: 8080
+          name: rules-{{port}}
+      - image: quay.io/kiegroup/kogito-data-index-postgresql:latest
+        name: di-{{port}}
+        env:
+        - name: SCRIPT_DEBUG
+          value: "true"
+        - name: QUARKUS_DATASOURCE_JDBC_URL
+          value: jdbc:postgresql://rules-pg-{{port}}.addons-rules-{{port}}.svc.cluster.local:5432/quarkus
+        - name: QUARKUS_DATASOURCE_USERNAME
+          value: root
+        - name: QUARKUS_DATASOURCE_PASSWORD
+          value: password
+        ports:
+        - containerPort: 9090
+          name: data-index-{{port}}
+      - image: quay.io/kiegroup/kogito-explainability:latest
+        name: ex-{{port}}
+        env:
+        - name: SCRIPT_DEBUG
+          value: "true"
+      - image: quay.io/kiegroup/kogito-jobs-service-postgresql:latest
+        name: js-{{port}}
+        env:
+        - name: SCRIPT_DEBUG
+          value: "true"
+        - name: QUARKUS_DATASOURCE_JDBC_URL
+          value: jdbc:postgresql://rules-pg-{{port}}.addons-rules-{{port}}.svc.cluster.local:5432/quarkus
+        - name: QUARKUS_DATASOURCE_USERNAME
+          value: root
+        - name: QUARKUS_DATASOURCE_PASSWORD
+          value: password
+      - image: quay.io/kiegroup/kogito-management-console:latest
+        name: mm-{{port}}
+        env:
+        - name: SCRIPT_DEBUG
+          value: "true"
+        - name: KOGITO_DATAINDEX_HTTP_URL
+          value: di-{{port}}.addons-rules-{{port}}.svc.cluster.local:9090
+      - image: quay.io/kiegroup/kogito-task-console:latest
+        name: task-{{port}}
+        env:
+        - name: SCRIPT_DEBUG
+          value: "true"
+        - name: KOGITO_DATAINDEX_HTTP_URL
+          value: di-{{port}}.addons-rules-{{port}}.svc.cluster.local:9090
+      - image: quay.io/kiegroup/kogito-trusty-postgresql:latest
+        name: trusty-{{port}}
+        env:
+        - name: SCRIPT_DEBUG
+          value: "true"
+        - name: QUARKUS_DATASOURCE_JDBC_URL
+          value: jdbc:postgresql://rules-pg-{{port}}.addons-rules-{{port}}.svc.cluster.local:5432/quarkus
+        - name: QUARKUS_DATASOURCE_USERNAME
+          value: root
+        - name: QUARKUS_DATASOURCE_PASSWORD
+          value: password
+        ports:
+        - containerPort: 9090
+          name: trusty-{{port}}
+      - image: quay.io/kiegroup/kogito-trusty-ui:latest
+        name: ui-{{port}}
+        env:
+        - name: SCRIPT_DEBUG
+          value: "true"
+        - name: KOGITO_TRUSTY_ENDPOINT
+          value: trusty-{{port}}.addons-rules-{{port}}.svc.cluster.local:9090
+        ports:
+        - containerPort: 8080
+          name: ui-{{port}}
+      - image: quay.io/kiegroup/kogito-jit-runner:latest
+        name: jit-{{port}}
+        env:
+        - name: SCRIPT_DEBUG
+          value: "true"
+      volumes:
+      - name: rules-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: rules-{{port}}-claim
+      
+          
