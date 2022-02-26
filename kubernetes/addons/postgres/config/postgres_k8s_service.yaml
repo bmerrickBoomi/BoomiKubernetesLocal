@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-{{port}}
+  namespace: addons-postgres-{{port}}
+  labels:
+    app.kubernetes.io/name: postgres-{{port}}
+spec:
+  type: NodePort
+  ports:
+    - name: postgres-{{port}}
+      port: {{port}}
+      targetPort: postgres-{{port}}
+      nodePort: {{node}}
+  selector:
+    app.kubernetes.io/name: postgres-{{port}}

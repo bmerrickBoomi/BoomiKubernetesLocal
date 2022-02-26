@@ -15,3 +15,6 @@ kubectl -n addons-sqlserver-1433 exec -i sqlserver-1433-0 -- /opt/mssql-tools/bi
 
 # MongoDB
 kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -- mongoimport --db inventory --collection list --authenticationDatabase admin --username root --password password < $APATH/mongodb/datasets/inventory.json
+
+# Postgres
+kubectl -n addons-postgres-5432 exec -i postgres-5432-0 -- pg_restore --dbname=postgresql://postgres:password@localhost:5432/demo < $APATH/postgres/datasets/dvdrental.tar

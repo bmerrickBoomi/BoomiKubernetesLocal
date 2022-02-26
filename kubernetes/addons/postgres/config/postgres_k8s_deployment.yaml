@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-{{port}}
+  namespace: addons-postgres-{{port}}
+  labels:
+    app.kubernetes.io/name: postgres-{{port}}
+spec:
+  serviceName: postgres-{{port}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgres-{{port}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: postgres-{{port}}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+      - image: postgres:latest
+        name: postgres-{{port}}
+        env:
+        - name: POSTGRES_PASSWORD
+          value: password
+        - name: POSTGRES_DB
+          value: demo
+        ports:
+        - containerPort: 5432
+          name: postgres-{{port}}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-{{port}}-storage
+      volumes:
+      - name: postgres-{{port}}-storage
+        persistentVolumeClaim:
+          claimName: postgres-{{port}}-claim

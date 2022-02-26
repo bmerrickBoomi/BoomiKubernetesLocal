@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-{{port}}-claim
+  namespace: addons-postgres-{{port}}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: postgres-{{port}}-storage
+  resources:
+    requests:
+      storage: 5Gi

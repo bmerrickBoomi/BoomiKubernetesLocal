@@ -223,6 +223,8 @@ Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/mysql/JDBC mysql 8.0.27 v2
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/oracledb/JDBC Oracle Database 12.2.0.1
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/sqlserver/JDBC sqlserver 10.2.0 jre11
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/sqlserver/JDBC sqlserver 10.2.0 jre11 v2
+Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/postgres/JDBC postgres 42.3.3
+Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/postgres/JDBC postgres 42.3.3 v2
 ```
 
 ## Hosts
@@ -268,6 +270,12 @@ mySQL
   Username: root
   Password: password
   
+postgres
+  Hostname: 127.0.0.1
+  Port: 30100
+  Username: root
+  Password: password
+  
 OpenLDAP
   Hostname: 127.0.0.1
   Port: 30010
@@ -309,6 +317,7 @@ Vault
 ./boomi.sh ADDON --add --name "mysql"
 ./boomi.sh ADDON --add --name "oracledb"
 ./boomi.sh ADDON --add --name "sqlserver"
+./boomi.sh ADDON --add --name "postgres"
 ./boomi.sh ADDON --add --name "sftp"
 ./boomi.sh ADDON --add --name "vault"
 ```
@@ -329,6 +338,7 @@ Load sample data into all services. This process should be ran only once otherwi
 ./boomi.sh ADDON --delete --name "mysql"
 ./boomi.sh ADDON --delete --name "oracledb"
 ./boomi.sh ADDON --delete --name "sqlserver"
+./boomi.sh ADDON --delete --name "postgres"
 ./boomi.sh ADDON --delete --name "sftp"
 ./boomi.sh ADDON --delete --name "vault"
 ```
