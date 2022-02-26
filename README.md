@@ -273,7 +273,7 @@ mySQL
 postgres
   Hostname: 127.0.0.1
   Port: 30100
-  Username: root
+  Username: postgres
   Password: password
   
 OpenLDAP
