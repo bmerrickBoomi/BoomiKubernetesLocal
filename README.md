@@ -313,6 +313,14 @@ Vault
 ./boomi.sh ADDON --add --name "vault"
 ```
 
+### Bootstrap
+
+Load sample data into all services. This process should be ran only once otherwise duplicate rows may appear and should be ran after verifying that all services are functional.
+
+```
+./bootstrap.sh
+```
+
 ## Delete
 
 ```
