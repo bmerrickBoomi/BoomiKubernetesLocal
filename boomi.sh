@@ -277,6 +277,8 @@ then
   # Bypass token for DCP
   if [ "$_arg_operation" = "DCP" ];
   then
+    echo "DCP is not ready, exiting"
+    exit
     _arg_token="DCP"
   fi
 
