@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dcp-{{name}}-claim
+  namespace: dcp-{{name}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: dcp-{{name}}-storage
+  resources:
+    requests:
+      storage: 20Gi

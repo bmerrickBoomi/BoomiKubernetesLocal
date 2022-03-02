@@ -56,7 +56,7 @@ Navigate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kuber
 # Installer
 
 ```
-Operation [ATOM | MOLECULE | ADDON]
+Operation [ATOM | MOLECULE | ADDON | APIM | DCP]
 --add Add
 --name Name
 --delete Delete
@@ -67,8 +67,8 @@ Operation [ATOM | MOLECULE | ADDON]
 --vm ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation
 --container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation
 
-boomi [ATOM | MOLECULE] --add --name NAME --token TOKEN [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
-boomi [ATOM | MOLECULE] --delete --name NAME
+boomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
+boomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME
 boomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]
 boomi ADDON --delete --name NAME
 boomi ADDON --list

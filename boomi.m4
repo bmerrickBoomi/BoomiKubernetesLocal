@@ -3,7 +3,7 @@
 # ARG_OPTIONAL_BOOLEAN([add], a, [Create a new Atom/Molecule])
 # ARG_OPTIONAL_BOOLEAN([delete], d, [Delete an Atom/Molecule])
 # ARG_OPTIONAL_BOOLEAN([list], l, [List available resources])
-# ARG_POSITIONAL_SINGLE([operation], o, [ATOM, MOLECULE or ADDON])
+# ARG_POSITIONAL_SINGLE([operation], o, [ATOM, MOLECULE, ADDON, APIM or DCP])
 # ARG_OPTIONAL_SINGLE([name], n, [The name of the Atom/Molecule])
 # ARG_OPTIONAL_SINGLE([path], p, [Default /run/desktop/mnt/host/c/Boomi\ AtomSphere])
 # ARG_OPTIONAL_SINGLE([port], x, [The port to use for the service])
@@ -12,7 +12,7 @@
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
 # ARG_OPTIONAL_SINGLE([node], e, [Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi [ATOM | MOLECULE | APIM] --add --name NAME --token TOKEN [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
+# ARG_HELP([boomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -34,7 +34,7 @@ then
   printf "default path $_arg_path\n"
 fi
 
-if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ] || [ "$_arg_operation" = "APIM" ];
+if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ] || [ "$_arg_operation" = "APIM" ] || [ "$_arg_operation" = "DCP" ];
 then
   # Checking for ${add} and ${delete} not set
   if [ "$_arg_add" != on ] && [ "$_arg_delete" != on ];
@@ -46,9 +46,15 @@ then
     print_help
     exit
   fi
+
+  # Bypass token for DCP
+  if [ "$_arg_operation" = "DCP" ];
+  then
+    _arg_token="DCP"
+  fi
   
   # Checking ${add} -o && -n && -p && -t and ${delete} -o -n
-  if [ "$_arg_add" = on ] && ( [ "$_arg_name" = "" ] || [ "$_arg_path" = "" ] || [ "$_arg_token" = "" ]);
+  if [ "$_arg_add" = on ] && ( [ "$_arg_name" = "" ] || [ "$_arg_path" = "" ] || [ "$_arg_token" = "" ] );
   then
     print_help
     exit
@@ -71,6 +77,16 @@ then
     then
       location=$PWD
       cd kubernetes/apim/docker
+      make
+      cd $location
+    fi
+  elif [ "$_arg_operation" = "DCP" ];
+  then
+    op="dcp"
+    if [ "$_arg_add" = on ];
+    then
+      location=$PWD
+      cd kubernetes/dcp/docker
       make
       cd $location
     fi
