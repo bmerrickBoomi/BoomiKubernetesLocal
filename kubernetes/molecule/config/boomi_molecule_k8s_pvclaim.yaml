@@ -5,7 +5,7 @@ metadata:
   namespace: molecule-{{name}}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: molecule-{{name}}-storage
   resources:
     requests:

@@ -47,7 +47,7 @@ spec:
         fsGroup: 2000
       containers:
       - name: sftp-{{port}}
-        image: emberstack/sftp:latest
+        image: emberstack/sftp:5.1.5
         imagePullPolicy: "Always"
         ports:
           - name: sftp-{{port}}

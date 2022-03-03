@@ -16,7 +16,7 @@ spec:
     storage: 50Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Delete
   storageClassName: dcp-{{name}}-storage
   local:

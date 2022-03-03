@@ -20,7 +20,7 @@ spec:
         fsGroup: 2000
       containers:
       - name: openldap-{{port}}
-        image: docker.io/bitnami/openldap:latest
+        image: docker.io/bitnami/openldap:2.5.11
         imagePullPolicy: "Always"
         env:
         - name: LDAP_ADMIN_USERNAME

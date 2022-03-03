@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if ! command -v kubectl 2>/dev/null; then 
+  kubectl() {
+    kubectl.exe "$@"
+  }
+fi
+
 APATH=kubernetes/addons
 
 # MySQL

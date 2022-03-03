@@ -17,11 +17,11 @@ spec:
         app.kubernetes.io/name: postgres-{{port}}
     spec:
       securityContext:
-        runAsUser: 1000
+        runAsUser: 0
         runAsGroup: 3000
         fsGroup: 2000
       containers:
-      - image: postgres:latest
+      - image: postgres:14.2
         name: postgres-{{port}}
         env:
         - name: POSTGRES_PASSWORD

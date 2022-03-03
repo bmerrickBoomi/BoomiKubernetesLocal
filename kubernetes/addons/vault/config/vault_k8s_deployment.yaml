@@ -27,7 +27,7 @@ spec:
           value: '{"backend":{"file":{"path":"/vault/file"}},"ui":true,"disable_mlock":true}'
         - name: VAULT_DEV_ROOT_TOKEN_ID
           value: OnIBNb78YqEXzEtbReUi3kDj
-        image: vault:latest
+        image: vault:1.9.3
         imagePullPolicy: "Always"
         ports:
           - name: vault-{{port}}

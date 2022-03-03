@@ -20,6 +20,12 @@ This repository contains all Runtime containerization reference architectures, g
 
 [Install WSL](https://ubuntu.com/wsl)
 
+Clone this Repository
+
+```
+sudo git clone https://github.com/bmerrickBoomi/BoomiKubernetesLocal.git
+```
+
 # Start Kubernetes forwarding
 
 Run the install script
@@ -79,7 +85,7 @@ boomi ADDON --list
 ## Add
 
 ```
-./boomi.sh MOLECULE --add --name NAME --token INSTALLER_TOKEN
+boomi MOLECULE --add --name NAME --token INSTALLER_TOKEN
 ```
 
 **Wait until the Molecule is registered in Boomi before scaling out nodes!**
@@ -89,7 +95,7 @@ boomi ADDON --list
 ## Delete
 
 ```
-./boomi.sh MOLECULE --delete --name NAME
+boomi MOLECULE --delete --name NAME
 ```
 
 ## Example Options
@@ -115,13 +121,13 @@ https://localhost/molecule/NAME
 ## Add
 
 ```
-./boomi.sh ATOM --add --name NAME --token INSTALLER_TOKEN
+boomi ATOM --add --name NAME --token INSTALLER_TOKEN
 ```
 
 ## Delete
 
 ```
-./boomi.sh ATOM --delete --name NAME
+boomi ATOM --delete --name NAME
 ```
 
 ## Example Options
@@ -147,7 +153,7 @@ https://localhost/atom/NAME
 ## Add
 
 ```
-./boomi.sh APIM --add --name NAME --token INSTALLER_TOKEN
+boomi APIM --add --name NAME --token INSTALLER_TOKEN
 ```
 
 **Wait until the Gateway is registered in Boomi and developer portal loads before scaling out nodes!**
@@ -157,7 +163,7 @@ https://localhost/atom/NAME
 ## Delete
 
 ```
-./boomi.sh APIM --delete --name NAME
+boomi APIM --delete --name NAME
 ```
 
 ## Access API
@@ -250,7 +256,7 @@ Example
 ## List
 
 ```
-./boomi.sh ADDON --list
+boomi ADDON --list
 ```
 
 ## Add
@@ -297,6 +303,8 @@ SFTP
   
 MongoDB
   UI: https://localhost/addons/mongo
+    Username: admin
+	Password: q
   Hostname: 127.0.0.1
   Port: 30050
   Username: root
@@ -312,14 +320,16 @@ Vault
 ### Commands
 
 ```
-./boomi.sh ADDON --add --name "mongodb"
-./boomi.sh ADDON --add --name "openldap"
-./boomi.sh ADDON --add --name "mysql"
-./boomi.sh ADDON --add --name "oracledb"
-./boomi.sh ADDON --add --name "sqlserver"
-./boomi.sh ADDON --add --name "postgres"
-./boomi.sh ADDON --add --name "sftp"
-./boomi.sh ADDON --add --name "vault"
+(
+  boomi ADDON --add --name "mongodb"
+  boomi ADDON --add --name "openldap"
+  boomi ADDON --add --name "mysql"
+  boomi ADDON --add --name "oracledb"
+  boomi ADDON --add --name "sqlserver"
+  boomi ADDON --add --name "postgres"
+  boomi ADDON --add --name "sftp"
+  boomi ADDON --add --name "vault"
+)
 ```
 
 ### Bootstrap
@@ -333,14 +343,16 @@ Load sample data into all services. This process should be ran only once otherwi
 ## Delete
 
 ```
-./boomi.sh ADDON --delete --name "mongodb"
-./boomi.sh ADDON --delete --name "openldap"
-./boomi.sh ADDON --delete --name "mysql"
-./boomi.sh ADDON --delete --name "oracledb"
-./boomi.sh ADDON --delete --name "sqlserver"
-./boomi.sh ADDON --delete --name "postgres"
-./boomi.sh ADDON --delete --name "sftp"
-./boomi.sh ADDON --delete --name "vault"
+(
+  boomi ADDON --delete --name "mongodb"
+  boomi ADDON --delete --name "openldap"
+  boomi ADDON --delete --name "mysql"
+  boomi ADDON --delete --name "oracledb"
+  boomi ADDON --delete --name "sqlserver"
+  boomi ADDON --delete --name "postgres"
+  boomi ADDON --delete --name "sftp"
+  boomi ADDON --delete --name "vault"
+)
 ```
 
 ## Demos

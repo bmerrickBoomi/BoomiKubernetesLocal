@@ -22,3 +22,8 @@ do
     fi
   fi
 done
+
+if ! $(cat ~/.bashrc | grep "alias boomi=");
+then
+  echo "alias boomi=$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/boomi.sh" >> ~/.bashrc
+fi

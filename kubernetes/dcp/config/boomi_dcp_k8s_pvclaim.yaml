@@ -5,7 +5,7 @@ metadata:
   namespace: dcp-{{name}}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: dcp-{{name}}-storage
   resources:
     requests:
