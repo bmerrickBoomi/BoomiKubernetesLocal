@@ -367,7 +367,9 @@ Load sample data into all services. This process should be ran only once otherwi
 
 Add Callback URLs under Applications > APPICATION_NAME > Settings > Application URIs > Allowed Callback URLs
 
-**https://localhost, https://localhost/addons/demo/cart/auth**
+```
+https://localhost, https://localhost/addons/demo/cart/auth
+```
 
 ### Cart
 
@@ -382,4 +384,8 @@ REACT_APP_API_HOST=https://localhost/apim/ws/rest
 EOF
 ```
 
+Add Service
+
+```
 boomi ADDON --add --name "demo/cart"
+```
