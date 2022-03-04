@@ -1,6 +1,15 @@
-FROM centos:centos7.9.2009
+FROM amazonlinux:2
 
-RUN yum -y update && yum -y install sudo && yum -y install wget && yum -y install epel-release && yum -y install python-pip
+RUN yum -y update && yum -y install sudo \
+ wget \
+ epel-release \
+ python-pip \
+ tar
+ 
+RUN yum -y install python3 \
+  python3-pip \
+  shadow-utils
+  
 RUN useradd -m unifi && echo "unifi:unifi" | chpasswd && usermod -aG root unifi
 RUN echo "unifi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 

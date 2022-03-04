@@ -9,8 +9,6 @@ sudo yum -y install java-1.8.0-openjdk-devel
 
 sudo /tmp/unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x/install_unifi_prereqs_catalog.sh --unifi-services-user unifi --unifi-services-group unifi
 
-echo "alias hostname='echo 127.0.0.1'" >> /home/unifi/.bashrc
-
 shopt -s expand_aliases
 source /home/unifi/.bashrc
 
@@ -41,15 +39,7 @@ unifi_install --dbhost 127.0.0.1 --dbport 5432 --dbuser unifi \
   --unifipass Password123! --unifiemail noreply@boomi.com \
   --unififirstname DCP --unifilastname User
 
-unifi_start --redis
-unifi_start --access
-unifi_start --executor
-unifi_start --integration
-unifi_start --discovery
-unifi_start --celery
-unifi_start --solr
-unifi_start --iagent
-
+unifi_start
 unifi_status
 
 sleep infinity
