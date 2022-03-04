@@ -373,7 +373,7 @@ https://localhost, https://localhost/addons/demo/cart/auth
 
 ### Cart
 
-Create the environments file under **kubernetes/addons/demo/cart/docker/.env**
+Create the environments file under **kubernetes/addons/demo/cart/docker/.env** and replace **AUTH0_CLIENT_ID** and **AUTH0_HOST**
 
 ```
 cat << EOF > kubernetes/addons/demo/cart/docker/.env
