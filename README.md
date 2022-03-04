@@ -357,6 +357,29 @@ Load sample data into all services. This process should be ran only once otherwi
 
 ## Demos
 
+### Auth0
+
+[Create an Auth0 Account](https://auth0.com/signup?place=header&type=button&text=sign%20up)
+
+[Add the Google Social Connection](https://marketplace.auth0.com/integrations/google-social-connection)
+
+[Create a Regular Web Application](https://auth0.com/docs/get-started/auth0-overview/create-applications/regular-web-apps)
+
+Add Callback URLs under Applications > APPICATION_NAME > Settings > Application URIs > Allowed Callback URLs
+
+**https://localhost, https://localhost/addons/demo/cart/auth**
+
 ### Cart
 
-TBD
+Create the environments file under **kubernetes/addons/demo/cart/docker/.env**
+
+```
+cat << EOF > kubernetes/addons/demo/cart/docker/.env
+REACT_APP_REDIRECT_URI=https://localhost/addons/demo/cart/auth
+REACT_APP_CLIENT_ID=AUTH0_CLIENT_ID
+REACT_APP_IDP_HOST=https://AUTH0_HOST.us.auth0.com
+REACT_APP_API_HOST=https://localhost/apim/ws/rest
+EOF
+```
+
+boomi ADDON --add --name "demo/cart"
