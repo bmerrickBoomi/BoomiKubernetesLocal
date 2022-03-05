@@ -6,15 +6,10 @@ wget -q https://storage.googleapis.com/unifi-hd-4tb/unifi-release/${DCP_VERSION}
 
 sudo tar xvf /tmp/unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz -C /tmp > /dev/null 2>&1
 
-sudo yum -y install java-1.8.0-openjdk-devel
-
-sudo tar xvf /tmp/adapters_no_internet_${DCP_DOT_VERSION}.tar.gz -C /usr/local/unifing-${DCP_VERSION}/opt > /dev/null 2>&1
+sudo yum -y install java-1.8.0-openjdk-headless-1.8.0.282.b08 \
+  java-1.8.0-openjdk-1.8.0.282.b08
 
 sudo /tmp/unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x/install_unifi_prereqs_catalog.sh --unifi-services-user unifi --unifi-services-group unifi
-
-sudo yum -y downgrade java-1.8.0-openjdk-headless-1.8.0.282.b08 \
-  java-1.8.0-openjdk-devel-1.8.0.282.b08 \
-  java-1.8.0-openjdk-1.8.0.282.b08
 
 shopt -s expand_aliases
 source /home/unifi/.bashrc
@@ -57,7 +52,15 @@ unifi_install --dbhost 127.0.0.1 --dbport 5432 --dbuser unifi \
   --unifipass Password123! --unifiemail noreply@boomi.com \
   --unififirstname DCP --unifilastname User
 
-unifi_start
+unifi_start --redis
+unifi_start --access
+unifi_start --integration
+unifi_start --executor
+unifi_start --discovery
+# unifi_start --celery
+# unifi_start --solr
+# unifi_start --iagent
+
 unifi_status
 
 sleep infinity

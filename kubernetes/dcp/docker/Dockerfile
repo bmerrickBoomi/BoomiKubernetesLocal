@@ -1,4 +1,4 @@
-FROM amazonlinux:2
+FROM centos:centos7
 
 RUN yum -y update && yum -y install sudo \
  wget \
@@ -17,21 +17,6 @@ RUN echo "unifi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 COPY install.sh /home/unifi
 RUN chown -R unifi /home/unifi
 
-EXPOSE 5432
-EXPOSE 6379
-EXPOSE 7199
-EXPOSE 8000  
-EXPOSE 8081
-EXPOSE 8082
-EXPOSE 8083
-EXPOSE 8084
-EXPOSE 8444
-EXPOSE 8445
-EXPOSE 8998
-EXPOSE 9042
-EXPOSE 9081  
-EXPOSE 9082
-EXPOSE 9083
-EXPOSE 9084
+EXPOSE 8000
 
 CMD ["/home/unifi/install.sh"]
