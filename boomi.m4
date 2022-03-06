@@ -47,12 +47,22 @@ then
     exit
   fi
 
+  xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
+
   # Bypass token for DCP
   if [ "$_arg_operation" = "DCP" ];
   then
     #echo "DCP is not ready, exiting"
     #exit
     _arg_token="DCP"
+    _arg_path=$_arg_path/DCP_$_arg_name
+    if [ $(cat "$SCRIPTPATH/kubernetes/dcp/config.default" | jq 'has("folders")') = "true" ];
+    then
+      for xfolder in $(cat "$SCRIPTPATH/kubernetes/dcp/config.default" | jq --raw-output '.folders[]')
+      do
+        mkdir -p "$xhostpath/DCP_$_arg_name/$xfolder"
+      done
+    fi
   fi
   
   # Checking ${add} -o && -n && -p && -t and ${delete} -o -n
@@ -98,7 +108,6 @@ then
 
   lname=${_arg_name,,}
 
-  xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
   echo "host path $xhostpath"
   mkdir -p "$xhostpath"
 
@@ -108,6 +117,18 @@ then
     kubectl delete namespace ${op}-${lname}
     kubectl delete pv ${op}-${lname}-pv
     kubectl delete sc ${op}-${lname}-storage
+
+    if [ "$_arg_operation" = "DCP" ];
+    then
+      if [ $(cat "$SCRIPTPATH/kubernetes/dcp/config.default" | jq 'has("volumes")') = "true" ];
+      then
+        for xfolder in $(cat "$SCRIPTPATH/kubernetes/dcp/config.default" | jq --raw-output '.volumes[]')
+        do
+          kubectl delete pv dcp-${xfolder}-${lname}-pv
+          kubectl delete sc dcp-${xfolder}-${lname}-storage
+        done
+      fi      
+    fi
     
     if [ "$_arg_operation" = "APIM" ];
     then
@@ -117,8 +138,6 @@ then
     fi
   elif [ "$_arg_add" = on ];
   then
-    xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
-
     echo "host path $xhostpath"
     mkdir -p "$xhostpath"
 

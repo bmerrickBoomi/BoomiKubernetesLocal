@@ -1,0 +1,9 @@
+{
+  "folders": [
+    "postgres",
+    "unifi"
+  ],
+  "volumes": [
+    "pg"
+  ]
+}

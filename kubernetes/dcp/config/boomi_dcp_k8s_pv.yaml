@@ -20,7 +20,7 @@ spec:
   persistentVolumeReclaimPolicy: Delete
   storageClassName: dcp-{{name}}-storage
   local:
-    path: {{path}}
+    path: {{path}}/unifi
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -29,3 +29,36 @@ spec:
           operator: In
           values:
           - docker-desktop
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: dcp-pg-{{name}}-storage
+  namespace: dcp-{{name}}
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dcp-pg-{{name}}-pv
+  namespace: dcp-{{name}}
+spec:
+  capacity:
+    storage: 50Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: dcp-pg-{{name}}-storage
+  local:
+    path: {{path}}/postgres
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - docker-desktop
+

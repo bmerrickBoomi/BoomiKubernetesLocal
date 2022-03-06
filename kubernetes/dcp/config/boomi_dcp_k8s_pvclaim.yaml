@@ -10,3 +10,16 @@ spec:
   resources:
     requests:
       storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dcp-pg-{{name}}-claim
+  namespace: dcp-{{name}}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: dcp-pg-{{name}}-storage
+  resources:
+    requests:
+      storage: 20Gi
