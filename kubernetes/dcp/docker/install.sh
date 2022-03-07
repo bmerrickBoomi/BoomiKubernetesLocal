@@ -5,7 +5,11 @@ IS_EMPTY=$(ls -A /usr/local/unifing-catalog-${DCP_DOT_VERSION})
 
 echo "unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz"
 
-wget https://storage.googleapis.com/unifi-hd-4tb/unifi-release/${DCP_VERSION}/unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz -P /tmp
+until $(wget -q https://storage.googleapis.com/unifi-hd-4tb/unifi-release/${DCP_VERSION}/unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz -P /tmp); do
+  sleep 10
+done
+
+echo "untar unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz"
 sudo tar xvf /tmp/unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz -C /tmp > /dev/null 2>&1
 
 sudo yum -y install java-1.8.0-openjdk-headless-1.8.0.282.b08 \
