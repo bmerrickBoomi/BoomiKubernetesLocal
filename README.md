@@ -70,6 +70,7 @@ Operation [ATOM | MOLECULE | ADDON | APIM | DCP]
 --add Add
 --name Name
 --delete Delete
+--purge Remove file-system contents
 --path default /run/desktop/mnt/host/c/Boomi\ AtomSphere
 --token Installer Token   
 --port Port override for service. If ommitted, the service default port will be used
@@ -78,7 +79,7 @@ Operation [ATOM | MOLECULE | ADDON | APIM | DCP]
 --container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation
 
 boomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
-boomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME
+boomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]
 boomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]
 boomi ADDON --delete --name NAME
 boomi ADDON --list

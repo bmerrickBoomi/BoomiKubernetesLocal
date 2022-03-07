@@ -3,6 +3,7 @@
 # ARG_OPTIONAL_BOOLEAN([add], a, [Create a new Atom/Molecule])
 # ARG_OPTIONAL_BOOLEAN([delete], d, [Delete an Atom/Molecule])
 # ARG_OPTIONAL_BOOLEAN([list], l, [List available resources])
+# ARG_OPTIONAL_BOOLEAN([purge], z, [Delete file-system contents])
 # ARG_POSITIONAL_SINGLE([operation], o, [ATOM, MOLECULE, ADDON, APIM or DCP])
 # ARG_OPTIONAL_SINGLE([name], n, [The name of the Atom/Molecule])
 # ARG_OPTIONAL_SINGLE([path], p, [Default /run/desktop/mnt/host/c/Boomi\ AtomSphere])
@@ -12,7 +13,7 @@
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
 # ARG_OPTIONAL_SINGLE([node], e, [Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
+# ARG_HELP([boomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -88,7 +89,7 @@ then
     if [ "$_arg_add" = on ];
     then
       location=$PWD
-      cd kubernetes/apim/docker
+      cd $SCRIPTPATH/kubernetes/apim/docker
       make
       cd $location
     fi
@@ -98,7 +99,7 @@ then
     if [ "$_arg_add" = on ];
     then
       location=$PWD
-      cd kubernetes/dcp/docker
+      cd $SCRIPTPATH/kubernetes/dcp/docker
       make
       cd $location
     fi
@@ -130,11 +131,16 @@ then
       fi      
     fi
     
-    if [ "$_arg_operation" = "APIM" ];
+    if [ "$_arg_purge" = on ];
     then
-      rm -rf "$xhostpath/Gateway_${_arg_name}"
-    else
-      rm -rf "$xhostpath/${op}_${_arg_name}"
+      if [ "$_arg_operation" = "APIM" ];
+      then
+        echo "cleaning up $xhostpath/Gateway_${_arg_name}"
+        rm -rf "$xhostpath/Gateway_${_arg_name}"
+      else
+        echo "cleaning up $xhostpath/${op}_${_arg_name}"
+        rm -rf "$xhostpath/${op}_${_arg_name}"
+      fi
     fi
   elif [ "$_arg_add" = on ];
   then
@@ -341,8 +347,11 @@ then
       kubectl delete pv ${dhypepath}-${xport}-pv
       kubectl delete sc ${dhypepath}-${xport}-storage
 
-      echo "cleaning up $_arg_path"
-      rm -rf "$_arg_path"
+      if [ "$_arg_purge" = on ];
+      then
+        echo "cleaning up $_arg_path"
+        rm -rf "$_arg_path"
+      fi
 
       if [ $(cat "$SCRIPTPATH/kubernetes/addons/${dpath}/config.default" | jq 'has("volumes")') = "true" ];
       then

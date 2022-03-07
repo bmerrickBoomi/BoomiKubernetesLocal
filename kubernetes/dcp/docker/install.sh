@@ -32,41 +32,37 @@ time (
     )
     
     echo "unifing-catalog-${DCP_DOT_VERSION}.tar.gz"
-    
-    time (
-      sudo chown -R unifi:unifi /usr/local/unifing-catalog-${DCP_DOT_VERSION}
-      sudo chown -R unifi:unifi /usr/local/unifi_virtualenv
-    
-      echo "UNIFI_VIRT_ENV=/usr/local/unifi_virtualenv" >> /usr/local/unifing-catalog-${DCP_DOT_VERSION}/unifi_env.sh
-    )
-    
-    echo "chown unifing-catalog-${DCP_DOT_VERSION}.tar.gz"
   fi
 
   sudo ln -s /usr/local/unifing-catalog-${DCP_DOT_VERSION} /usr/local/unifi
   sudo ln -s /usr/local/unifing-catalog-${DCP_DOT_VERSION}/unifi_pylib/lib/unifi /usr/local/unifi_virtualenv/lib/python3.8/site-packages/
+  
+  time (
+    sudo chown -R unifi:unifi /usr/local/unifing-catalog-${DCP_DOT_VERSION}
+    sudo chown -R unifi:unifi /usr/local/unifi_virtualenv
+  
+    echo "UNIFI_VIRT_ENV=/usr/local/unifi_virtualenv" >> /usr/local/unifi/unifi_env.sh
+  )
+  
+  echo "chown unifing-catalog-${DCP_DOT_VERSION}.tar.gz"
 
-  pip install /usr/local/unifing-catalog-${DCP_DOT_VERSION}/unifi_pylib/django_celery_beat-1.4.0.Unifi-py2.py3-none-any.whl
+  pip install /usr/local/unifi/unifi_pylib/django_celery_beat-1.4.0.Unifi-py2.py3-none-any.whl
 
-  cd /usr/local/unifing-catalog-${DCP_DOT_VERSION}/scripts/sbin
+  time (
+    cd /usr/local/unifi/scripts/sbin
 
-  unifi_checkdeps
+    unifi_checkdeps
 
-  if [ -z "$IS_EMPTY" ]; 
-  then
-    time (
+    if [ -z "$IS_EMPTY" ]; 
+    then
       sed -i 's/DEFAULT_PEXPECT_TIMEOUT = 600/DEFAULT_PEXPECT_TIMEOUT = 60000/g' unifi_install
       unifi_install --dbhost 127.0.0.1 --dbport 5432 --dbuser unifi \
         --dbpass unifi --dbname unifi --chost 127.0.0.1 --cport 9042 \
         --cuser cassandra --cpass cassandra --unifiuser unifi \
         --unifipass Password123! --unifiemail noreply@boomi.com \
         --unififirstname DCP --unifilastname User
-    )
-    
-    echo "unifi_install time"
-  fi
+    fi
 
-  time (
     unifi_start
     unifi_status
   )
