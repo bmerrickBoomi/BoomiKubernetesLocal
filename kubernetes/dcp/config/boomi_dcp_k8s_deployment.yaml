@@ -41,10 +41,10 @@ spec:
         resources:
           limits:
             cpu: "1000m"
-            memory: "3680Mi"
+            memory: "8Gi"
           requests:
             cpu: "1000m"
-            memory: "3680Mi"
+            memory: "8Gi"
         volumeMounts:
         - name: dcp-{{name}}-storage
           mountPath: /usr/local/unifing-catalog-4.11
@@ -68,10 +68,10 @@ spec:
         resources:
           limits:
             cpu: "1000m"
-            memory: "1680Mi"
+            memory: "2Gi"
           requests:
             cpu: "1000m"
-            memory: "1680Mi"
+            memory: "1Gi"
         securityContext:
           capabilities:
             add:

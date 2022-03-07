@@ -47,7 +47,7 @@ The Boomi APIs should be accessible without port forwarding, but any modificatio
 kubectl proxy &
 ```
 
-Run nginx and kubernetes-dashboard
+Run nginx, kubernetes-dashboard and metrics
 
 ```
 kubectl apply -f tools/dashboard
@@ -55,6 +55,10 @@ kubectl apply -f tools/dashboard
 
 ```
 kubectl apply -f tools/nginx
+```
+
+```
+kubectl apply -f tools/metrics
 ```
 
 Navigate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
