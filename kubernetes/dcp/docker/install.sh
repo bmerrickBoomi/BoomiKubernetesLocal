@@ -30,11 +30,11 @@ sudo ln -s /usr/local/unifing-catalog-${DCP_DOT_VERSION}/unifi_pylib/lib/unifi /
 
 echo "chown /usr/local/unifi"
 
-sudo chown -R unifi:unifi /usr/local/unifing-catalog-${DCP_DOT_VERSION}
-sudo chown -R unifi:unifi /usr/local/unifi_virtualenv
-
 if [ -z "$IS_EMPTY" ]; 
 then
+  sudo chown -R unifi:unifi /usr/local/unifing-catalog-${DCP_DOT_VERSION}
+  sudo chown -R unifi:unifi /usr/local/unifi_virtualenv
+  
   echo "UNIFI_VIRT_ENV=/usr/local/unifi_virtualenv" >> /usr/local/unifi/unifi_env.sh
 fi
 
