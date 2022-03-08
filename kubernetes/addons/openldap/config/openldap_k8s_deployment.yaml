@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: openldap-{{port}}
     spec:
       securityContext:
-        fsGroup: 2000
+        fsGroup: 1000
       containers:
       - name: openldap-{{port}}
         image: docker.io/bitnami/openldap:2.5.11

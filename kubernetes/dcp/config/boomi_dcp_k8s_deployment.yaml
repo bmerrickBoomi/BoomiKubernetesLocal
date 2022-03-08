@@ -16,6 +16,8 @@ spec:
       labels:
         app: {{name}}
     spec:
+      securityContext:
+        fsGroup: 1000
       terminationGracePeriodSeconds: 60
       volumes:
         - name: dcp-{{name}}-storage

@@ -16,6 +16,8 @@ spec:
       labels:
         app.kubernetes.io/name: demo-cart-{{port}}
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
       - image: boomi/apim-cart-demo:latest
         imagePullPolicy: IfNotPresent

@@ -43,8 +43,7 @@ spec:
     spec:
       securityContext:
         runAsUser: 0
-        runAsGroup: 3000
-        fsGroup: 2000
+        fsGroup: 1000
       containers:
       - name: sftp-{{port}}
         image: emberstack/sftp:5.1.5

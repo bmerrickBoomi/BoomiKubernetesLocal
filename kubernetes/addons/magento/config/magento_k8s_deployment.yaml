@@ -18,7 +18,7 @@ spec:
     spec:
       securityContext:
         runAsUser: 1001
-        fsGroup: 2000
+        fsGroup: 1000
       containers:
       - name: magento-{{port}}
         image: bitnami/magento:2.4.3

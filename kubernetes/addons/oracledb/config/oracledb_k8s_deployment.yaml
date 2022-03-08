@@ -18,8 +18,7 @@ spec:
     spec:
       securityContext:
         runAsUser: 54321
-        runAsGroup: 3000
-        fsGroup: 2000
+        fsGroup: 1000
       containers:
       - image: gvenzl/oracle-xe:21.3.0
         name: oracledb-{{port}}
