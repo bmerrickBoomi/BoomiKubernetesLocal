@@ -297,7 +297,6 @@ then
     #echo "DCP is not ready, exiting"
     #exit
     _arg_token="DCP"
-    _arg_path=$_arg_path/DCP_$_arg_name
     if [ $(cat "$SCRIPTPATH/kubernetes/dcp/config.default" | jq 'has("folders")') = "true" ];
     then
       for xfolder in $(cat "$SCRIPTPATH/kubernetes/dcp/config.default" | jq --raw-output '.folders[]')
@@ -321,9 +320,11 @@ then
   if [ "$_arg_operation" = "MOLECULE" ];
   then
     op="molecule"
+    _arg_path=$_arg_path/Molecule_$_arg_name
   elif [ "$_arg_operation" = "ATOM" ];
   then
     op="atom"
+    _arg_path=$_arg_path/Atom_$_arg_name
   elif [ "$_arg_operation" = "APIM" ];
   then
     op="apim"
@@ -334,6 +335,7 @@ then
       make
       cd $location
     fi
+    _arg_path=$_arg_path/Gateway_$_arg_name
   elif [ "$_arg_operation" = "DCP" ];
   then
     op="dcp"
@@ -344,7 +346,10 @@ then
       make
       cd $location
     fi
+    _arg_path=$_arg_path/DCP_$_arg_name
   fi
+
+  xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
 
   # Apply ${operation} with Replacements
 
@@ -374,12 +379,8 @@ then
 
     if [ "$_arg_purge" = on ];
     then
-      if [ "$_arg_operation" = "APIM" ];
-      then
-        rm -rf "$xhostpath/Gateway_${_arg_name}"
-      else
-        rm -rf "$xhostpath/${op}_${_arg_name}"
-      fi
+      echo "cleaning up $xhostpath"
+      rm -rf "$xhostpath"
     fi
   elif [ "$_arg_add" = on ];
   then
