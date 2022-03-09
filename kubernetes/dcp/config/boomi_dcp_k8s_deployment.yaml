@@ -23,9 +23,6 @@ spec:
         - name: dcp-{{name}}-storage
           persistentVolumeClaim:
             claimName: dcp-{{name}}-claim
-        - name: dcp-pg-{{name}}-storage
-          persistentVolumeClaim:
-            claimName: dcp-pg-{{name}}-claim
       containers:
       - image: boomi/dcp-catalog:latest
         securityContext:
@@ -37,6 +34,8 @@ spec:
           value: "4.11"
         - name: DCP_DOT_VERSION
           value: "4.11"
+        - name: POSTGRES_NAME
+          value: {{name}}
         ports:
         - containerPort: 8000
           protocol: TCP
@@ -50,21 +49,6 @@ spec:
         volumeMounts:
         - name: dcp-{{name}}-storage
           mountPath: /usr/local/unifing-catalog-4.11
-      - image: postgres:12.5
-        name: dcp-pg-{{name}}
-        env:
-        - name: POSTGRES_PASSWORD
-          value: unifi
-        - name: POSTGRES_USER
-          value: unifi
-        - name: POSTGRES_DB
-          value: invalid
-        ports:
-        - containerPort: 5432
-          name: dcp-pg-{{name}}
-        volumeMounts:
-        - mountPath: /var/lib/postgresql/data
-          name: dcp-pg-{{name}}-storage
       - image: cassandra:3.11.10
         name: dcp-ca-{{name}}
         resources:
@@ -106,3 +90,44 @@ spec:
           name: jmx
         - containerPort: 9042
           name: cql
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{name}}-pg
+  labels:
+    app: {{name}}-pg
+  namespace: dcp-{{name}}
+spec:
+  serviceName: {{name}}-pg
+  selector:
+    matchLabels:
+      app: {{name}}-pg
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{name}}-pg
+    spec:
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: dcp-pg-{{name}}-storage
+          persistentVolumeClaim:
+            claimName: dcp-pg-{{name}}-claim
+      containers:
+      - image: postgres:12.5
+        name: dcp-pg-{{name}}
+        env:
+        - name: POSTGRES_PASSWORD
+          value: unifi
+        - name: POSTGRES_USER
+          value: unifi
+        - name: POSTGRES_DB
+          value: invalid
+        ports:
+        - containerPort: 5432
+          name: dcp-pg-{{name}}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: dcp-pg-{{name}}-storage

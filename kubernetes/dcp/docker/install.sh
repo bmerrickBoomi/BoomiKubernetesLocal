@@ -3,6 +3,7 @@
 
 IS_EMPTY=$(ls -A /usr/local/unifing-catalog-${DCP_DOT_VERSION})
 
+echo "DB Host > ${POSTGRES_NAME}-pg.dcp-${POSTGRES_NAME}.svc.cluster.local"
 echo "unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz"
 
 until $(wget -q https://storage.googleapis.com/unifi-hd-4tb/unifi-release/${DCP_VERSION}/unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz -P /tmp); do
@@ -52,7 +53,7 @@ if [ -z "$IS_EMPTY" ];
 then
   echo "unifi_install..."
   sed -i 's/DEFAULT_PEXPECT_TIMEOUT = 600/DEFAULT_PEXPECT_TIMEOUT = 60000/g' unifi_install
-  unifi_install --dbhost 127.0.0.1 --dbport 5432 --dbuser unifi \
+  unifi_install --dbhost ${POSTGRES_NAME}-pg.dcp-${POSTGRES_NAME}.svc.cluster.local --dbport 5432 --dbuser unifi \
     --dbpass unifi --dbname unifi --chost 127.0.0.1 --cport 9042 \
     --cuser cassandra --cpass cassandra --unifiuser unifi \
     --unifipass Password123! --unifiemail noreply@boomi.com \
