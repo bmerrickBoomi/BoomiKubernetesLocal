@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright (c) 2015 Boomi, Inc.
 
-IS_EMPTY=$(ls -A /usr/local/unifing-catalog-${DCP_DOT_VERSION})
+IS_EMPTY=$(ls -A /usr/local/unifing-catalog/unifing-catalog-${DCP_DOT_VERSION})
 
 echo "DB Host > ${POSTGRES_NAME}-pg.dcp-${POSTGRES_NAME}.svc.cluster.local"
 echo "unifi-prereqs-${DCP_VERSION}-catalog-centos-rhel-7.x.tar.gz"
@@ -27,21 +27,23 @@ if [ -z "$IS_EMPTY" ];
 then
   echo "unifing-catalog-${DCP_DOT_VERSION}.tar.gz"
   wget https://storage.googleapis.com/unifi-hd-4tb/unifi-release/${DCP_VERSION}/unifing-catalog-${DCP_DOT_VERSION}.tar.gz -P /tmp
-  sudo tar xvf /tmp/unifing-catalog-${DCP_DOT_VERSION}.tar.gz -C /usr/local > /dev/null 2>&1
+  sudo tar xvf /tmp/unifing-catalog-${DCP_DOT_VERSION}.tar.gz -C /usr/local/unifing-catalog > /dev/null 2>&1
 fi
 
-sudo ln -s /usr/local/unifing-catalog-${DCP_DOT_VERSION} /usr/local/unifi
-sudo ln -s /usr/local/unifing-catalog-${DCP_DOT_VERSION}/unifi_pylib/lib/unifi /usr/local/unifi_virtualenv/lib/python3.8/site-packages/
+sudo ln -s /usr/local/unifing-catalog/unifing-catalog-${DCP_DOT_VERSION} /usr/local/unifi
+sudo ln -s /usr/local/unifing-catalog/unifing-catalog-${DCP_DOT_VERSION}/unifi_pylib/lib/unifi /usr/local/unifi_virtualenv/lib/python3.8/site-packages/
 
-echo "chown /usr/local/unifi"
+echo "starting chown /usr/local/unifi"
 
 if [ -z "$IS_EMPTY" ]; 
 then
-  sudo chown -R unifi:unifi /usr/local/unifing-catalog-${DCP_DOT_VERSION}
+  sudo chown -R unifi:unifi /usr/local/unifing-catalog/unifing-catalog-${DCP_DOT_VERSION}
   sudo chown -R unifi:unifi /usr/local/unifi_virtualenv
   
   echo "UNIFI_VIRT_ENV=/usr/local/unifi_virtualenv" >> /usr/local/unifi/unifi_env.sh
 fi
+
+echo "chown complete"
 
 pip install /usr/local/unifi/unifi_pylib/django_celery_beat-1.4.0.Unifi-py2.py3-none-any.whl
 

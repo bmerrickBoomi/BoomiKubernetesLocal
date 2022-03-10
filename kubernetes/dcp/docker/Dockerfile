@@ -19,4 +19,6 @@ RUN chown -R unifi /home/unifi
 
 EXPOSE 8000
 
+USER unifi
+
 CMD ["/home/unifi/install.sh"]

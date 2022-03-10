@@ -13,7 +13,7 @@
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
 # ARG_OPTIONAL_SINGLE([node], e, [Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
+# ARG_HELP([boomi START\nboomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -362,6 +362,18 @@ then
       fi
     done
   fi
+elif [ "$_arg_operation" = "START" ];
+then
+  location=$PWD
+  cd $SCRIPTPATH
+
+  kubectl apply -f tools/dashboard > /dev/null 2>&1 
+  kubectl apply -f tools/nginx > /dev/null 2>&1
+  kubectl apply -f tools/metrics > /dev/null 2>&1
+
+  cd $location
+
+  kubectl proxy & > /dev/null 2>&1
 else
   print_help
   exit

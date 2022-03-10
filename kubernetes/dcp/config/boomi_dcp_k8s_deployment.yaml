@@ -48,7 +48,7 @@ spec:
             memory: "12Gi"
         volumeMounts:
         - name: dcp-{{name}}-storage
-          mountPath: /usr/local/unifing-catalog-4.11
+          mountPath: /usr/local/unifing-catalog
       - image: cassandra:3.11.10
         name: dcp-ca-{{name}}
         resources:

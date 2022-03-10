@@ -11,6 +11,7 @@ do
     sudo ${osInfo[$f]} update
     sudo ${osInfo[$f]} -y install jq
     sudo ${osInfo[$f]} -y install make
+    sudo ${osInfo[$f]} -y install zip
     if ! $(cat ~/.bashrc | grep "alias kubectl=kubectl.exe");
     then
       echo 'alias kubectl=kubectl.exe' >> ~/.bashrc

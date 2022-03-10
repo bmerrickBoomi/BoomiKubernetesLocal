@@ -26,7 +26,7 @@ Clone this Repository
 sudo git clone https://github.com/bmerrickBoomi/BoomiKubernetesLocal.git
 ```
 
-# Start Kubernetes forwarding
+# Installation
 
 Run the install script
 
@@ -40,25 +40,10 @@ Reload ~/.bashrc
 source ~/.bashrc
 ```
 
-To access the Kubernetes dashboard, start the proxy and navigate to the link below. 
-The Boomi APIs should be accessible without port forwarding, but any modifications require this to be running.
+Run boomi START
 
 ```
-kubectl proxy &
-```
-
-Run nginx, kubernetes-dashboard and metrics
-
-```
-kubectl apply -f tools/dashboard
-```
-
-```
-kubectl apply -f tools/nginx
-```
-
-```
-kubectl apply -f tools/metrics
+boomi START
 ```
 
 Navigate to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
@@ -78,6 +63,7 @@ Operation [ATOM | MOLECULE | ADDON | APIM | DCP]
 --vm ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation
 --container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation
 
+boomi START
 boomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
 boomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]
 boomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]
