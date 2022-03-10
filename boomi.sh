@@ -606,6 +606,10 @@ then
   fi
 elif [ "$_arg_operation" = "START" ];
 then
+  kubectl proxy &
+
+  # Make sure K8S is running
+
   location=$PWD
   cd $SCRIPTPATH
 
@@ -614,8 +618,6 @@ then
   kubectl apply -f tools/metrics > /dev/null 2>&1
 
   cd $location
-
-  kubectl proxy & > /dev/null 2>&1
 else
   print_help
   exit

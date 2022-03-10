@@ -40,7 +40,7 @@ Reload ~/.bashrc
 source ~/.bashrc
 ```
 
-Run boomi START
+Run boomi START each time you reboot your machine to ensure Kubernetes Port Forwarding is enabled
 
 ```
 boomi START
