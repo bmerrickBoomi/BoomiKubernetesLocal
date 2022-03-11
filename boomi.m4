@@ -13,7 +13,7 @@
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
 # ARG_OPTIONAL_SINGLE([node], e, [Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi START\nboomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list])
+# ARG_HELP([boomi STATUS\nboomi START\nboomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list\nboomi BOOTSTRAP\nboomi BOOTSTRAP --name NAME [--token TOKEN]])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -173,10 +173,10 @@ then
       then
         for xdd in $(find $SCRIPTPATH/kubernetes/addons/demo/* -maxdepth 0 -type d);
         do
-          echo demo/$(basename $xdd)
+          echo -e "demo/$(basename $xdd)"
         done
       else
-        echo $(basename $xd)
+        echo -e "$(basename $xd)"
       fi
     done
   elif [ "$_arg_add" = on ];
@@ -366,8 +366,6 @@ elif [ "$_arg_operation" = "START" ];
 then
   kubectl proxy &
 
-  # Make sure K8S is running
-
   location=$PWD
   cd $SCRIPTPATH
 
@@ -376,6 +374,12 @@ then
   kubectl apply -f tools/metrics > /dev/null 2>&1
 
   cd $location
+elif [ "$_arg_operation" = "STATUS" ];
+then
+  $SCRIPTPATH/status.sh
+elif [ "$_arg_operation" = "BOOTSTRAP" ];
+then
+  $SCRIPTPATH/bootstrap.sh $_arg_name $_arg_token
 else
   print_help
   exit

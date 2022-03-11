@@ -63,12 +63,15 @@ Operation [ATOM | MOLECULE | ADDON | APIM | DCP]
 --vm ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation
 --container CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation
 
+boomi STATUS
 boomi START
 boomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]
 boomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]
 boomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]
 boomi ADDON --delete --name NAME
 boomi ADDON --list
+boomi BOOTSTRAP
+boomi BOOTSTRAP --name NAME [--token TOKEN]
 ```
 
 # Molecule
@@ -315,11 +318,18 @@ Vault
   boomi ADDON --add --name "mongodb"
   boomi ADDON --add --name "openldap"
   boomi ADDON --add --name "mysql"
-  boomi ADDON --add --name "oracledb"
-  boomi ADDON --add --name "sqlserver"
   boomi ADDON --add --name "postgres"
   boomi ADDON --add --name "sftp"
   boomi ADDON --add --name "vault"
+)
+```
+
+Larger memory usage databases
+
+```
+(
+  boomi ADDON --add --name "oracledb"
+  boomi ADDON --add --name "sqlserver"
 )
 ```
 
