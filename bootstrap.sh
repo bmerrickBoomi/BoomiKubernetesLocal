@@ -71,11 +71,71 @@ dcp() {
 
       echo ""
   done
+
+  ADAPTER_LIST=$(curl -X GET -H "Content-Type: application/json" \
+	        -H "Authorization: Bearer $DCP_TOKEN" \
+		-s -k https://localhost/datai-api/datastore-adapters/)
+
+  DATA_STORE_LIST=$(curl -X GET -H "Content-Type: application/json" \
+    	            -H "Authorization: Bearer $DCP_TOKEN" \
+		    -s -k https://localhost/datai-api/datastores/)
+
+  # Data Stores
+  dcp_data_store "MySql_5_7"      "MySQL"     "mysql-3306.addons-mysql-3306.svc.cluster.local"         "3306"
+  dcp_data_store "MongoDB_3_4"    "MongoDB"   "mongodb-27017.addons-mongodb-27017.svc.cluster.local"   "27017"
+  dcp_data_store "PostgreSql_9_3" "Postgres"  "postgres-5432.addons-postgres-5432.svc.cluster.local"   "5432"
+  dcp_data_store "SQLServer_15_0" "SQLServer" "sqlserver-1433.addons-sqlserver-1433.svc.cluster.local" "1433"
+  dcp_data_store "Oracle_18c"     "Oracle"    "oracledb-1521.addons-oracledb-1521.svc.cluster.local"   "1521"
+
+  DATA_STORE_LIST=$(curl -X GET -H "Content-Type: application/json" \
+	            -H "Authorization: Bearer $DCP_TOKEN" \
+		    -s -k https://localhost/datai-api/datastores/)
+
+  DATA_SOURCE_LIST=$(curl -X GET -H "Content-Type: application/json" \
+                     -H "Authorization: Bearer $DCP_TOKEN" \
+                     -s -k https://localhost/datai-api/data-sources/)
+
+  # Data Sources
+  dcp_data_source "MySQL"     "root" "password" "classicmodels"
+  #dcp_data_source "MongoDB"   ""
+  #dcp_data_source "Postgres"  ""
+  #dcp_data_source "SQLServer" ""
+  #dcp_data_source "Oracle"    ""
+}
+
+dcp_data_store() {
+  EXISTING_STORE=$(echo "$DATA_STORE_LIST" | jq ".[] | select(.name==\"$2\") | .id")
+  if [ -z "$EXISTING_STORE" ];
+  then
+    echo "Installing Data Store $2..."
+    ADAPTER_ID=$(echo "$ADAPTER_LIST" | jq -r ".[] | select(.adapter_base==\"$1\") | .id")
+    curl -X POST -H "Content-Type: application/json" \
+      -H "Authorization: Bearer $DCP_TOKEN" \
+      -d "{\"name\":\"$2\",\"adapter\":$ADAPTER_ID,\"properties\":{\"host\":\"$3\",\"port\":\"$4\"}}" \
+      -k https://localhost/datai-api/datastores/
+
+    echo ""
+  fi
+}
+
+dcp_data_source() {
+  EXISTING_SOURCE=$(echo "$DATA_SOURCE_LIST" | jq ".[] | select(.name==\"$1\") | .id")
+  if [ -z "$EXISTING_SOURCE" ];
+  then
+    echo "Installing Data Source $1..."
+    STORE_ID=$(echo "$DATA_STORE_LIST" | jq -r ".[] | select(.name==\"$1\") | .id")
+    curl -X POST -H "Content-Type: application/json" \
+      -H "Authorization: Bearer $DCP_TOKEN" \
+      -d "{\"name\":\"$1\",\"datastore\":$STORE_ID,\"description\":\"\",\"properties\":{\"user\":\"$2\",\"password\":\"$3\",\"droppable\":\"False\",\"databasename\":\"$4\"},\"tags\":[]}" \
+      -k https://localhost/datai-api/data-sources/
+
+      echo ""
+  fi
 }
 
 if [ "$1" = "mysql" ];
 then
-  echo "mysql"
+  mysql
 elif [ "$1" = "oracledb" ];
 then
   echo "oracledb"

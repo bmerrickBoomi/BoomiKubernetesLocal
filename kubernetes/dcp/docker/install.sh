@@ -63,8 +63,6 @@ fi
 
 echo "unifi_start..."
 
-# Loop to start here for consitency
-
 unifi_start
 unifi_status
 
