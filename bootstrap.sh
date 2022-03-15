@@ -6,16 +6,20 @@ if ! command -v kubectl 2>/dev/null; then
   }
 fi
 
+GS="\033[0;32m"
+GE="\033[0m"
+
 if [ -z "$1" ];
 then
-  echo "Available Services:"
-  echo -e "\033[0;32mmysql"
+  echo -e "Available Services:$GS"
+  echo -e "mysql"
   echo -e "oracledb"
   echo -e "sqlserver"
   echo -e "mongodb"
   echo -e "postgres"
   echo -e "dcp"
-  echo -e "--ALL\033[0m"
+  echo -e "vault"
+  echo -e "--ALL$GE"
   exit
 fi
 
@@ -23,10 +27,19 @@ echo "Bootstrapping $1..."
 APATH=kubernetes/addons
 
 mysql() {
-  # MySQL
-  kubectl -n addons-mysql-3306 exec -i mysql-3306-0 -- mysqladmin ping -h localhost -u root -ppassword
-  kubectl -n addons-mysql-3306 exec -i mysql-3306-0 -- mysql -u root -ppassword < $APATH/mysql/datasets/feature_flags.sql
-  kubectl -n addons-mysql-3306 exec -i mysql-3306-0 -- mysql -u root -ppassword < $APATH/mysql/datasets/mysqlsampledatabase.sql
+  CHECK="SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'demo' AND table_name = 'feature_flags'"
+  if [ $(kubectl -n addons-mysql-3306 exec -i mysql-3306-0 -- mysql --batch -u root -ppassword -e "$CHECK" | sed -n '2 p') -eq 0 ];
+  then
+    echo -e "$GS -- mysql.feature_flags -- $GE"
+    kubectl -n addons-mysql-3306 exec -i mysql-3306-0 -- mysql -u root -ppassword < $APATH/mysql/datasets/feature_flags.sql
+  fi
+
+  CHECK='SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = "classicmodels" AND table_name = "customers"'
+  if [ $(kubectl -n addons-mysql-3306 exec -i mysql-3306-0 -- mysql --batch -u root -ppassword -e "$CHECK" | sed -n '2 p') -eq 0 ];
+  then
+    echo -e "$GS -- mysql.classicmodels -- $GE"
+    kubectl -n addons-mysql-3306 exec -i mysql-3306-0 -- mysql -u root -ppassword < $APATH/mysql/datasets/mysqlsampledatabase.sql
+  fi
 }
 
 oracledb() {
@@ -47,6 +60,10 @@ mongodb() {
 postgres() {
   # Postgres
   kubectl -n addons-postgres-5432 exec -i postgres-5432-0 -- pg_restore --dbname=postgresql://postgres:password@localhost:5432/demo < $APATH/postgres/datasets/dvdrental.tar
+}
+
+vault() {
+  echo "vault"
 }
 
 dcp() {
@@ -148,8 +165,13 @@ then
 elif [ "$1" = "postgres" ];
 then
   echo "postgres"
+elif [ "$1" = "vault" ];
+then
+  echo "vault"
 elif [ "$1" = "dcp" ];
 then
+  echo "DCP is not ready, exiting..."
+  exit
   dcp $2
 elif [ "$1" = "--ALL" ];
 then
