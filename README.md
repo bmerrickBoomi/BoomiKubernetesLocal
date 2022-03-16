@@ -338,7 +338,7 @@ Larger memory usage databases
 Load sample data into all services. This process should be ran only once otherwise duplicate rows may appear and should be ran after verifying that all services are functional.
 
 ```
-./bootstrap.sh
+boomi BOOTSTRAP --name "ALL"
 ```
 
 ## Delete
