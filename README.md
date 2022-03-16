@@ -137,7 +137,7 @@ boomi ATOM --delete --name NAME --purge
 
 ## Access API
 
-In order to access the API, the Shared Web Server API Type needs to be set to [Advanced](https://community.boomi.com/s/article/Authentication-Available-to-the-Shared-Web-Server#Advanced-API-Type).
+In order to access the API, the **Shared Web Server API Type** needs to be set to **[Advanced](https://community.boomi.com/s/article/Authentication-Available-to-the-Shared-Web-Server#Advanced-API-Type)**.
 
 ```
 https://localhost/atom/NAME
