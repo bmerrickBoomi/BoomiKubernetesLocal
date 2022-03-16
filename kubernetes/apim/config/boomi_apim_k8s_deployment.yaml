@@ -34,13 +34,6 @@ spec:
           protocol: TCP
         - containerPort: 18077
           protocol: TCP
-        resources:
-          limits:
-            cpu: "1000m"
-            memory: "1024Mi"
-          requests:
-            cpu: "500m"
-            memory: "768Mi"
         volumeMounts:
           - name: apim-{{name}}-storage
             mountPath: /mnt/boomi

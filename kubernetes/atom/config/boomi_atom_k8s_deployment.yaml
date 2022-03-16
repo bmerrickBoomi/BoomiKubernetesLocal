@@ -38,13 +38,6 @@ spec:
               command:
                 - sh
                 - /home/boomi/scaledown.sh
-        resources:
-          limits:
-            cpu: "1000m"
-            memory: "1024Mi"
-          requests:
-            cpu: "500m"
-            memory: "768Mi"
         volumeMounts:
           - name: atom-{{name}}-storage
             mountPath: /mnt/boomi
