@@ -105,7 +105,7 @@ boomi MOLECULE --delete --name NAME --purge
 
 ## Access API
 
-In order to access the API, the Shared Web Server API Type needs to be set to [Advanced](https://community.boomi.com/s/article/Authentication-Available-to-the-Shared-Web-Server#Advanced-API-Type).
+In order to access the API, the **Shared Web Server API Type** needs to be set to **[Advanced](https://community.boomi.com/s/article/Authentication-Available-to-the-Shared-Web-Server#Advanced-API-Type)**.
 
 ```
 https://localhost/molecule/NAME
@@ -202,7 +202,7 @@ https://localhost/
 
 Additional services can be installed to create integrations from and they can be accessed from within a Atom/Molecule from the internal DNS name or externally from the NodePort defined.
 
-Sample datasets can be found under __kubernetes/addons/SERVICE/datasets__.
+Sample datasets can be found under **kubernetes/addons/SERVICE/datasets**.
 
 ## Database Management
 
@@ -216,7 +216,7 @@ Sample datasets can be found under __kubernetes/addons/SERVICE/datasets__.
 
 [Boomi Kubernetes Demo](https://platform.boomi.com/AtomSphere.html#build;accountId=boomi_brianmerrick-4SYB9W;components=61eddde4-c766-4e0a-902d-f4a26cb47811;componentIdOnFocus=61eddde4-c766-4e0a-902d-f4a26cb47811)
 
-Upload the assets under kubernetes/addons/NAME/jdbc to your account and deploy the following Boomi libraries to access the database connections.
+Upload the assets under **kubernetes/addons/NAME/jdbc** to your account and deploy the following Boomi libraries to access the database connections.
 
 ```
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/mysql/JDBC mysql 8.0.27
@@ -299,7 +299,7 @@ SFTP
 MongoDB
   UI: https://localhost/addons/mongo
     Username: admin
-	  Password: q
+    Password: q
   Hostname: 127.0.0.1
   Port: 30050
   Username: root
