@@ -29,7 +29,7 @@ sudo git clone https://github.com/bmerrickBoomi/BoomiKubernetesLocal.git
 
 # Installation
 
-Run the install script
+Naviate to the install directory and run the install script
 
 ```
 ./install.sh
