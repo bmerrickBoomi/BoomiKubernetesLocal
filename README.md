@@ -1,6 +1,7 @@
 # Runtime Containers
 
-This repository contains all Runtime containerization reference architectures, guidance, and definitions for configuring a Boomi Molecule on a Docker Desktop Kubernetes configuration.
+This repository contains all Runtime containerization reference architectures, guidance, and definitions 
+for configuring a Boomi Molecule on a Docker Desktop Kubernetes configuration.
 
 ## Reference Contents
 
@@ -40,7 +41,7 @@ Reload ~/.bashrc
 source ~/.bashrc
 ```
 
-Run boomi START each time you reboot your machine to ensure Kubernetes Port Forwarding is enabled
+Run **boomi START** each time you reboot your machine to ensure Kubernetes port forwarding is enabled.
 
 ```
 boomi START
@@ -89,7 +90,7 @@ boomi MOLECULE --add --name NAME --token INSTALLER_TOKEN
 ## Delete
 
 ```
-boomi MOLECULE --delete --name NAME
+boomi MOLECULE --delete --name NAME --purge
 ```
 
 ## Example Options
@@ -121,7 +122,7 @@ boomi ATOM --add --name NAME --token INSTALLER_TOKEN
 ## Delete
 
 ```
-boomi ATOM --delete --name NAME
+boomi ATOM --delete --name NAME --purge
 ```
 
 ## Example Options
@@ -157,14 +158,14 @@ boomi APIM --add --name NAME --token INSTALLER_TOKEN
 ## Delete
 
 ```
-boomi APIM --delete --name NAME
+boomi APIM --delete --name NAME --purge
 ```
 
 ## Access API
 
-In order to access the API, the Shared Web Server API Type needs to be set to Gateway on the migrated Boomi runtime.
+In order to access the API, the Shared **Web Server API Type** needs to be set to **Gateway** on the migrated Boomi runtime.
 
-The Public URL for the Location Settings and Developer Portal in APIM should be set to
+The **Public URL** for the **Location Settings** and **Developer Portal** in APIM should be set to
 
 ```
 https://localhost:443
@@ -201,7 +202,7 @@ https://localhost/
 
 Additional services can be installed to create integrations from and they can be accessed from within a Atom/Molecule from the internal DNS name or externally from the NodePort defined.
 
-Sample datasets can be found under kubernetes/addons/SERVICE/datasets.
+Sample datasets can be found under __kubernetes/addons/SERVICE/datasets__.
 
 ## Database Management
 
@@ -298,7 +299,7 @@ SFTP
 MongoDB
   UI: https://localhost/addons/mongo
     Username: admin
-	Password: q
+	  Password: q
   Hostname: 127.0.0.1
   Port: 30050
   Username: root
@@ -318,24 +319,17 @@ Vault
   boomi ADDON --add --name "mongodb"
   boomi ADDON --add --name "openldap"
   boomi ADDON --add --name "mysql"
+  boomi ADDON --add --name "oracledb"
+  boomi ADDON --add --name "sqlserver"
   boomi ADDON --add --name "postgres"
   boomi ADDON --add --name "sftp"
   boomi ADDON --add --name "vault"
 )
 ```
 
-Larger memory usage databases
-
-```
-(
-  boomi ADDON --add --name "oracledb"
-  boomi ADDON --add --name "sqlserver"
-)
-```
-
 ### Bootstrap
 
-Load sample data into all services. This process should be ran only once otherwise duplicate rows may appear and should be ran after verifying that all services are functional.
+Load sample data into all services. Verify all services are running to ensure smooth data loading.
 
 ```
 boomi BOOTSTRAP --name "ALL"
