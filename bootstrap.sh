@@ -68,15 +68,20 @@ sqlserver() {
 
 mongodb() {
   echo -e "$GS-- mongodb --$GE"
-  if [ $(kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -- mongo --authenticationDatabase admin --username root --password password --eval 'db.getMongo().getDBNames().indexOf("zipcodes")' --quiet) -lt 0 ]; then
-    kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -- mongoimport --db zipcodes --collection zips --authenticationDatabase admin --username root --password password < $APATH/mongodb/datasets/zips.json
+  if [ $(kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -c mongodb-27017 -- mongo --authenticationDatabase admin --username root --password password --eval 'db.getMongo().getDBNames().indexOf("zipcodes")' --quiet) -lt 0 ]; then
+    echo -e "$GS -- mongodb.zipcodes -- $GE"
+    kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -c mongodb-27017 -- mongoimport --db zipcodes --collection zips --authenticationDatabase admin --username root --password password < $APATH/mongodb/datasets/zips.json
   fi
 }
 
 postgres() {
-  # Postgres
-  #kubectl -n addons-postgres-5432 exec -i postgres-5432-0 -- pg_restore --dbname=postgresql://postgres:password@localhost:5432/demo < $APATH/postgres/datasets/dvdrental.tar
   echo -e "$GS-- postgres --$GE"
+
+  CHECK="SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'film'"
+  if [ $(kubectl -n addons-postgres-5432 exec -i postgres-5432-0 -- psql postgresql://postgres:password@localhost:5432/demo -c "$CHECK" | sed -n '3 p'| xargs) -eq 0 ]; then
+    echo -e "$GS -- postgres.dvd -- $GE"
+    kubectl -n addons-postgres-5432 exec -i postgres-5432-0 -- pg_restore --dbname=postgresql://postgres:password@localhost:5432/demo < $APATH/postgres/datasets/dvdrental.tar
+  fi
 }
 
 vault() {
