@@ -384,3 +384,9 @@ Add Service
 ```
 boomi ADDON --add --name "demo/cart"
 ```
+
+Update [Demo Cart Properties](https://platform.boomi.com/AtomSphere.html#build;accountId=boomi_brianmerrick-4SYB9W;components=80ccda7d-4a58-4390-920d-180db22273ac;componentIdOnFocus=80ccda7d-4a58-4390-920d-180db22273ac) Process Properties in Boomi
+
+```
+Auth0 Client ID
+Auth0 Client Secret
