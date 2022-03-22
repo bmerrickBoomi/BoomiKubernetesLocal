@@ -67,9 +67,10 @@ sqlserver() {
 }
 
 mongodb() {
-  # MongoDB
-  #kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -- mongoimport --db inventory --collection list --authenticationDatabase admin --username root --password password < $APATH/mongodb/datasets/inventory.json
   echo -e "$GS-- mongodb --$GE"
+  if [ $(kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -- mongo --authenticationDatabase admin --username root --password password --eval 'db.getMongo().getDBNames().indexOf("zipcodes")' --quiet) -lt 0 ]; then
+    kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -- mongoimport --db zipcodes --collection zips --authenticationDatabase admin --username root --password password < $APATH/mongodb/datasets/zips.json
+  fi
 }
 
 postgres() {
