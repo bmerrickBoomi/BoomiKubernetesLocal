@@ -86,6 +86,9 @@ postgres() {
 
 vault() {
   echo -e "$GS-- vault --$GE"
+  CHECK="export VAULT_ADDR='http://127.0.0.1:8200'; export VAULT_TOKEN='OnIBNb78YqEXzEtbReUi3kDj';"
+  kubectl -n addons-vault-8200 exec -i vault-8200-0 -- sh -c "$CHECK vault kv put -cas 0 secret/app1 secret=supersecret1"
+  kubectl -n addons-vault-8200 exec -i vault-8200-0 -- sh -c "$CHECK vault kv put -cas 0 secret/app2 secret=supersecret2"
 }
 
 dcp() {
