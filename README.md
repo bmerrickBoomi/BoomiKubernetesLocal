@@ -390,3 +390,13 @@ Update [Demo Cart Properties](https://platform.boomi.com/AtomSphere.html#build;a
 ```
 Auth0 Client ID
 Auth0 Client Secret
+```
+
+Deploy the following Boomi components. **Note, v2 can be assigned a separate authentication mechanism in APIM**
+
+```
+Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/Authentication v1
+Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/Shopping Cart v1
+Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/(API) Auth0 JWT Token Endpoint
+Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/(API) User Cart Load
+```
