@@ -35,7 +35,7 @@ spec:
         - name: tcp-ldap-{{port}}
           containerPort: 1389
         volumeMounts:
-        - mountPath: /bitnami/openldap/data
+        - mountPath: /bitnami/openldap
           name: openldap-{{port}}-storage
       volumes:
       - name: openldap-{{port}}-storage
