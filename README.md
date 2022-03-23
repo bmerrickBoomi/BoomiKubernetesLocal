@@ -401,4 +401,4 @@ Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/(API) Auth0 JWT 
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/(API) User Cart Load
 ```
 
-**Be sure to apply a keyless plan to Shopping Cart v1/2**
+**Be sure to apply a keyless plan to Authentication v1 and Shopping Cart v1/2**
