@@ -400,3 +400,5 @@ Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/Shopping Cart v1
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/(API) Auth0 JWT Token Endpoint
 Boomi_BrianMerrick/Processes/Boosters/Kubernetes Demo/demo/cart/(API) User Cart Load
 ```
+
+**Be sure to apply a keyless plan to Shopping Cart v1/2**
