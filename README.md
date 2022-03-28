@@ -204,6 +204,10 @@ Additional services can be installed to create integrations from and they can be
 
 Sample datasets can be found under **kubernetes/addons/SERVICE/datasets**.
 
+## Bookmarks
+
+booksmarks.html contains useful bookmarks for this environment. These were exported from Chrome, but have the links inside the HTML file.
+
 ## Database Management
 
 [SQL Server Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
