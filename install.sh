@@ -28,3 +28,7 @@ if ! $(cat ~/.bashrc | grep "alias boomi=");
 then
   echo "alias boomi=$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/boomi.sh" >> ~/.bashrc
 fi
+
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+helm repo add boomi https://bmerrickboomi.github.io/helm-charts
