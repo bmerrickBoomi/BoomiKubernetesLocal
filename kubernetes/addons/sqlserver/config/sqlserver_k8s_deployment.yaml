@@ -35,5 +35,6 @@ spec:
           name: sqlserver-{{port}}-storage
       volumes:
       - name: sqlserver-{{port}}-storage
-        persistentVolumeClaim:
-          claimName: sqlserver-{{port}}-claim
+        hostPath:
+          path: {{path}}
+          type: DirectoryOrCreate

@@ -33,5 +33,6 @@ spec:
           name: oracledb-{{port}}-storage
       volumes:
       - name: oracledb-{{port}}-storage
-        persistentVolumeClaim:
-          claimName: oracledb-{{port}}-claim
+        hostPath:
+          path: {{path}}
+          type: DirectoryOrCreate

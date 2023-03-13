@@ -34,5 +34,6 @@ spec:
           name: postgres-{{port}}-storage
       volumes:
       - name: postgres-{{port}}-storage
-        persistentVolumeClaim:
-          claimName: postgres-{{port}}-claim
+        hostPath:
+          path: {{path}}
+          type: DirectoryOrCreate

@@ -17,6 +17,8 @@ spec:
         app.kubernetes.io/name: openldap-{{port}}
     spec:
       securityContext:
+        runAsUser: 0
+        runAsGroup: 1000
         fsGroup: 1000
       containers:
       - name: openldap-{{port}}
@@ -36,8 +38,9 @@ spec:
           containerPort: 1389
         volumeMounts:
         - mountPath: /bitnami/openldap
-          name: openldap-{{port}}-storage
+          name: openldap-storage
       volumes:
-      - name: openldap-{{port}}-storage
-        persistentVolumeClaim:
-          claimName: openldap-{{port}}-claim
+      - name: openldap-storage
+        hostPath:
+          path: {{path}}
+          type: DirectoryOrCreate

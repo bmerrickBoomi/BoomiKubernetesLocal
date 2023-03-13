@@ -22,9 +22,10 @@ spec:
         fsGroup: 1000
       terminationGracePeriodSeconds: 60
       volumes:
-        - name: molecule-{{name}}-storage
-          persistentVolumeClaim:
-            claimName: molecule-{{name}}-claim
+        - name: molecule-storage
+          hostPath:
+            path: {{path}}
+            type: DirectoryOrCreate
       containers:
       - image: boomi/molecule:4.0.0
         imagePullPolicy: Always
@@ -39,7 +40,7 @@ spec:
                 - sh
                 - /home/boomi/scaledown.sh
         volumeMounts:
-          - name: molecule-{{name}}-storage
+          - name: molecule-storage
             mountPath: /mnt/boomi
         readinessProbe:
           periodSeconds: 10

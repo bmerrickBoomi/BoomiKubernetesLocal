@@ -27,7 +27,7 @@ spec:
         app.kubernetes.io/name: mysql-{{port}}
     spec:
       securityContext:
-        runAsUser: 1000
+        runAsUser: 0
         runAsGroup: 1000
         fsGroup: 1000
       containers:
@@ -56,5 +56,6 @@ spec:
         configMap:
           name: mysql-{{port}}-config
       - name: mysql-{{port}}-storage
-        persistentVolumeClaim:
-          claimName: mysql-{{port}}-claim
+        hostPath:
+          path: {{path}}
+          type: DirectoryOrCreate

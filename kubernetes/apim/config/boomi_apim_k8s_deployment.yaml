@@ -22,9 +22,10 @@ spec:
         fsGroup: 1000
       terminationGracePeriodSeconds: 60
       volumes:
-        - name: apim-{{name}}-storage
-          persistentVolumeClaim:
-            claimName: apim-{{name}}-claim
+        - name: apim-storage
+          hostPath:
+            path: {{path}}
+            type: DirectoryOrCreate
       containers:
       - image: boomi/local-gateway:latest
         imagePullPolicy: IfNotPresent
@@ -35,7 +36,7 @@ spec:
         - containerPort: 18077
           protocol: TCP
         volumeMounts:
-          - name: apim-{{name}}-storage
+          - name: apim-storage
             mountPath: /mnt/boomi
         env:
         - name: ATOM_HOME
