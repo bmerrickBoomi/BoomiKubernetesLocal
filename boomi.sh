@@ -497,7 +497,7 @@ then
         fi
 
         xaddon="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
-        _arg_path="$_arg_path/addons/$dpath-$xport"
+        _arg_path="$xaddon/addons/$dpath-$xport"
 
         echo "addon host path $xaddon"
         echo "addon container path $_arg_path"

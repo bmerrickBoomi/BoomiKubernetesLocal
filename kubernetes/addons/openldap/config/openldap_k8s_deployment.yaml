@@ -17,8 +17,6 @@ spec:
         app.kubernetes.io/name: openldap-{{port}}
     spec:
       securityContext:
-        runAsUser: 0
-        runAsGroup: 1000
         fsGroup: 1000
       containers:
       - name: openldap-{{port}}
