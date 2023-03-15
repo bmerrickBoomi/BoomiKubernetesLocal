@@ -72,6 +72,11 @@ mongodb() {
     echo -e "$GS -- mongodb.zipcodes -- $GE"
     kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -c mongodb-27017 -- mongoimport --db zipcodes --collection zips --authenticationDatabase admin --username root --password password < $APATH/mongodb/datasets/zips.json
   fi
+
+  if [ $(kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -c mongodb-27017 -- mongo --authenticationDatabase admin --username root --password password --eval 'db.getMongo().getDBNames().indexOf("sales")' --quiet) -lt 0 ]; then
+    echo -e "$GS -- mongodb.sales -- $GE"
+    kubectl -n addons-mongodb-27017 exec -i mongodb-27017-0 -c mongodb-27017 -- mongoimport --db sales --collection orders --authenticationDatabase admin --username root --password password < $APATH/mongodb/datasets/sales.json
+  fi
 }
 
 postgres() {
