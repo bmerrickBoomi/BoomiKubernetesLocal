@@ -109,6 +109,7 @@ then
   fi
 
   xhostpath="$(echo "$_arg_path" | sed "s#/run/desktop##g" | sed "s#host/##g")"
+  _arg_path=$xhostpath
 
   # Apply ${operation} with Replacements
 
