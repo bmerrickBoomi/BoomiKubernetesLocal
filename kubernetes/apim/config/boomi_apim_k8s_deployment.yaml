@@ -27,7 +27,7 @@ spec:
             path: {{path}}
             type: DirectoryOrCreate
       containers:
-      - image: boomi/local-gateway:latest
+      - image: brianmerrick02/boomi-apim:latest
         imagePullPolicy: IfNotPresent
         name: apim-{{name}}-node
         ports:
