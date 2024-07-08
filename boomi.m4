@@ -4,16 +4,21 @@
 # ARG_OPTIONAL_BOOLEAN([delete], d, [Delete an Atom/Molecule])
 # ARG_OPTIONAL_BOOLEAN([list], l, [List available resources])
 # ARG_OPTIONAL_BOOLEAN([purge], z, [Delete file-system contents])
-# ARG_POSITIONAL_SINGLE([operation], o, [ATOM, MOLECULE, ADDON, APIM or DCP])
+# ARG_POSITIONAL_SINGLE([operation], o, [ATOM, MOLECULE, ADDON, APIM, DCP, CONTROLPLANE])
+# ARG_OPTIONAL_SINGLE([account], q, [The name of the Boomi Account])
+# ARG_OPTIONAL_SINGLE([backend], b, [The APIIDA Backend URL])
+# ARG_OPTIONAL_SINGLE([user], u, [The Boomi User])
+# ARG_OPTIONAL_SINGLE([api], i, [The Boomi User API Token])
+# ARG_OPTIONAL_SINGLE([gateway], g, [The Boomi Gateway ID])
 # ARG_OPTIONAL_SINGLE([name], n, [The name of the Atom/Molecule])
 # ARG_OPTIONAL_SINGLE([path], p, [Default /run/desktop/mnt/host/c/Boomi\ AtomSphere])
 # ARG_OPTIONAL_SINGLE([port], x, [The port to use for the service])
-# ARG_OPTIONAL_SINGLE([token], t, [The Installer Token for the Atom/Molecule])
+# ARG_OPTIONAL_SINGLE([token], t, [The Installer Token for the Atom/Molecule/ControlPlane])
 # ARG_OPTIONAL_SINGLE([vm], v, [ATOM_VMOPTIONS_OVERRIDES - (Optional) A | (pipe) separated list of vm options to set on a new installation])
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
 # ARG_OPTIONAL_SINGLE([node], e, [Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi STATUS\nboomi START\nboomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list\nboomi BOOTSTRAP\nboomi BOOTSTRAP --name NAME [--token TOKEN]])
+# ARG_HELP([boomi STATUS\nboomi START\nboomi CONTROLPLANE --add --name NAME --token AGENT TOKEN --backend BACKEND URL --account BOOMI ACCOUNT ID --user BOOMI USER EMAIL --api BOOMI USER API KEY --gateway BOOMI GATEWAY ID\nboomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list\nboomi BOOTSTRAP\nboomi BOOTSTRAP --name NAME [--token TOKEN]])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -26,7 +31,7 @@ kubectl() {
 # [ <-- needed because of Argbash
 
 function fileReplace() {
-  cat $1 | sed "s#{{uname}}#${_arg_name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${_arg_path}#g" | sed "s#{{token}}#${_arg_token}#g" | sed "s#{{vm}}#${_arg_vm}#g" | sed "s#{{container}}#${_arg_container}#g" | sed "s#{{port}}#${xport}#g" | sed "s#{{node}}#${xnode}#g"
+  cat $1 | sed "s#{{uname}}#${_arg_name}#g" | sed "s#{{name}}#${lname}#g" | sed "s#{{path}}#${_arg_path}#g" | sed "s#{{token}}#${_arg_token}#g" | sed "s#{{vm}}#${_arg_vm}#g" | sed "s#{{container}}#${_arg_container}#g" | sed "s#{{port}}#${xport}#g" | sed "s#{{node}}#${xnode}#g" | sed "s#{{backendUrl}}#${_arg_backend}#g" | sed "s#{{boomiAccountID}}#${_arg_account}#g" | sed "s#{{userEmail}}#${_arg_user}#g" | sed "s#{{boomiGatewayID}}#${_arg_gateway}#g" | sed "s#{{apiKey}}#${_arg_api}#g"
 }
 
 if [ "$_arg_path" = "" ];
@@ -35,7 +40,7 @@ then
   printf "default path $_arg_path\n"
 fi
 
-if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ] || [ "$_arg_operation" = "APIM" ] || [ "$_arg_operation" = "DCP" ];
+if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ] || [ "$_arg_operation" = "APIM" ] || [ "$_arg_operation" = "DCP" ] || [ "$_arg_operation" = "CONTROLPLANE" ];
 then
   # Checking for ${add} and ${delete} not set
   if [ "$_arg_add" != on ] && [ "$_arg_delete" != on ];
@@ -94,6 +99,16 @@ then
     fi
 
     _arg_path=$_arg_path/Gateway_$_arg_name
+  elif [ "$_arg_operation" = "CONTROLPLANE" ];
+  then
+    op="controlplane"
+    _arg_path=$_arg_path/Controlplane_$_arg_name
+    # Checking ${add} -o && -n && -t && q && b && u && i && g
+    if [ "$_arg_add" = on ] && ( [ "$_arg_name" = "" ] || [ "$_arg_token" = "" ] || [ "$_arg_account" = "" ] || [ "$_arg_backend" = "" ] || [ "$_arg_user" = "" ] || [ "$_arg_api" = "" ] || [ "$_arg_gateway" = "" ]);
+    then
+      print_help
+      exit
+    fi
   elif [ "$_arg_operation" = "DCP" ];
   then
     op="dcp"

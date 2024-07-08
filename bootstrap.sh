@@ -53,6 +53,7 @@ oracledb() {
     echo -e "$GS -- oracledb -- $GE"
     kubectl -n addons-oracledb-1521 exec -i oracledb-1521-0 -- sqlplus sys/Password123! as sysdba < $APATH/oracledb/datasets/LearningSQL-Oracle-Script.sql
   fi
+  kubectl -n addons-oracledb-1521 exec -i oracledb-1521-0 -- sqlplus sys/Password123! as sysdba < $APATH/oracledb/datasets/truncate.sql
 }
 
 sqlserver() {
@@ -94,6 +95,9 @@ vault() {
   CHECK="export VAULT_ADDR='http://127.0.0.1:8200'; export VAULT_TOKEN='OnIBNb78YqEXzEtbReUi3kDj';"
   kubectl -n addons-vault-8200 exec -i vault-8200-0 -- sh -c "$CHECK vault kv put -cas 0 secret/app1 secret=supersecret1"
   kubectl -n addons-vault-8200 exec -i vault-8200-0 -- sh -c "$CHECK vault kv put -cas 0 secret/app2 secret=supersecret2"
+  kubectl -n addons-vault-8200 exec -i vault-8200-0 -- sh -c "$CHECK vault kv put -cas 0 secret/dealer1 secret=i9JNN8q61BGCrFQ4agaq7uOI9Ekopqbwvw1chWEa"
+  kubectl -n addons-vault-8200 exec -i vault-8200-0 -- sh -c "$CHECK vault kv put -cas 0 secret/dealer2 secret=i9JNN8q61BGCrFQ4agaq7uOI9Ekopqbwvw1chWEa"
+  kubectl -n addons-vault-8200 exec -i vault-8200-0 -- sh -c "$CHECK vault kv put -cas 0 secret/dealer3 secret=i9JNN8q61BGCrFQ4agaq7uOI9Ekopqbwvw1chWEa"
 }
 
 dcp() {

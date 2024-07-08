@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{name}}
+  labels:
+    app: {{name}}
+  namespace: controlplane-{{name}}
+spec:
+  serviceName: {{name}}
+  selector:
+    matchLabels:
+      app: {{name}}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{name}}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: apiida/controlplane-agent:2024.5
+        imagePullPolicy: Always
+        name: controlplane-agent-{{name}}
+        env:
+        - name: backendUrl
+          value: {{backendUrl}}
+        - name: gateway.type
+          value: BOOMI
+        - name: gateway.accountId
+          value: {{boomiAccountID}}
+        - name: gateway.user
+          value: {{userEmail}}
+        - name: gateway.gatewayId
+          value: {{boomiGatewayID}}
+        - name: agentToken 
+          valueFrom:
+            secretKeyRef:
+              name: controlplane-secret-{{name}}
+              key: token
+        - name: gateway.apiToken 
+          valueFrom:
+            secretKeyRef:
+              name: controlplane-secret-{{name}}
+              key: apiKey

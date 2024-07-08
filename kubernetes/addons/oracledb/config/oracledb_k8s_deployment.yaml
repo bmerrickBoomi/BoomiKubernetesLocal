@@ -28,9 +28,9 @@ spec:
         ports:
         - containerPort: 1521
           name: oracledb-{{port}}
-        volumeMounts:
-        - mountPath: /opt/oracle/oradata
-          name: oracledb-{{port}}-storage
+        #volumeMounts:
+        #- mountPath: /opt/oracle/oradata
+        #  name: oracledb-{{port}}-storage
       volumes:
       - name: oracledb-{{port}}-storage
         hostPath:

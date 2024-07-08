@@ -1,3 +1,14 @@
+    create table DEMO (
+        CUST_ID number(10,0) not null,
+        ADDRESS varchar2(30 char),
+        CITY varchar2(20 char),
+        CUST_TYPE_CD varchar2(1 char) not null,
+        FED_ID varchar2(12 char) not null,
+        POSTAL_CODE varchar2(10 char),
+        STATE varchar2(20 char),
+        primary key (CUST_ID)
+    );
+    
     create table ACCOUNT (
         ACCOUNT_ID number(10,0) not null,
         AVAIL_BALANCE float,
@@ -184,7 +195,6 @@
 -- ======================================================================== 
 -- ========================================================================
 -- ========================================================================
- 
 
 -- begin data population 
 
