@@ -4,7 +4,7 @@
 # ARG_OPTIONAL_BOOLEAN([delete], d, [Delete an Atom/Molecule])
 # ARG_OPTIONAL_BOOLEAN([list], l, [List available resources])
 # ARG_OPTIONAL_BOOLEAN([purge], z, [Delete file-system contents])
-# ARG_POSITIONAL_SINGLE([operation], o, [ATOM, MOLECULE, ADDON, APIM, DCP, CONTROLPLANE])
+# ARG_POSITIONAL_SINGLE([operation], o, [ATOM, MOLECULE, ADDON, APIM, APIMv2, DCP, CONTROLPLANE])
 # ARG_OPTIONAL_SINGLE([account], q, [The name of the Boomi Account])
 # ARG_OPTIONAL_SINGLE([backend], b, [The APIIDA Backend URL])
 # ARG_OPTIONAL_SINGLE([user], u, [The Boomi User])
@@ -18,7 +18,7 @@
 # ARG_OPTIONAL_SINGLE([container], c, [CONTAINER_PROPERTIES_OVERRIDES - (Optional) A | (pipe) separated list of container properties to set on a new installation])
 # ARG_OPTIONAL_SINGLE([node], e, [Externally accesible port for the service > must be between 30000 - 32767])
 # ARG_DEFAULTS_POS
-# ARG_HELP([boomi STATUS\nboomi START\nboomi CONTROLPLANE --add --name NAME --token AGENT TOKEN --backend BACKEND URL --account BOOMI ACCOUNT ID --user BOOMI USER EMAIL --api BOOMI USER API KEY --gateway BOOMI GATEWAY ID\nboomi [ATOM | MOLECULE | APIM | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list\nboomi BOOTSTRAP\nboomi BOOTSTRAP --name NAME [--token TOKEN]])
+# ARG_HELP([boomi STATUS\nboomi START\nboomi CONTROLPLANE --add --name NAME --token AGENT TOKEN --backend BACKEND URL --account BOOMI ACCOUNT ID --user BOOMI USER EMAIL --api BOOMI USER API KEY --gateway BOOMI GATEWAY ID\nboomi [ATOM | MOLECULE | APIM | APIMv2 | DCP] --add --name NAME [--token TOKEN] [--path PATH] [--vm VM_OPTIONS --container CONTAINER_OPTIONS]\nboomi [ATOM | MOLECULE | APIM | APIMv2 | DCP] --delete --name NAME [--purge]\nboomi ADDON --add --name NAME [--port PORT] [--path PATH] [--node NODEPORT]\nboomi ADDON --delete --name NAME\nboomi ADDON --list\nboomi BOOTSTRAP\nboomi BOOTSTRAP --name NAME [--token TOKEN]])
 # ARGBASH_GO
 
 SCRIPT=`realpath $0`
@@ -40,7 +40,7 @@ then
   printf "default path $_arg_path\n"
 fi
 
-if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ] || [ "$_arg_operation" = "APIM" ] || [ "$_arg_operation" = "DCP" ] || [ "$_arg_operation" = "CONTROLPLANE" ];
+if [ "$_arg_operation" = "ATOM" ] || [ "$_arg_operation" = "MOLECULE" ] || [ "$_arg_operation" = "APIM" ] || [ "$_arg_operation" = "APIMv2" ] || [ "$_arg_operation" = "DCP" ] || [ "$_arg_operation" = "CONTROLPLANE" ];
 then
   # Checking for ${add} and ${delete} not set
   if [ "$_arg_add" != on ] && [ "$_arg_delete" != on ];
@@ -98,6 +98,10 @@ then
       cd $location
     fi
 
+    _arg_path=$_arg_path/Gateway_$_arg_name
+  elif [ "$_arg_operation" = "APIMv2" ];
+  then
+    op="apimv2"
     _arg_path=$_arg_path/Gateway_$_arg_name
   elif [ "$_arg_operation" = "CONTROLPLANE" ];
   then

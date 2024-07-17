@@ -1,0 +1,7 @@
+-Xmx1024m
+-Djava.net.preferIPv4Stack=true
+-Dsun.net.client.defaultConnectTimeout=120000
+-Dsun.net.client.defaultReadTimeout=120000
+-Dsun.net.http.retryPost=false
+-Dcom.boomi.container.clusterLibVersion=3
+-Dcom.boomi.container.securityCompatibility=2021.01
